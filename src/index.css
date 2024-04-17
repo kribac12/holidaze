@@ -1,4 +1,29 @@
 @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-  
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-primaryBg text-primaryText font-roboto;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.nav-link {
+  @apply font-poppins;
+}
+
+.button-primary {
+  @apply bg-primary text-white;
+}
+
+.card {
+  @apply bg-cardBg;
+}
+
+.border-secondary {
+  @apply border-secondaryText;
+}

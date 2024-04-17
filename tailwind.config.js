@@ -4,29 +4,20 @@ module.exports = {
   content: ["./pages/**/*.{js,jsx}", "./components/**/*.{js,jsx}", "./app/**/*.{js,jsx}", "./src/**/*.{js,jsx}"],
   prefix: "",
   theme: {
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
-    },
     extend: {
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
+      colors: {
+        primary: "#ED0010", // Primary button, H1, icons
+        primaryBg: "#F1F1F1", // Background color
+        primaryText: "#333333", // Primary text color
+        secondaryText: "#626567", // Secondary text and borders
+        accent: "#FFBA08", // Accent color
+        cardBg: "#FFFFFF", // Background for cards
       },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
+      fontFamily: {
+        poppins: ["Poppins", "sans-serif"], // Headings and nav links
+        roboto: ["Roboto", "sans-serif"], // Body text and everything else
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [],
 };

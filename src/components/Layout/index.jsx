@@ -1,8 +1,8 @@
 import { Outlet } from "react-router-dom";
-import Header from "./Header";
-import Footer from "./Footer";
+import Header from "../Header";
+import Footer from "../Footer";
 
-const Layout = () => {
+function Layout() {
   return (
     <>
       <Header />
@@ -12,6 +12,6 @@ const Layout = () => {
       <Footer />
     </>
   );
-};
+}
 
 export default Layout;

@@ -12,8 +12,10 @@ function VenueList() {
       <div>
         {venues.data.map((venue) => (
           <div key={venue.id}>
-            <h2>{venue.name}</h2>
+            <h2 className="text-h2 font-h2">{venue.name}</h2>
             <p>{venue.description}</p>
+            <p>{venue.rating}</p>
+            <p>Price per night: {venue.price}</p>
             {venue.media && venue.media.length > 0 && <img src={venue.media[0].url} alt={venue.media[0].alt || "Venue image"} />}
           </div>
         ))}

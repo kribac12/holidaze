@@ -17,6 +17,14 @@ module.exports = {
         poppins: ["Poppins", "sans-serif"], // Headings and nav links
         roboto: ["Roboto", "sans-serif"], // Body text and everything else
       },
+      fontSize: {
+        h1: "2.25rem",
+        h2: "1.5rem",
+      },
+      fontWeight: {
+        h1: "500",
+        h2: "300",
+      },
     },
   },
   plugins: [],

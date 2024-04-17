@@ -16,6 +16,10 @@ h6,
   @apply font-poppins;
 }
 
+h1 {
+  @apply text-primary;
+}
+
 .button-primary {
   @apply bg-primary text-white;
 }

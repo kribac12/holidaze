@@ -11,7 +11,7 @@ function VenueList() {
     return (
       <>
         {venues.data.map((venue) => (
-          <div key={venue.id} className="p-4 shadow rounded-lg bg-white">
+          <div key={venue.id} className="p-4 shadow rounded-lg bg-cardBg">
             {venue.media && venue.media.length > 0 && (
               <img src={venue.media[0].url} alt={venue.media[0].alt || "Venue image"} className="w-full h-48 object-cover rounded-t-lg" />
             )}

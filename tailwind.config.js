@@ -7,11 +7,15 @@ module.exports = {
     extend: {
       colors: {
         primary: "#ED0010", // Primary button, H1, icons
-        primaryBg: "#F1F1F1", // Background color
+        primaryBg: "#FFFFFF", // Background color
         primaryText: "#333333", // Primary text color
         secondaryText: "#626567", // Secondary text and borders
         accent: "#FFBA08", // Accent color
-        cardBg: "#FFFFFF", // Background for cards
+        cardBg: "#F1F1F1", // Background for cards
+      },
+      spacing: {
+        section: "2rem",
+        heading: "1rem",
       },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"], // Headings and nav links

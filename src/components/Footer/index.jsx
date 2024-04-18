@@ -1,7 +1,9 @@
 function Footer() {
   return (
-    <footer className="bg-gray-700 text-white py-3 px-6 text-center">
-      <p>© 2024 Holidaze Kristine Bache. All rights reserved.</p>
+    <footer className="bg-cardBg text-primaryText py-3 text-center">
+      <div className="container mx-auto px-6">
+        <p>© 2024 Holidaze Kristine Bache. All rights reserved.</p>
+      </div>
     </footer>
   );
 }

@@ -8,7 +8,7 @@ function VenueSpecific() {
 
   useEffect(() => {
     if (venueId) {
-      setUrl(`https://v2.api.noroff.dev/holidaze/venues/${venueId}`);
+      setUrl(`https://v2.api.noroff.dev/holidaze/venues/${venueId}?_bookings=true`);
     }
   }, [venueId, setUrl]);
 

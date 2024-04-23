@@ -1,5 +1,6 @@
 import { useState } from "react";
 import useApi from "@/services/Api";
+import { Link } from "react-router-dom";
 
 function SearchForm() {
   const [query, setQuery] = useState("");
@@ -42,15 +43,15 @@ function SearchForm() {
           {searchSubmitted &&
             (data && Array.isArray(data) && data.length > 0 ? (
               data.map((venue) => (
-                <div key={venue.id} className="p-4 shadow rounded-lg bg-cardBg">
+                <Link to={`/venues/${venue.id}`} key={venue.id} className="p-4 shadow rounded-lg bg-cardBg">
                   {venue.media && venue.media.length > 0 && (
                     <img src={venue.media[0].url} alt={venue.media[0].alt || "Venue image"} className="w-full h-48 object-cover rounded-t-lg" />
                   )}
                   <div className="p-4">
-                    <h3 className="text-xl font-semibold">{venue.name}</h3>
+                    <h2 className="text-xl font-semibold">{venue.name}</h2>
                     <p>{venue.description}</p>
                   </div>
-                </div>
+                </Link>
               ))
             ) : searchSubmitted ? ( // Only show if search has been submitted
               <div>No venues found.</div>

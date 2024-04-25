@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 import useApi from "@/services/Api";
 import { useParams } from "react-router-dom";
-import VenueDetails from "@/components/Venue/VenueDetails";
-import VenueMedia from "@/components/Venue/VenueMedia";
+import VenueHeader from "@/components/Venue/VenueHeader";
 import BookingCalendar from "@/components/Venue/BookingCalendar";
+import Facilities from "@/components/Venue/Facilities";
+import Description from "@/components/Venue/Description";
+import BookingSection from "@/components/Venue/BookingSection";
 
 function VenueSpecific() {
   const { venueId } = useParams();
@@ -13,13 +15,15 @@ function VenueSpecific() {
     setUrl(`https://v2.api.noroff.dev/holidaze/venues/${venueId}?_bookings=true`);
   }, [venueId, setUrl]);
 
-  if (isLoading) return <div className="text-center py-4">Loading venue details...</div>;
-  if (isError || !venue) return <div className="text-center text-red-500 py-4">Failed to load venue details. Please try again later.</div>;
+  if (isLoading) return <div>Loading...</div>;
+  if (isError || !venue) return <div>Error loading venue details.</div>;
 
   return (
-    <div className="p-6 bg-primaryBg shadow-lg rounded-lg">
-      <VenueMedia media={venue.media || []} />
-      <VenueDetails venue={venue} />
+    <div>
+      <VenueHeader venue={venue} />
+      <Description description={venue.description} />
+      <BookingSection />
+      <Facilities meta={venue.meta} />
       <BookingCalendar bookings={venue.bookings || []} />
     </div>
   );

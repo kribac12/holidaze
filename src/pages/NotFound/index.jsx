@@ -3,7 +3,7 @@ function NotFound() {
     <div>
       <h1>The page was not found. Try again.</h1>
     </div>
-  );
+  )
 }
 
-export default NotFound;
+export default NotFound

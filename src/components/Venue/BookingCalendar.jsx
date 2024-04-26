@@ -1,14 +1,14 @@
-import PropTypes from "prop-types";
-import { Calendar } from "react-date-range";
-import "react-date-range/dist/styles.css";
-import "react-date-range/dist/theme/default.css";
+import PropTypes from 'prop-types'
+import { Calendar } from 'react-date-range'
+import 'react-date-range/dist/styles.css'
+import 'react-date-range/dist/theme/default.css'
 
 const BookingCalendar = ({ bookings }) => {
   const bookedDates = bookings?.map((booking) => ({
     startDate: new Date(booking.dateFrom),
     endDate: new Date(booking.dateTo),
-    key: "booked",
-  }));
+    key: 'booked',
+  }))
 
   return (
     <Calendar
@@ -16,7 +16,7 @@ const BookingCalendar = ({ bookings }) => {
       minDate={new Date()}
       showDateDisplay={false}
       ranges={bookedDates}
-      rangeColors={["#ff0000"]}
+      rangeColors={['#ff0000']}
       showSelectionPreview={true}
       moveRangeOnFirstSelection={false}
       months={2}
@@ -25,8 +25,8 @@ const BookingCalendar = ({ bookings }) => {
       showMonthAndYearPickers={false}
       disabledDates={bookedDates.map((range) => range.startDate)}
     />
-  );
-};
+  )
+}
 
 BookingCalendar.propTypes = {
   bookings: PropTypes.arrayOf(
@@ -35,6 +35,6 @@ BookingCalendar.propTypes = {
       dateTo: PropTypes.string.isRequired,
     })
   ).isRequired,
-};
+}
 
-export default BookingCalendar;
+export default BookingCalendar

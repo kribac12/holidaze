@@ -1,22 +1,24 @@
-import { useEffect } from "react";
-import useApi from "@/services/Api";
-import { useParams } from "react-router-dom";
-import VenueHeader from "@/components/Venue/VenueHeader";
-import BookingCalendar from "@/components/Venue/BookingCalendar";
-import Facilities from "@/components/Venue/Facilities";
-import Description from "@/components/Venue/Description";
-import BookingSection from "@/components/Venue/BookingSection";
+import { useEffect } from 'react'
+import useApi from '@/services/Api'
+import { useParams } from 'react-router-dom'
+import VenueHeader from '@/components/Venue/VenueHeader'
+import BookingCalendar from '@/components/Venue/BookingCalendar'
+import Facilities from '@/components/Venue/Facilities'
+import Description from '@/components/Venue/Description'
+import BookingSection from '@/components/Venue/BookingSection'
 
 function VenueSpecific() {
-  const { venueId } = useParams();
-  const { data: venue, isLoading, isError, setUrl } = useApi();
+  const { venueId } = useParams()
+  const { data: venue, isLoading, isError, setUrl } = useApi()
 
   useEffect(() => {
-    setUrl(`https://v2.api.noroff.dev/holidaze/venues/${venueId}?_bookings=true`);
-  }, [venueId, setUrl]);
+    setUrl(
+      `https://v2.api.noroff.dev/holidaze/venues/${venueId}?_bookings=true`
+    )
+  }, [venueId, setUrl])
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError || !venue) return <div>Error loading venue details.</div>;
+  if (isLoading) return <div>Loading...</div>
+  if (isError || !venue) return <div>Error loading venue details.</div>
 
   return (
     <div>
@@ -26,7 +28,7 @@ function VenueSpecific() {
       <Facilities meta={venue.meta} />
       <BookingCalendar bookings={venue.bookings || []} />
     </div>
-  );
+  )
 }
 
-export default VenueSpecific;
+export default VenueSpecific

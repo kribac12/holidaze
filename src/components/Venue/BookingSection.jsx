@@ -3,6 +3,6 @@ const BookingSection = () => (
     <h2 className="text-xl font-semibold">Book Your Stay</h2>
     <p>Booking functionality will be implemented here.</p>
   </div>
-);
+)
 
-export default BookingSection;
+export default BookingSection

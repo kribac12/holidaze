@@ -9,13 +9,14 @@ import BookingSection from '@/components/Venue/BookingSection'
 
 function VenueSpecific() {
   const { venueId } = useParams()
-  const { data: venue, isLoading, isError, setUrl } = useApi()
+  const { data: venue, isLoading, isError, sendRequest } = useApi()
 
   useEffect(() => {
-    setUrl(
-      `https://v2.api.noroff.dev/holidaze/venues/${venueId}?_bookings=true`
-    )
-  }, [venueId, setUrl])
+    sendRequest({
+      url: `https://v2.api.noroff.dev/holidaze/venues/${venueId}?_bookings=true`,
+      method: 'get',
+    })
+  }, [venueId, sendRequest])
 
   if (isLoading) return <div>Loading...</div>
   if (isError || !venue) return <div>Error loading venue details.</div>

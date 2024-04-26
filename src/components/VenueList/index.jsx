@@ -3,11 +3,14 @@ import useApi from '@/services/Api'
 import { Link } from 'react-router-dom'
 
 function VenueList() {
-  const { data: venues, isLoading, isError, setUrl } = useApi()
+  const { data: venues, isLoading, isError, sendRequest } = useApi()
 
   useEffect(() => {
-    setUrl('https://v2.api.noroff.dev/holidaze/venues')
-  }, [setUrl])
+    sendRequest({
+      url: 'https://v2.api.noroff.dev/holidaze/venues',
+      method: 'get',
+    })
+  }, [sendRequest])
 
   if (isLoading) return <div>Loading...</div>
   if (isError || !venues)

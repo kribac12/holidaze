@@ -1,32 +1,29 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import axios from 'axios'
 
 const useApi = () => {
   const [data, setData] = useState(null)
-  const [url, setUrl] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState(false)
 
-  const fetchData = useCallback(async () => {
-    if (!url) return // Do not fetch if URL is not set
+  const sendRequest = useCallback(async (config) => {
     setIsLoading(true)
     setIsError(false)
+
     try {
-      const response = await axios.get(url)
+      const response = await axios(config)
       setData(response.data.data)
+      return response.data
     } catch (error) {
-      console.error('API fetch error:', error)
+      console.error('API request error:', error)
       setIsError(true)
+      return null
     } finally {
       setIsLoading(false)
     }
-  }, [url])
+  }, [])
 
-  useEffect(() => {
-    fetchData()
-  }, [fetchData])
-
-  return { data, isLoading, isError, setUrl }
+  return { data, isLoading, isError, sendRequest }
 }
 
 export default useApi

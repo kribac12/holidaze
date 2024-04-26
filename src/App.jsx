@@ -1,9 +1,9 @@
-import { Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Layout from "./components/Layout";
-import Home from "./pages/Home";
-import NotFound from "./pages/NotFound";
-import VenueSpecific from "./pages/VenueSpecific";
+import { Suspense } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Layout from './components/Layout'
+import Home from './pages/Home'
+import NotFound from './pages/NotFound'
+import VenueSpecific from './pages/VenueSpecific'
 
 const App = () => {
   return (
@@ -19,7 +19,7 @@ const App = () => {
         </Routes>
       </Suspense>
     </Router>
-  );
-};
+  )
+}
 
-export default App;
+export default App

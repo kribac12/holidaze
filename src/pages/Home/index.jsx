@@ -1,6 +1,6 @@
-import VenueList from "@/components/VenueList";
-import FeatureSection from "@/components/FeatureSection";
-import SearchForm from "@/components/SearchForm";
+import VenueList from '@/components/VenueList'
+import FeatureSection from '@/components/FeatureSection'
+import SearchForm from '@/components/SearchForm'
 
 function Home() {
   return (
@@ -17,7 +17,7 @@ function Home() {
         <FeatureSection />
       </section>
     </div>
-  );
+  )
 }
 
-export default Home;
+export default Home

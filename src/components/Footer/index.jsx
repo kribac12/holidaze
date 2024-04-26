@@ -5,7 +5,7 @@ function Footer() {
         <p>© 2024 Holidaze Kristine Bache. All rights reserved.</p>
       </div>
     </footer>
-  );
+  )
 }
 
-export default Footer;
+export default Footer

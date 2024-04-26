@@ -2,12 +2,13 @@ import { useState } from 'react'
 import { Modal as ResponsiveModal } from 'react-responsive-modal'
 import 'react-responsive-modal/styles.css'
 import RegisterForm from '../RegistrationForm'
+import LoginForm from '../LoginForm'
 import useApi from '@/services/Api'
 import useModalStore from '@/store/ModalStore'
 
 function Modal() {
   const { isOpen, closeModal } = useModalStore()
-  const { sendRequest, isLoading, isError } = useApi()
+  const { sendRequest, isLoading, isError, setAuth } = useApi()
   const [isRegister, setIsRegister] = useState(true)
 
   const handleRegister = async (data) => {
@@ -17,7 +18,35 @@ function Modal() {
       data,
     })
     if (result) {
+      console.log('Registration successful:', result)
       closeModal()
+    } else {
+      console.log('Registration failed. See errors for details.')
+      if (isError && result) {
+        console.log('Error details:', result.errors)
+      }
+    }
+  }
+  const handleLogin = async (loginData) => {
+    const loginResponse = await sendRequest({
+      url: 'https://v2.api.noroff.dev/auth/login',
+      method: 'post',
+      data: loginData,
+    })
+    if (loginResponse) {
+      setAuth({ token: loginResponse.data.accessToken })
+      const apiKeyResponse = await sendRequest({
+        url: 'https://v2.api.noroff.dev/auth/create-api-key',
+        method: 'post',
+        headers: { Authorization: `Bearer ${loginResponse.data.accessToken}` },
+      })
+      if (apiKeyResponse) {
+        setAuth({
+          token: loginResponse.data.accessToken,
+          apiKey: apiKeyResponse.data.key,
+        })
+        closeModal()
+      }
     }
   }
 
@@ -47,7 +76,7 @@ function Modal() {
       {isRegister ? (
         <RegisterForm onSubmit={handleRegister} />
       ) : (
-        <div>Login Form Goes Here</div>
+        <LoginForm onLogin={handleLogin} />
       )}
       {/* Loading and Error Handling */}
       {isLoading && <p>Loading...</p>}

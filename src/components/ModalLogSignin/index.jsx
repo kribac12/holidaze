@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { Modal as ResponsiveModal } from 'react-responsive-modal'
 import 'react-responsive-modal/styles.css'
 import RegisterForm from '../RegistrationForm'
+import { useNavigate } from 'react-router-dom'
 import LoginForm from '../LoginForm'
 import Notification from '../Notifications'
 import useApi from '@/services/Api'
@@ -12,6 +13,10 @@ function ModalLogSignin() {
   const { sendRequest, isLoading, isError, setAuth } = useApi()
   const [isRegister, setIsRegister] = useState(true)
   const [notification, setNotification] = useState({ message: '', type: '' })
+  const navigate = useNavigate()
+  const clearNotification = useCallback(() => {
+    setNotification({ message: '', type: '' })
+  }, [])
 
   const handleRegister = async (data) => {
     const { avatar, banner, ...otherData } = data
@@ -60,6 +65,7 @@ function ModalLogSignin() {
       })
       setAuth({ token: loginResponse.data.accessToken })
       closeModal()
+      navigate('/profile')
     } catch (error) {
       console.error('Login failed:', error.response.data)
       if (error.response && error.response.data && error.response.data.errors) {
@@ -80,7 +86,12 @@ function ModalLogSignin() {
       closeIconClassName="text-gray-500 hover:text-gray-800"
     >
       {notification.message && notification.type && (
-        <Notification message={notification.message} type={notification.type} />
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          onDismiss={clearNotification}
+          className="absolute top-0 w-full text-center"
+        />
       )}
       <div className="tabs mb-4">
         <button

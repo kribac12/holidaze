@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import Home from './pages/Home'
+import ProfilePage from './pages/Profile'
 import NotFound from './pages/NotFound'
 import VenueSpecific from './pages/VenueSpecific'
 
@@ -13,7 +14,7 @@ const App = () => {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="venues/:venueId" element={<VenueSpecific />} />
-
+            <Route path="/profile/:name" element={<ProfilePage />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

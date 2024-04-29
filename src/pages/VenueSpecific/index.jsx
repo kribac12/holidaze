@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import useApi from '@/services/Api'
 import { useParams } from 'react-router-dom'
 import VenueHeader from '@/components/Venue/VenueHeader'
@@ -9,13 +9,24 @@ import BookingSection from '@/components/Venue/BookingSection'
 
 function VenueSpecific() {
   const { venueId } = useParams()
-  const { data: venue, isLoading, isError, setUrl } = useApi()
+  const { isLoading, isError, sendRequest } = useApi()
+  const [venue, setVenue] = useState(null)
 
   useEffect(() => {
-    setUrl(
-      `https://v2.api.noroff.dev/holidaze/venues/${venueId}?_bookings=true`
-    )
-  }, [venueId, setUrl])
+    sendRequest({
+      url: `https://v2.api.noroff.dev/holidaze/venues/${venueId}?_bookings=true`,
+      method: 'get',
+    })
+      .then((response) => {
+        if (response && response.data) {
+          // Setting the venue state to the data object within the response
+          setVenue(response.data)
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching venue details:', error)
+      })
+  }, [venueId, sendRequest])
 
   if (isLoading) return <div>Loading...</div>
   if (isError || !venue) return <div>Error loading venue details.</div>

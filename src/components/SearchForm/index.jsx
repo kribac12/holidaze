@@ -6,7 +6,7 @@ function SearchForm() {
   const [query, setQuery] = useState('')
   const [searchSubmitted, setSearchSubmitted] = useState(false) // State to track if search has been performed
 
-  const { data, isLoading, isError, setUrl } = useApi()
+  const { data, isLoading, isError, sendRequest } = useApi()
 
   const handleChange = (e) => {
     setQuery(e.target.value)
@@ -14,10 +14,12 @@ function SearchForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    console.log('Query before sending:', query)
     if (query.trim()) {
-      setUrl(
-        `https://v2.api.noroff.dev/holidaze/venues/search?q=${encodeURIComponent(query)}`
-      )
+      sendRequest({
+        url: `https://v2.api.noroff.dev/holidaze/venues/search?q=${encodeURIComponent(query)}`,
+        method: 'get',
+      })
       setSearchSubmitted(true)
     }
   }
@@ -46,8 +48,8 @@ function SearchForm() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {searchSubmitted &&
-            (data && Array.isArray(data) && data.length > 0 ? (
-              data.map((venue) => (
+            (data && Array.isArray(data.data) && data.data.length > 0 ? (
+              data.data.map((venue) => (
                 <Link
                   to={`/venues/${venue.id}`}
                   key={venue.id}
@@ -66,7 +68,7 @@ function SearchForm() {
                   </div>
                 </Link>
               ))
-            ) : searchSubmitted ? ( // Only show if search has been submitted
+            ) : searchSubmitted ? (
               <div>No venues found.</div>
             ) : null)}
         </div>

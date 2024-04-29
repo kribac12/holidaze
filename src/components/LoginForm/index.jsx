@@ -30,7 +30,6 @@ function LoginForm({ onLogin }) {
         className="input-field"
       />
       <p>{errors.email?.message}</p>
-
       <input
         {...register('password')}
         type="password"
@@ -38,7 +37,6 @@ function LoginForm({ onLogin }) {
         className="input-field"
       />
       <p>{errors.password?.message}</p>
-
       <button type="submit" className="submit-button">
         Login
       </button>

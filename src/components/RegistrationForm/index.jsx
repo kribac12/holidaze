@@ -22,14 +22,26 @@ const schema = yup
       .required('Password is required')
       .min(8, 'Password must be at least 8 characters long'),
     bio: yup.string().max(160, 'Bio must be less than 160 characters'),
-    avatar: yup.object({
-      url: yup.string().url('Must be a valid URL'),
-      alt: yup.string().max(120, 'Alt text must be less than 120 characters'),
-    }),
-    banner: yup.object({
-      url: yup.string().url('Must be a valid URL'),
-      alt: yup.string().max(120, 'Alt text must be less than 120 characters'),
-    }),
+    avatar: yup
+      .object()
+      .shape({
+        url: yup.string().url('Must be a valid URL').nullable(true),
+        alt: yup
+          .string()
+          .max(120, 'Alt text must be less than 120 characters')
+          .nullable(true),
+      })
+      .nullable(true),
+    banner: yup
+      .object()
+      .shape({
+        url: yup.string().url('Must be a valid URL').nullable(true),
+        alt: yup
+          .string()
+          .max(120, 'Alt text must be less than 120 characters')
+          .nullable(true),
+      })
+      .nullable(true),
     venueManager: yup.boolean(),
   })
   .required()
@@ -39,26 +51,37 @@ function RegisterForm({ onSubmit }) {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm({
     resolver: yupResolver(schema),
   })
 
+  const onSubmitWrapper = async (data) => {
+    try {
+      await onSubmit(data)
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.errors) {
+        error.response.data.errors.forEach((err) => {
+          setError(err.path[0], { type: 'server', message: err.message })
+        })
+      }
+    }
+  }
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmitWrapper)} className="space-y-4">
       <input
         {...register('name')}
         placeholder="Username"
         className="input-field"
       />
       <p>{errors.name?.message}</p>
-
       <input
         {...register('email')}
         placeholder="Email (stud.noroff.no)"
         className="input-field"
       />
       <p>{errors.email?.message}</p>
-
       <input
         {...register('password')}
         type="password"
@@ -66,14 +89,12 @@ function RegisterForm({ onSubmit }) {
         className="input-field"
       />
       <p>{errors.password?.message}</p>
-
       <textarea
         {...register('bio')}
         placeholder="Bio"
         className="input-field"
       />
       <p>{errors.bio?.message}</p>
-
       <input
         {...register('avatar.url')}
         placeholder="Avatar URL"
@@ -84,7 +105,6 @@ function RegisterForm({ onSubmit }) {
         placeholder="Avatar Alt Text"
         className="input-field"
       />
-
       <input
         {...register('banner.url')}
         placeholder="Banner URL"
@@ -95,12 +115,10 @@ function RegisterForm({ onSubmit }) {
         placeholder="Banner Alt Text"
         className="input-field"
       />
-
       <label>
         <input {...register('venueManager')} type="checkbox" />
         Register as a Venue Manager
       </label>
-
       <button
         type="submit"
         className="bg-primary text-white font-bold py-2 px-4 rounded hover:bg-red-700"

@@ -23,12 +23,16 @@ const useApi = () => {
             ...headers,
           },
         })
-        setData(response.data.data)
-        return response.data
+        if (response.status >= 200 && response.status < 300) {
+          setData(response.data.data)
+          return response.data
+        } else {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
       } catch (error) {
-        console.error('API request error:', error)
         setIsError(true)
-        return error.response
+        console.error('API request error:', error)
+        throw error
       } finally {
         setIsLoading(false)
       }

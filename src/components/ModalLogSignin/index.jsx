@@ -6,23 +6,27 @@ import { useNavigate } from 'react-router-dom'
 import LoginForm from '../LoginForm'
 import Notification from '../Notifications'
 import useApi from '@/services/Api'
-import useModalStore from '@/store/ModalStore'
+import useStore from '@/store'
+import { fetchApiKey } from '@/services/Api/ApiKey'
 
 function ModalLogSignin() {
-  const { isOpen, closeModal } = useModalStore()
-  const { sendRequest, isLoading, isError, setAuth } = useApi()
+  const { isOpen, closeModal, setAuth } = useStore((state) => ({
+    isOpen: state.isOpen,
+    closeModal: state.closeModal,
+    setAuth: state.setAuth,
+  }))
+  const { sendRequest, isLoading, isError } = useApi()
+  const navigate = useNavigate()
   const [isRegister, setIsRegister] = useState(true)
   const [notification, setNotification] = useState({ message: '', type: '' })
-  const navigate = useNavigate()
+
   const clearNotification = useCallback(() => {
     setNotification({ message: '', type: '' })
   }, [])
 
   const handleRegister = async (data) => {
     const { avatar, banner, ...otherData } = data
-
-    // Only add avatar and banner to payload if their URLs are provided
-    const payload = {
+    const formattedData = {
       ...otherData,
       ...(avatar.url && { avatar: { url: avatar.url, alt: avatar.alt || '' } }),
       ...(banner.url && { banner: { url: banner.url, alt: banner.alt || '' } }),
@@ -32,10 +36,10 @@ function ModalLogSignin() {
       const result = await sendRequest({
         url: 'https://v2.api.noroff.dev/auth/register',
         method: 'post',
-        data: payload,
+        data: formattedData,
       })
       setAuth({ user: result.data })
-      setIsRegister(false) // Switch to login tab
+      setIsRegister(false)
       setNotification({
         message: 'Registration successful, please log in.',
         type: 'success',
@@ -48,7 +52,6 @@ function ModalLogSignin() {
           console.error(
             `Error in ${err.path ? err.path.join('.') : 'request'}: ${err.message}`
           )
-
           errorMessage += ` ${err.message}`
         })
       }
@@ -63,16 +66,25 @@ function ModalLogSignin() {
         method: 'post',
         data: loginData,
       })
-      setAuth({ token: loginResponse.data.accessToken })
-      closeModal()
-      navigate('/profile')
-    } catch (error) {
-      console.error('Login failed:', error.response.data)
-      if (error.response && error.response.data && error.response.data.errors) {
-        error.response.data.errors.forEach((err) => {
-          console.error(`Error: ${err.message}`)
-        })
+
+      if (!loginResponse || !loginResponse.data) {
+        throw new Error('Invalid login response')
       }
+
+      useStore.getState().setAuth({
+        token: loginResponse.data.accessToken,
+        user: loginResponse.data,
+      })
+
+      await fetchApiKey(loginResponse.data.accessToken)
+
+      closeModal()
+
+      navigate(`/profile/${loginResponse.data.name}`)
+    } catch (error) {
+      console.error('Login failed:', error.response?.data || error)
+      // Display an error message to the user
+      alert('Login failed: ' + (error.response?.data?.message || error.message))
     }
   }
 
@@ -85,7 +97,7 @@ function ModalLogSignin() {
       modalClassName="bg-white rounded-lg p-6 mx-auto my-12 max-w-md shadow-lg custom-modal-padding"
       closeIconClassName="text-gray-500 hover:text-gray-800"
     >
-      {notification.message && notification.type && (
+      {notification.message && (
         <Notification
           message={notification.message}
           type={notification.type}
@@ -95,14 +107,14 @@ function ModalLogSignin() {
       )}
       <div className="tabs mb-4">
         <button
-          className={`mr-2 px-4 py-2 rounded ${isRegister ? 'bg-primary text-white' : 'bg-transparent text-primary'}`}
           onClick={() => setIsRegister(true)}
+          className={`mr-2 px-4 py-2 rounded ${isRegister ? 'bg-primary text-white' : 'bg-transparent text-primary'}`}
         >
           Register
         </button>
         <button
-          className={`px-4 py-2 rounded ${!isRegister ? 'bg-primary text-white' : 'bg-transparent text-primary'}`}
           onClick={() => setIsRegister(false)}
+          className={`px-4 py-2 rounded ${!isRegister ? 'bg-primary text-white' : 'bg-transparent text-primary'}`}
         >
           Login
         </button>
@@ -120,4 +132,5 @@ function ModalLogSignin() {
     </ResponsiveModal>
   )
 }
+
 export default ModalLogSignin

@@ -1,46 +1,44 @@
 import { useState, useCallback } from 'react'
 import axios from 'axios'
+import useStore from '@/store'
 
 const useApi = () => {
+  const { token, apiKey } = useStore((state) => state.auth)
   const [data, setData] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState(false)
-  const [auth, setAuth] = useState({ token: '', apiKey: '' })
 
   const sendRequest = useCallback(
     async ({ url, method = 'get', data = null, headers = {} }) => {
       setIsLoading(true)
       setIsError(false)
+      const authHeaders = {
+        Authorization: `Bearer ${token}`,
+        'X-Noroff-API-Key': apiKey,
+        ...headers,
+      }
 
       try {
         const response = await axios({
           url,
           method,
           data,
-          headers: {
-            Authorization: `Bearer ${auth.token}`,
-            'X-Noroff-API-Key': auth.apiKey,
-            ...headers,
-          },
+          headers: authHeaders,
         })
-        if (response.status >= 200 && response.status < 300) {
-          setData(response.data.data)
-          return response.data
-        } else {
-          throw new Error(`HTTP error! status: ${response.status}`)
-        }
+        setData(response.data)
+        return response.data
       } catch (error) {
+        console.error('API request error:', error.response || error)
         setIsError(true)
-        console.error('API request error:', error)
         throw error
       } finally {
         setIsLoading(false)
       }
     },
-    [auth]
+    [token, apiKey]
   )
 
-  return { data, isLoading, isError, sendRequest, setAuth }
+  return { data, isLoading, isError, sendRequest }
 }
 
 export default useApi

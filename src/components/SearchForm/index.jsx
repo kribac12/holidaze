@@ -14,6 +14,7 @@ function SearchForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    console.log('Query before sending:', query)
     if (query.trim()) {
       sendRequest({
         url: `https://v2.api.noroff.dev/holidaze/venues/search?q=${encodeURIComponent(query)}`,
@@ -47,8 +48,8 @@ function SearchForm() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {searchSubmitted &&
-            (data && Array.isArray(data) && data.length > 0 ? (
-              data.map((venue) => (
+            (data && Array.isArray(data.data) && data.data.length > 0 ? (
+              data.data.map((venue) => (
                 <Link
                   to={`/venues/${venue.id}`}
                   key={venue.id}

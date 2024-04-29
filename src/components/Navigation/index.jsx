@@ -1,7 +1,7 @@
-import useModalStore from '@/store/ModalStore'
+import useStore from '@/store'
 
 function Nav() {
-  const { openModal } = useModalStore()
+  const { openModal } = useStore()
 
   return (
     <nav>

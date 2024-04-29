@@ -14,7 +14,7 @@ const App = () => {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="venues/:venueId" element={<VenueSpecific />} />
-            <Route path="profile" element={<ProfilePage />} />
+            <Route path="/profile/:name" element={<ProfilePage />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

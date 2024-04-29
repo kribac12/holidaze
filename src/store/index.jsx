@@ -3,7 +3,6 @@ import { devtools } from 'zustand/middleware'
 
 const useStore = create(
   devtools((set) => ({
-    // Include modal open/close state
     isOpen: false,
     isRegister: true, // true for register form, false for login form
     openModal: (register = true) => set({ isOpen: true, isRegister: register }),

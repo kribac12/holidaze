@@ -15,7 +15,6 @@ const ProfilePage = () => {
       .catch(console.error)
   }, [sendRequest, profileName])
 
-  console.log('Profile Data:', profileData)
   if (isLoading) return <div>Loading...</div>
   if (isError) return <div>Error fetching profile data.</div>
   if (!profileData || !profileData.data)

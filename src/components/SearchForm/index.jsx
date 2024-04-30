@@ -14,7 +14,7 @@ function SearchForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('Query before sending:', query)
+
     if (query.trim()) {
       sendRequest({
         url: `https://v2.api.noroff.dev/holidaze/venues/search?q=${encodeURIComponent(query)}`,

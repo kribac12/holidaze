@@ -69,48 +69,67 @@ function EditProfileModal({ isOpen, onClose, profile }) {
       overlayClassName="fixed inset-0 bg-gray-900 bg-opacity-50 z-50"
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <label className="block">
+        <h2 className="font-h2 text-h2">Edit your profile</h2>
+        <label className="block text-sm font-medium text-gray-700">
           Bio:
-          <input {...register('bio')} className="input-field" />
+          <input
+            {...register('bio')}
+            className=" mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+          />
         </label>
-        <label className="block">
+        <label className="block text-sm font-medium text-gray-700">
           Avatar URL:
           <input
             {...register('avatar', { pattern: urlPattern })}
-            className="input-field"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
           />
           {errors.avatar && <p>Invalid URL</p>}
         </label>
-        <label className="block">
+        <label className="block text-sm font-medium text-gray-700">
           Avatar Alt Text:
-          <input {...register('avatarAlt')} className="input-field" />
+          <input
+            {...register('avatarAlt')}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+          />
         </label>
-        <label className="block">
+        <label className="block text-sm font-medium text-gray-700">
           Banner URL:
           <input
             {...register('banner', { pattern: urlPattern })}
-            className="input-field"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
           />
           {errors.banner && <p>Invalid URL</p>}
         </label>
-        <label className="block">
+        <label className="block text-sm font-medium text-gray-700">
           Banner Alt Text:
-          <input {...register('bannerAlt')} className="input-field" />
+          <input
+            {...register('bannerAlt')}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+          />
         </label>
-        <label className="block">
+        <label className="block text-sm font-medium text-gray-700">
           Venue Manager:
-          <input type="checkbox" {...register('venueManager')} />
+          <input
+            type="checkbox"
+            {...register('venueManager')}
+            className="ml-2 align-middle"
+          />
         </label>
-        <button type="submit" className="submit-button">
-          Update Profile
-        </button>
-        <button
-          type="button"
-          onClick={() => onClose(false)}
-          className="cancel-button"
-        >
-          Cancel
-        </button>
+        <div className="flex justify-end space-x-4">
+          <button
+            type="submit"
+            className="py-2 px-4 bg-primary text-white rounded hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500"
+          >
+            Update Profile
+          </button>
+          <button
+            type="button"
+            onClick={() => onClose(false)}
+            className="py-2 px-4 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
+          >
+            Cancel
+          </button>
+        </div>
       </form>
     </Modal>
   )

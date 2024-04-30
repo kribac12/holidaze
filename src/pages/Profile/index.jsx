@@ -1,10 +1,12 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import useApi from '@/services/Api'
+import EditProfileModal from '@/components/EditProfileModal'
 
 const ProfilePage = () => {
   const { name: profileName } = useParams()
   const { data: profileData, isLoading, isError, sendRequest } = useApi()
+  const [isEditing, setIsEditing] = useState(false)
 
   useEffect(() => {
     sendRequest({
@@ -15,12 +17,28 @@ const ProfilePage = () => {
       .catch(console.error)
   }, [sendRequest, profileName])
 
+  const handleModalClose = (updated) => {
+    setIsEditing(false)
+    if (updated) {
+      sendRequest({
+        url: `https://v2.api.noroff.dev/holidaze/profiles/${profileName}`,
+        method: 'get',
+      }).catch(console.error)
+    }
+  }
+
   if (isLoading) return <div>Loading...</div>
-  if (isError) return <div>Error fetching profile data.</div>
-  if (!profileData || !profileData.data)
-    return <div>No profile data available.</div>
+
+  if (isError || !profileData || !profileData.data)
+    return <div>Error fetching profile data.</div>
   return (
     <div>
+      <button onClick={() => setIsEditing(true)}>Edit Profile</button>
+      <EditProfileModal
+        isOpen={isEditing}
+        onClose={handleModalClose}
+        profile={profileData.data}
+      />
       <h1>{profileData.data.name}</h1>
       <p>Email: {profileData.data.email}</p>
       <p>Bio: {profileData.data.bio}</p>

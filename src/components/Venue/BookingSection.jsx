@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import useApi from '@/services/Api'
-import { Calendar } from 'react-date-range'
+import { DateRangePicker } from 'react-date-range'
+
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
 
@@ -12,46 +13,51 @@ const BookingSection = ({ venueId, bookings }) => {
       startDate: new Date(),
       endDate: new Date(),
       key: 'selection',
-      color: 'f00',
+      color: '#f00',
     },
   ])
   const [guests, setGuests] = useState(1)
 
+  const getDatesInRange = (startDate, endDate) => {
+    const dates = []
+    let currentDate = startDate
+    while (currentDate <= endDate) {
+      dates.push(new Date(currentDate))
+      currentDate.setDate(currentDate.getDate() + 1)
+    }
+    return dates
+  }
+
   useEffect(() => {
     console.log('Current date range:', dateRange)
   }, [dateRange])
-  const handleSelect = (date) => {
-    console.log('Received date:', date)
 
-    if (!(date instanceof Date)) {
-      console.error('Invalid date received:', date)
-      return
-    }
-
+  const handleSelect = (ranges) => {
+    console.log('Received ranges:', ranges)
     const newRange = {
-      startDate: date,
-      endDate: date,
-      key: 'selection',
+      ...ranges.selection,
       color: '#f00',
     }
-
     setDateRange([newRange])
   }
 
   const handleBooking = async () => {
     console.log('Attempting to book with range:', dateRange)
-
     if (!venueId || !dateRange[0].startDate || !dateRange[0].endDate) {
-      alert('Please select valid date range.')
+      alert('Please select a valid date range.')
       return
     }
 
+    const startDateUTC = new Date(dateRange[0].startDate.setHours(0, 0, 0, 0))
+    const endDateUTC = new Date(dateRange[0].endDate.setHours(23, 59, 59, 999))
+
     const bookingData = {
-      dateFrom: dateRange[0].startDate.toISOString(),
-      dateTo: dateRange[0].endDate.toISOString(),
+      dateFrom: startDateUTC.toISOString(),
+      dateTo: endDateUTC.toISOString(),
       guests,
       venueId,
     }
+    console.log('Booking data:', bookingData)
 
     try {
       await sendRequest({
@@ -67,23 +73,24 @@ const BookingSection = ({ venueId, bookings }) => {
   }
 
   // Prepare booked dates for display
-  const disabledDates = bookings.map((booking) => ({
-    startDate: new Date(booking.dateFrom),
-    endDate: new Date(booking.dateTo),
-    key: 'booked',
-  }))
+  const disabledDates = bookings.reduce((acc, booking) => {
+    const dates = getDatesInRange(
+      new Date(booking.dateFrom),
+      new Date(booking.dateTo)
+    )
+    return [...acc, ...dates]
+  }, [])
 
   return (
     <div className="my-4 py-4 border-t">
       <h2 className="text-xl font-semibold">Book Your Stay</h2>
-      <Calendar
+      <DateRangePicker
         ranges={dateRange}
         onChange={handleSelect}
-        showSelectionPreview={true}
         moveRangeOnFirstSelection={false}
         months={1}
         direction="horizontal"
-        disabledDates={disabledDates.map((date) => new Date(date.startDate))}
+        disabledDates={disabledDates}
       />
       <input
         type="number"

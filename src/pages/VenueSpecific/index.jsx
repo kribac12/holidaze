@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import useApi from '@/services/Api'
 import { useParams } from 'react-router-dom'
 import VenueHeader from '@/components/Venue/VenueHeader'
-import BookingCalendar from '@/components/Venue/BookingCalendar'
+
 import Facilities from '@/components/Venue/Facilities'
 import Description from '@/components/Venue/Description'
 import BookingSection from '@/components/Venue/BookingSection'
@@ -30,14 +30,15 @@ function VenueSpecific() {
 
   if (isLoading) return <div>Loading...</div>
   if (isError || !venue) return <div>Error loading venue details.</div>
-
+  if (!venue || !venue.bookings) {
+    return <div>Loading venue and booking details...</div> // This ensures you don't try to render components that depend on these data being loaded
+  }
   return (
     <div>
       <VenueHeader venue={venue} />
       <Description description={venue.description} />
-      <BookingSection />
+      <BookingSection venueId={venueId} bookings={venue.bookings || []} />
       <Facilities meta={venue.meta} />
-      <BookingCalendar bookings={venue.bookings || []} />
     </div>
   )
 }

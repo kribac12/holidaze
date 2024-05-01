@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import useApi from '@/services/Api'
 import EditProfileModal from '@/components/EditProfileModal'
 import ProfileBookings from '@/components/ProfileBookings'
+import ProfileVenues from '@/components/ProfileVenues'
 
 const ProfilePage = () => {
   const { name: profileName } = useParams()
@@ -77,7 +78,14 @@ const ProfilePage = () => {
           Total Bookings: {profileData.data._count.bookings}
         </p>
       </div>
-      <ProfileBookings profileName={profileName} />
+      <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mt-4">
+        <div className="md:flex-1">
+          <ProfileBookings profileName={profileData.data.name} />
+        </div>
+        <div className="md:flex-1">
+          <ProfileVenues profileName={profileData.data.name} />
+        </div>
+      </div>
     </div>
   )
 }

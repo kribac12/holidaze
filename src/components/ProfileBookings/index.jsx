@@ -25,7 +25,8 @@ const ProfileBookings = ({ profileName }) => {
     return (
       <div>
         {' '}
-        <h2 className="font-h2 text-h2">Bookings</h2>The user has no bookings.
+        <h2 className="font-h2 text-h2">Bookings</h2>
+        {profileName} has no bookings.
       </div>
     )
 

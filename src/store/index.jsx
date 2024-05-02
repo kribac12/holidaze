@@ -1,9 +1,10 @@
 import { create } from 'zustand'
 
-// Helper functions to manage localStorage
 const getLocalStorageAuth = () => {
   const auth = localStorage.getItem('auth')
-  return auth ? JSON.parse(auth) : { token: null, apiKey: null, user: null }
+  return auth
+    ? JSON.parse(auth)
+    : { token: null, apiKey: null, user: { venueManager: false } }
 }
 
 const setLocalStorageAuth = (authData) => {
@@ -12,21 +13,17 @@ const setLocalStorageAuth = (authData) => {
 
 const useStore = create((set) => ({
   isOpen: false,
-  isRegister: true, // true for register form, false for login form
+  isRegister: true,
   openModal: (register = true) => set({ isOpen: true, isRegister: register }),
   closeModal: () => set({ isOpen: false }),
-
-  // Authentication state
   auth: getLocalStorageAuth(),
-  setAuth: (authData) =>
-    set((state) => {
-      // Update the state and localStorage
-      const newAuth = { ...state.auth, ...authData }
-      setLocalStorageAuth(newAuth)
-      return { auth: newAuth }
-    }),
+  setAuth: (authData) => {
+    const newAuth = { ...getLocalStorageAuth(), ...authData }
+    setLocalStorageAuth(newAuth)
+    set({ auth: newAuth })
+  },
   clearAuth: () => {
-    set({ auth: { token: null, apiKey: null, user: null } })
+    set({ auth: { token: null, apiKey: null, user: { venueManager: false } } })
     localStorage.removeItem('auth')
   },
 }))

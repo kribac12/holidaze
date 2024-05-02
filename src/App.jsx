@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import ProfilePage from './pages/Profile'
 import NotFound from './pages/NotFound'
 import VenueSpecific from './pages/VenueSpecific'
+import CreateVenueForm from './pages/CreateVenue'
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="venues/:venueId" element={<VenueSpecific />} />
+            <Route path="/create-venue" element={<CreateVenueForm />} />
             <Route path="/profile/:name" element={<ProfilePage />} />
             <Route path="*" element={<NotFound />} />
           </Route>

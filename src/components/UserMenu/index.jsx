@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import useStore from '@/store'
 import { FaUserCircle } from 'react-icons/fa'
 
@@ -19,9 +19,10 @@ function UserMenu() {
 
   const handleLogout = () => {
     clearAuth() // Clears the authentication state
-    navigate('/') // Redirects to the homepage or login page
+    navigate('/') // Redirects to the homepage
     setDropdownOpen(false) // Ensures the dropdown is closed after logout
   }
+  console.log('User role:', auth.user.venueManager) // Debug: Check the user's role in the console
 
   return (
     <div className="relative">
@@ -40,6 +41,15 @@ function UserMenu() {
           >
             Profile
           </a>
+
+          <Link
+            to="/create-venue"
+            className="block px-4 py-2 text-sm text-blue-500 hover:text-blue-700"
+            onClick={() => setDropdownOpen(false)}
+          >
+            Add a Venue
+          </Link>
+
           <button
             onClick={handleLogout}
             className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"

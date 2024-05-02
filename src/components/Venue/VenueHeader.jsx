@@ -2,10 +2,10 @@ import PropTypes from 'prop-types'
 import VenueMedia from './VenueMedia'
 
 const VenueHeader = ({ venue }) => (
-  <div className="p-4 shadow rounded-lg bg-cardBg">
+  <div className="shadow rounded-lg bg-cardBg">
     <VenueMedia media={venue.media || []} />
     <div className="p-4">
-      <h1 className="text-2xl font-bold">{venue.name}</h1>
+      <h1 className="font-h1 text-h1">{venue.name}</h1>
       <p className="text-lg">Rating: {venue.rating || 'N/A'}</p>
       <p className="font-bold">Price: ${venue.price} per night</p>
     </div>

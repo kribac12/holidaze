@@ -53,3 +53,9 @@ h1 {
 .react-responsive-modal-modal.custom-modal-padding {
   padding-top: 60px;
 }
+
+/*Calendar*/
+
+.selected-day {
+  @apply bg-accent text-primaryText;
+}

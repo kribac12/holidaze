@@ -1,13 +1,27 @@
 import PropTypes from 'prop-types'
+import { FaWifi, FaCar, FaDog, FaUtensils } from 'react-icons/fa'
 
 const Facilities = ({ meta }) => (
-  <div className="my-4 py-4 border-t border-b">
-    <h2 className="text-xl font-semibold">Facilities</h2>
+  <div className="relative my-4 py-4">
+    <div className="absolute top-0 left-0 w-2/3 h-px bg-gradient-to-r from-transparent via-secondaryText to-transparent"></div>
+    <h2 className="font-h2 text-h2 mb-2">Facilities</h2>
     <ul>
-      <li>Wifi: {meta.wifi ? 'Available' : 'Not available'}</li>
-      <li>Parking: {meta.parking ? 'Available' : 'Not available'}</li>
-      <li>Pets: {meta.pets ? 'Allowed' : 'Not allowed'}</li>
-      <li>Breakfast: {meta.breakfast ? 'Included' : 'Not included'}</li>
+      <li className="flex items-center">
+        <FaWifi className="mr-3" />
+        WiFi: {meta.wifi ? 'Available' : 'Not Available'}
+      </li>
+      <li className="flex items-center">
+        <FaCar className="mr-3" />
+        Parking: {meta.parking ? 'Available' : 'Not Available'}
+      </li>
+      <li className="flex items-center">
+        <FaDog className="mr-3" />
+        Pets: {meta.pets ? 'Allowed' : 'Not allowed'}
+      </li>
+      <li className="flex items-center">
+        <FaUtensils className="mr-3" />
+        Breakfast: {meta.breakfast ? 'Included' : 'Not included'}
+      </li>
     </ul>
   </div>
 )

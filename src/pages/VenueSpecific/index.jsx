@@ -14,7 +14,7 @@ function VenueSpecific() {
 
   useEffect(() => {
     sendRequest({
-      url: `https://v2.api.noroff.dev/holidaze/venues/${venueId}?_bookings=true`,
+      url: `https://v2.api.noroff.dev/holidaze/venues/${venueId}?_bookings=true&_owner=true`,
       method: 'get',
     })
       .then((response) => {
@@ -34,11 +34,17 @@ function VenueSpecific() {
     return <div>Loading venue and booking details...</div> // This ensures you don't try to render components that depend on these data being loaded
   }
   return (
-    <div>
+    <div className="flex flex-col">
       <VenueHeader venue={venue} />
-      <Description description={venue.description} />
-      <BookingSection venueId={venueId} bookings={venue.bookings || []} />
-      <Facilities meta={venue.meta} />
+      <div className="flex flex-col md:flex-row mt-4">
+        <div className="md:w-1/2 lg:w-2/3 mr-2">
+          <Description description={venue.description} />
+          <Facilities meta={venue.meta} />
+        </div>
+        <div className="md:w-1/2 lg:w-1/3 mt-4 md:mt-0">
+          <BookingSection venueId={venueId} bookings={venue.bookings || []} />
+        </div>
+      </div>
     </div>
   )
 }

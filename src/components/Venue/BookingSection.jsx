@@ -1,54 +1,38 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useApi from '@/services/Api'
-import { Calendar } from 'react-date-range'
-import 'react-date-range/dist/styles.css'
-import 'react-date-range/dist/theme/default.css'
+import { DayPicker } from 'react-day-picker'
+import 'react-day-picker/dist/style.css'
+import { formatISO, addDays } from 'date-fns'
 
 const BookingSection = ({ venueId, bookings }) => {
   const { sendRequest, isLoading } = useApi()
-  const [dateRange, setDateRange] = useState([
-    {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: 'selection',
-      color: 'f00',
-    },
-  ])
+  const [range, setRange] = useState({ from: undefined, to: undefined })
   const [guests, setGuests] = useState(1)
 
-  useEffect(() => {
-    console.log('Current date range:', dateRange)
-  }, [dateRange])
-  const handleSelect = (date) => {
-    console.log('Received date:', date)
-
-    if (!(date instanceof Date)) {
-      console.error('Invalid date received:', date)
-      return
-    }
-
-    const newRange = {
-      startDate: date,
-      endDate: date,
-      key: 'selection',
-      color: '#f00',
-    }
-
-    setDateRange([newRange])
+  // Function to collect all dates within each booking range for disabling
+  const getDisabledDays = () => {
+    let days = []
+    bookings.forEach((booking) => {
+      let current = new Date(booking.dateFrom)
+      const end = new Date(booking.dateTo)
+      while (current <= end) {
+        days.push(new Date(current))
+        current = addDays(current, 1)
+      }
+    })
+    return days
   }
 
   const handleBooking = async () => {
-    console.log('Attempting to book with range:', dateRange)
-
-    if (!venueId || !dateRange[0].startDate || !dateRange[0].endDate) {
-      alert('Please select valid date range.')
+    if (!venueId || !range.from || !range.to) {
+      alert('Please select a valid date range.')
       return
     }
 
     const bookingData = {
-      dateFrom: dateRange[0].startDate.toISOString(),
-      dateTo: dateRange[0].endDate.toISOString(),
+      dateFrom: formatISO(range.from, { representation: 'date' }),
+      dateTo: formatISO(range.to, { representation: 'date' }),
       guests,
       venueId,
     }
@@ -66,35 +50,47 @@ const BookingSection = ({ venueId, bookings }) => {
     }
   }
 
-  // Prepare booked dates for display
-  const disabledDates = bookings.map((booking) => ({
-    startDate: new Date(booking.dateFrom),
-    endDate: new Date(booking.dateTo),
-    key: 'booked',
-  }))
+  const disabledDays = getDisabledDays()
 
   return (
-    <div className="my-4 py-4 border-t">
-      <h2 className="text-xl font-semibold">Book Your Stay</h2>
-      <Calendar
-        ranges={dateRange}
-        onChange={handleSelect}
-        showSelectionPreview={true}
-        moveRangeOnFirstSelection={false}
-        months={1}
-        direction="horizontal"
-        disabledDates={disabledDates.map((date) => new Date(date.startDate))}
+    <div className="flex flex-col w-full">
+      <h2 className="font-h2 text-h2 mt-2">Book Your Stay</h2>
+      <DayPicker
+        mode="range"
+        selected={range}
+        onSelect={setRange}
+        disabled={disabledDays}
+        modifiersStyles={{
+          selected: {
+            backgroundColor: '#FFBA08',
+            color: '#333333',
+          },
+          disabled: {
+            backgroundColor: '#F1F1F1',
+            color: '#626567',
+          },
+        }}
+        className="mx-0"
       />
-      <input
-        type="number"
-        value={guests}
-        onChange={(e) => setGuests(parseInt(e.target.value, 10))}
-        min="1"
-        className="mt-2"
-      />
-      <button onClick={handleBooking} disabled={isLoading} className="mt-2">
-        Book Now
-      </button>
+      <div className="mt-4">
+        <div className="flex flex-row gap-3 items-center">
+          <p> Number of guests: </p>
+          <input
+            type="number"
+            value={guests}
+            onChange={(e) => setGuests(parseInt(e.target.value, 10))}
+            min="1"
+            className="block h-10 w-14 p-2 border rounded"
+          />
+        </div>
+        <button
+          onClick={handleBooking}
+          disabled={isLoading}
+          className="bg-primary w-1/2 text-white font-bold my-4 py-2 px-4 rounded hover:bg-red-700"
+        >
+          Book Now
+        </button>
+      </div>
     </div>
   )
 }

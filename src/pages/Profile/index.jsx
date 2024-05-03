@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import useApi from '@/services/Api'
+import useStore from '@/store'
 import EditProfileModal from '@/components/EditProfileModal'
 import ProfileBookings from '@/components/ProfileBookings'
 import ProfileVenues from '@/components/ProfileVenues'
@@ -15,7 +16,17 @@ const ProfilePage = () => {
       url: `https://v2.api.noroff.dev/holidaze/profiles/${profileName}`,
       method: 'get',
     })
-      .then((data) => console.log('API data received:', data))
+      .then((data) => {
+        console.log('API data received:', data)
+        if (data && data.venueManager !== undefined) {
+          useStore.getState().setAuth({
+            user: {
+              ...useStore.getState().auth.user,
+              venueManager: data.venueManager,
+            },
+          })
+        }
+      })
       .catch(console.error)
   }, [sendRequest, profileName])
 

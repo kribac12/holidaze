@@ -43,8 +43,8 @@ module.exports = {
         roboto: ['Roboto', 'sans-serif'],
       },
       fontSize: {
-        h1: '2.25rem',
-        h2: '1.5rem',
+        h1: '2rem',
+        h2: '1.3rem',
       },
       fontWeight: {
         h1: '500',

@@ -22,7 +22,7 @@ function UserMenu() {
     navigate('/') // Redirects to the homepage
     setDropdownOpen(false) // Ensures the dropdown is closed after logout
   }
-  console.log('User role:', auth.user.venueManager) // Debug: Check the user's role in the console
+  console.log('User role:', auth.user.venueManager)
 
   return (
     <div className="relative">

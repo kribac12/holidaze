@@ -17,12 +17,12 @@ const ProfilePage = () => {
       method: 'get',
     })
       .then((data) => {
-        console.log('API data received:', data)
-        if (data && data.venueManager !== undefined) {
+        if (data && data.data && data.data.venueManager !== undefined) {
+          // Update Zustand store with the latest venueManager status
           useStore.getState().setAuth({
             user: {
               ...useStore.getState().auth.user,
-              venueManager: data.venueManager,
+              venueManager: data.data.venueManager,
             },
           })
         }

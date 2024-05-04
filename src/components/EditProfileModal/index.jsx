@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-
+import useStore from '@/store'
 import Modal from 'react-modal'
 import useApi from '@/services/Api'
 import PropTypes from 'prop-types'
@@ -48,12 +48,20 @@ function EditProfileModal({ isOpen, onClose, profile }) {
       updateData.venueManager = data.venueManager
 
     try {
-      await sendRequest({
+      const response = await sendRequest({
         url: `https://v2.api.noroff.dev/holidaze/profiles/${profile.name}`,
         method: 'put',
         data: updateData,
       })
-      onClose(true) // Signal a successful update
+      if (response.data) {
+        useStore.getState().setAuth({
+          user: {
+            ...useStore.getState().auth.user,
+            venueManager: data.venueManager, // Make sure this is updated based on form data
+          },
+        })
+        onClose(true) // Close the modal with a state that updates can reflect immediately
+      }
     } catch (error) {
       console.error('Failed to update profile:', error)
       onClose(false) // Signal an error

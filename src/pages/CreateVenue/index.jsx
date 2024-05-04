@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import useApi from '@/services/Api'
 
 const venueSchema = Yup.object().shape({
@@ -20,12 +21,16 @@ const venueSchema = Yup.object().shape({
   parking: Yup.boolean(),
   breakfast: Yup.boolean(),
   pets: Yup.boolean(),
-  address: Yup.string(),
-  zip: Yup.string(),
-  country: Yup.string(),
-  continent: Yup.string(),
-  lat: Yup.number(),
-  lng: Yup.number(),
+  address: Yup.string().nullable(),
+  zip: Yup.string().nullable(),
+  country: Yup.string().nullable(),
+  continent: Yup.string().nullable(),
+  lat: Yup.number()
+    .transform((value) => (isNaN(value) ? undefined : value))
+    .nullable(true),
+  lng: Yup.number()
+    .transform((value) => (isNaN(value) ? undefined : value))
+    .nullable(true),
 })
 
 const CreateVenueForm = () => {
@@ -38,6 +43,7 @@ const CreateVenueForm = () => {
     resolver: yupResolver(venueSchema),
   })
   const { sendRequest } = useApi()
+  const navigate = useNavigate()
 
   const onSubmit = async (data) => {
     const apiData = {
@@ -60,19 +66,20 @@ const CreateVenueForm = () => {
         zip: data.zip || null,
         country: data.country || null,
         continent: data.continent || null,
-        lat: data.lat || 0,
-        lng: data.lng || 0,
+        lat: data.lat || null,
+        lng: data.lng || null,
       },
     }
 
     try {
-      await sendRequest({
+      const response = await sendRequest({
         url: 'https://v2.api.noroff.dev/holidaze/venues',
         method: 'post',
         data: apiData,
         headers: { 'Content-Type': 'application/json' },
       })
       alert('Venue created successfully!')
+      navigate(`/venues/${response.data.id}`) // Redirect to the newly created venue's page
     } catch (error) {
       console.error('Failed to create venue:', error)
       alert('Error creating venue. Please try again.')

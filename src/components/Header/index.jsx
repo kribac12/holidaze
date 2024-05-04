@@ -3,7 +3,7 @@ import Nav from '../Navigation'
 
 function Header() {
   return (
-    <header className="bg-cardBg text-white py-4 px-6 flex justify-between items-center">
+    <header className="bg-cardBg text-white py-4 mb-2 px-6 flex justify-between items-center">
       <div className="container mx-auto flex justify-between">
         <Logo />
         <Nav />

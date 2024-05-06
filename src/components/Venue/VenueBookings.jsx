@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import FormattedDate from '@/lib/FormattedDate'
 
 const VenueBookings = ({ bookings }) => {
   if (!bookings.length) {
@@ -7,12 +8,13 @@ const VenueBookings = ({ bookings }) => {
 
   return (
     <div className="mt-4">
-      <h2 className="font-bold text-lg">Current Bookings</h2>
+      <h2 className="text-h2 font-h2 ">Current Bookings</h2>
       <ul className="list-disc pl-5">
         {bookings.map((booking, index) => (
           <li key={index}>
-            Booking from {booking.dateFrom} to {booking.dateTo} for{' '}
-            {booking.guests} guests.
+            Booking from <FormattedDate date={booking.dateFrom} /> to{' '}
+            <FormattedDate date={booking.dateTo} /> for {booking.guests}{' '}
+            guest(s).
           </li>
         ))}
       </ul>

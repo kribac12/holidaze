@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import useApi from '@/services/Api'
+import FormattedDate from '@/lib/FormattedDate'
 
 const ProfileBookings = ({ profileName }) => {
   const { isLoading, isError, sendRequest } = useApi()
@@ -37,8 +38,8 @@ const ProfileBookings = ({ profileName }) => {
       <ul>
         {bookings.map((booking) => (
           <li key={booking.id}>
-            From: {booking.dateFrom} - To: {booking.dateTo} ({booking.guests}{' '}
-            guests)
+            From: <FormattedDate date={booking.dateFrom} /> - To:{' '}
+            <FormattedDate date={booking.dateTo} />({booking.guests} guests)
           </li>
         ))}
       </ul>

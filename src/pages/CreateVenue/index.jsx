@@ -1,8 +1,8 @@
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import useApi from '@/services/Api'
 
 const venueSchema = Yup.object().shape({
@@ -34,55 +34,72 @@ const venueSchema = Yup.object().shape({
 })
 
 const CreateVenueForm = () => {
+  const { venueId } = useParams()
+  const navigate = useNavigate()
+  const { sendRequest } = useApi()
   const [showAdditional, setShowAdditional] = useState(false)
+
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(venueSchema),
   })
-  const { sendRequest } = useApi()
-  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (venueId) {
+      sendRequest({
+        url: `https://v2.api.noroff.dev/holidaze/venues/${venueId}`,
+        method: 'get',
+      })
+        .then((response) => {
+          const fields = [
+            'name',
+            'description',
+            'price',
+            'maxGuests',
+            'mediaUrl',
+            'mediaAlt',
+            'wifi',
+            'parking',
+            'breakfast',
+            'pets',
+            'address',
+            'zip',
+            'country',
+            'continent',
+            'lat',
+            'lng',
+          ]
+          fields.forEach((field) => setValue(field, response.data[field]))
+          setShowAdditional(true) // Automatically show additional information if editing
+        })
+        .catch((error) => console.error('Fetching venue data failed:', error))
+    }
+  }, [venueId, sendRequest, setValue])
 
   const onSubmit = async (data) => {
-    const apiData = {
-      name: data.name,
-      description: data.description,
-      media: data.mediaUrl
-        ? [{ url: data.mediaUrl, alt: data.mediaAlt || 'Venue image' }]
-        : [],
-      price: data.price,
-      maxGuests: data.maxGuests,
-      meta: {
-        wifi: data.wifi || false,
-        parking: data.parking || false,
-        breakfast: data.breakfast || false,
-        pets: data.pets || false,
-      },
-      location: {
-        address: data.address || null,
-        city: data.city || null,
-        zip: data.zip || null,
-        country: data.country || null,
-        continent: data.continent || null,
-        lat: data.lat || null,
-        lng: data.lng || null,
-      },
-    }
+    const url = venueId
+      ? `https://v2.api.noroff.dev/holidaze/venues/${venueId}`
+      : 'https://v2.api.noroff.dev/holidaze/venues'
+    const method = venueId ? 'put' : 'post'
 
     try {
       const response = await sendRequest({
-        url: 'https://v2.api.noroff.dev/holidaze/venues',
-        method: 'post',
-        data: apiData,
+        url: url,
+        method: method,
+        data: data,
         headers: { 'Content-Type': 'application/json' },
       })
-      alert('Venue created successfully!')
-      navigate(`/venues/${response.data.id}`) // Redirect to the newly created venue's page
+      alert(`Venue ${venueId ? 'updated' : 'created'} successfully!`)
+      navigate(`/venues/${response.data.id}`)
     } catch (error) {
-      console.error('Failed to create venue:', error)
-      alert('Error creating venue. Please try again.')
+      console.error(`Failed to ${venueId ? 'update' : 'create'} venue:`, error)
+      alert(
+        `Error ${venueId ? 'updating' : 'creating'} venue. Please try again.`
+      )
     }
   }
 

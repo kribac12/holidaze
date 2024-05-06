@@ -4,6 +4,7 @@ import useApi from '@/services/Api'
 import { DayPicker } from 'react-day-picker'
 import 'react-day-picker/dist/style.css'
 import { formatISO, addDays } from 'date-fns'
+import Button from '@/lib/Buttons'
 
 const BookingSection = ({ venueId, bookings }) => {
   const { sendRequest, isLoading } = useApi()
@@ -83,13 +84,9 @@ const BookingSection = ({ venueId, bookings }) => {
             className="block h-10 w-14 p-2 border rounded"
           />
         </div>
-        <button
-          onClick={handleBooking}
-          disabled={isLoading}
-          className="bg-primary w-1/2 text-white font-bold my-4 py-2 px-4 rounded hover:bg-red-700"
-        >
+        <Button onClick={handleBooking} disabled={isLoading} type="primary">
           Book Now
-        </button>
+        </Button>
       </div>
     </div>
   )

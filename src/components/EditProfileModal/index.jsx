@@ -57,7 +57,7 @@ function EditProfileModal({ isOpen, onClose, profile }) {
         useStore.getState().setAuth({
           user: {
             ...useStore.getState().auth.user,
-            venueManager: data.venueManager, // Make sure this is updated based on form data
+            venueManager: data.venueManager,
           },
         })
         onClose(true) // Close the modal with a state that updates can reflect immediately

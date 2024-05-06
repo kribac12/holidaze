@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
-import useApi from '@/services/Api'
 import { useParams, useNavigate } from 'react-router-dom'
+import useApi from '@/services/Api'
 import useStore from '@/store'
 import Button from '@/lib/Buttons'
 import VenueHeader from '@/components/Venue/VenueHeader'
 import Facilities from '@/components/Venue/Facilities'
 import Description from '@/components/Venue/Description'
 import BookingSection from '@/components/Venue/BookingSection'
+import VenueBookings from '@/components/Venue/VenueBookings'
 
 function VenueSpecific() {
   const { venueId } = useParams()
@@ -74,13 +75,16 @@ function VenueSpecific() {
         </div>
       </div>
       {isOwner && (
-        <div className="flex space-x-2 mt-5">
-          <Button type="secondary" onClick={handleEdit}>
-            Edit Venue
-          </Button>
-          <Button type="extra" onClick={handleDelete}>
-            Delete Venue
-          </Button>
+        <div>
+          <VenueBookings bookings={venue.bookings || []} />
+          <div className="flex space-x-2 mt-5">
+            <Button type="secondary" onClick={handleEdit}>
+              Edit Venue
+            </Button>
+            <Button type="extra" onClick={handleDelete}>
+              Delete Venue
+            </Button>
+          </div>
         </div>
       )}
     </div>

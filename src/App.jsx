@@ -16,6 +16,7 @@ const App = () => {
             <Route index element={<Home />} />
             <Route path="venues/:venueId" element={<VenueSpecific />} />
             <Route path="/create-venue" element={<CreateVenueForm />} />
+            <Route path="/edit-venue/:venueId" element={<CreateVenueForm />} />
             <Route path="/profile/:name" element={<ProfilePage />} />
             <Route path="*" element={<NotFound />} />
           </Route>

@@ -10,7 +10,7 @@ const ProfileBookings = ({ profileName }) => {
   useEffect(() => {
     if (profileName) {
       sendRequest({
-        url: `https://v2.api.noroff.dev/holidaze/profiles/${profileName}/bookings`,
+        url: `https://v2.api.noroff.dev/holidaze/profiles/${profileName}/bookings?_venue=true`,
         method: 'get',
       })
         .then((data) => {
@@ -37,7 +37,8 @@ const ProfileBookings = ({ profileName }) => {
 
       <ul>
         {bookings.map((booking) => (
-          <li key={booking.id}>
+          <li key={booking.id} className="py-3">
+            <p>{booking.venue.name}</p>
             From: <FormattedDate date={booking.dateFrom} /> - To:{' '}
             <FormattedDate date={booking.dateTo} />({booking.guests} guests)
           </li>

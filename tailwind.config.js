@@ -20,6 +20,7 @@ module.exports = {
         accent: '#FFBA08',
         cardBg: '#F1F1F1',
       },
+      safeList: ['font-h1', 'text-h1', 'font-h2', 'text-h2'],
       spacing: {
         section: '2rem',
         heading: '1rem',

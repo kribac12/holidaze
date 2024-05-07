@@ -63,8 +63,7 @@ function VenueSpecific() {
 
   return (
     <div className="flex flex-col">
-      <VenueHeader venue={venue} />
-
+      <VenueHeader venue={venue} />;
       <div className="flex flex-col md:flex-row mt-4">
         <div className="md:w-1/2 lg:w-2/3 mr-2">
           <Description description={venue.description} />

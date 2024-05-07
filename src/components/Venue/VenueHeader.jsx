@@ -1,21 +1,12 @@
 import PropTypes from 'prop-types'
-import VenueMedia from './VenueMedia'
-import { FaStar } from 'react-icons/fa'
+import VenueInfoCard from './VenueInfoCard'
 
 const VenueHeader = ({ venue }) => (
-  <div className="shadow rounded-lg bg-cardBg">
-    <VenueMedia media={venue.media || []} />
-    <div className="p-4">
-      <h1 className="font-h1 text-h1">{venue.name}</h1>
-      <div className="flex flex-row gap-2 items-center ">
-        {' '}
-        <FaStar />
-        <p className="text-lg">Rating: {venue.rating || 'N/A'}</p>
-      </div>
-
-      <p className="font-bold">Price: ${venue.price} per night</p>
-    </div>
-  </div>
+  <VenueInfoCard
+    venue={venue}
+    titleLevel={1}
+    className="specific-venue-header"
+  />
 )
 
 VenueHeader.propTypes = {
@@ -29,7 +20,9 @@ VenueHeader.propTypes = {
         alt: PropTypes.string,
       })
     ),
+    location: PropTypes.shape({
+      country: PropTypes.string,
+    }),
   }).isRequired,
 }
-
 export default VenueHeader

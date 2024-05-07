@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import useApi from '@/services/Api'
 import { Link } from 'react-router-dom'
-import { truncateText } from '@/lib/TextUtils'
+import VenueInfoCard from '../Venue/VenueInfoCard'
 
 function VenueList() {
   const { isLoading, isError, sendRequest } = useApi()
@@ -51,29 +51,16 @@ function VenueList() {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {venues.map((venue) => (
-          <Link
-            to={`/venues/${venue.id}`}
-            key={venue.id}
-            className="p-4 shadow rounded-lg bg-cardBg"
-          >
-            {venue.media && venue.media.length > 0 && (
-              <img
-                src={venue.media[0].url}
-                alt={venue.media[0].alt || 'Venue image'}
-                className="w-full h-48 object-cover rounded-t-lg"
-              />
-            )}
-            <div className="p-4">
-              <h2 className="text-xl font-semibold">
-                {truncateText(venue.name, 50)}
-              </h2>
-              <p>{truncateText(venue.description, 100)} </p>
-            </div>
+          <Link to={`/venues/${venue.id}`} key={venue.id}>
+            <VenueInfoCard
+              venue={venue}
+              titleLevel={2}
+              className="venue-list-item"
+            />
           </Link>
         ))}
       </div>
     </div>
   )
 }
-
 export default VenueList

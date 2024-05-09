@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 function SearchForm() {
   const [query, setQuery] = useState('')
-  const [searchSubmitted, setSearchSubmitted] = useState(false) // State to track if search has been performed
+  const [searchSubmitted, setSearchSubmitted] = useState(false)
 
   const { data, isLoading, isError, sendRequest } = useApi()
 
@@ -25,28 +25,29 @@ function SearchForm() {
   }
 
   return (
-    <div className="p-6 bg-primaryBg">
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+    <div className=" bg-primaryBg">
+      <form onSubmit={handleSubmit} className="flex items-center space-x-0">
         <input
           type="text"
           value={query}
           onChange={handleChange}
-          placeholder="Search by name or description"
-          className="px-4 py-2 border rounded-md text-primaryText border-secondaryText focus:outline-none focus:border-accent"
+          placeholder="Find your stay by name or description"
+          className="flex-grow px-4 py-3 border rounded-l-md text-primaryText border-secondaryText focus:outline-none focus:border-accent"
         />
         <button
           type="submit"
-          className="bg-primary text-white font-semibold py-2 px-4 rounded hover:bg-red-700"
+          className="bg-primary text-white font-semibold px-4 py-3 md:px-6 lg:px-10 border border-primary rounded-r-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-primary-500"
         >
           Search
         </button>
       </form>
+
       {isLoading ? (
         <div>Loading...</div>
       ) : isError ? (
         <div className="text-red-500">Error occurred</div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
           {searchSubmitted &&
             (data && Array.isArray(data.data) && data.data.length > 0 ? (
               data.data.map((venue) => (

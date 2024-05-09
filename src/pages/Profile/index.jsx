@@ -10,6 +10,8 @@ const ProfilePage = () => {
   const { name: profileName } = useParams()
   const { data: profileData, isLoading, isError, sendRequest } = useApi()
   const [isEditing, setIsEditing] = useState(false)
+  const { auth } = useStore()
+  const isOwnProfile = auth.user && auth.user.name === profileName
 
   useEffect(() => {
     sendRequest({
@@ -28,7 +30,7 @@ const ProfilePage = () => {
         }
       })
       .catch(console.error)
-  }, [sendRequest, profileName])
+  }, [sendRequest, profileName, auth.user.username])
 
   const handleModalClose = (updated) => {
     setIsEditing(false)
@@ -91,10 +93,16 @@ const ProfilePage = () => {
       </div>
       <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mt-4">
         <div className="md:flex-1">
-          <ProfileBookings profileName={profileData.data.name} />
+          <ProfileBookings
+            profileName={profileData.data.name}
+            isOwnProfile={isOwnProfile}
+          />
         </div>
         <div className="md:flex-1">
-          <ProfileVenues profileName={profileData.data.name} />
+          <ProfileVenues
+            profileName={profileData.data.name}
+            isOwnProfile={isOwnProfile}
+          />
         </div>
       </div>
     </div>

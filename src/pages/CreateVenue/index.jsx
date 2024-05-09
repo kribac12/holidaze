@@ -43,7 +43,8 @@ const CreateVenueForm = () => {
     register,
     handleSubmit,
     setValue,
-    formState: { errors },
+    reset,
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(venueSchema),
   })
@@ -81,6 +82,19 @@ const CreateVenueForm = () => {
   }, [venueId, sendRequest, setValue])
 
   const onSubmit = async (data) => {
+    const formattedData = {
+      ...data,
+      location: {
+        address: data.address,
+        city: data.city,
+        zip: data.zip,
+        country: data.country,
+        continent: data.continent,
+        lat: data.lat,
+        lng: data.lng,
+      },
+    }
+
     const url = venueId
       ? `https://v2.api.noroff.dev/holidaze/venues/${venueId}`
       : 'https://v2.api.noroff.dev/holidaze/venues'
@@ -90,10 +104,11 @@ const CreateVenueForm = () => {
       const response = await sendRequest({
         url: url,
         method: method,
-        data: data,
+        data: formattedData,
         headers: { 'Content-Type': 'application/json' },
       })
       alert(`Venue ${venueId ? 'updated' : 'created'} successfully!`)
+      reset()
       navigate(`/venues/${response.data.id}`)
     } catch (error) {
       console.error(`Failed to ${venueId ? 'update' : 'create'} venue:`, error)
@@ -286,6 +301,23 @@ const CreateVenueForm = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
             <div>
               <label
+                htmlFor="country"
+                className="block text-lg font-semibold mb-1"
+              >
+                Country{' '}
+                <span className="text-sm font-normal text-secondaryText">
+                  (Optional)
+                </span>
+              </label>
+              <input
+                {...register('country')}
+                id="country"
+                placeholder="Norway"
+                className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
+              />
+            </div>
+            <div>
+              <label
                 htmlFor="address"
                 className="block text-lg font-semibold mb-1"
               >
@@ -375,8 +407,9 @@ const CreateVenueForm = () => {
       <button
         type="submit"
         className="bg-primary text-white font-bold py-2 px-4 rounded hover:bg-primary-dark"
+        disabled={isSubmitting}
       >
-        Create Venue
+        {venueId ? 'Update Venue' : 'Create Venue'}
       </button>
     </form>
   )

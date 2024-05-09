@@ -8,6 +8,7 @@ import Facilities from '@/components/Venue/Facilities'
 import Description from '@/components/Venue/Description'
 import BookingSection from '@/components/Venue/BookingSection'
 import VenueBookings from '@/components/Venue/VenueBookings'
+import VenueDetails from '@/components/Venue/Details'
 
 function VenueSpecific() {
   const { venueId } = useParams()
@@ -61,14 +62,20 @@ function VenueSpecific() {
     venue.owner.email === auth.user.email &&
     auth.user.venueManager
 
+  const venueDetails = {
+    maxGuests: venue.maxGuests,
+    location: venue.location,
+  }
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       <VenueHeader venue={venue} />
 
       <div className="flex flex-col md:flex-row mt-4">
         <div className="md:w-1/2 lg:w-2/3 mr-2">
           <Description description={venue.description} />
           <Facilities meta={venue.meta} />
+          <VenueDetails details={venueDetails} />
         </div>
         <div className="md:w-1/2 lg:w-1/3 mt-4 md:mt-0">
           <BookingSection venueId={venueId} bookings={venue.bookings || []} />

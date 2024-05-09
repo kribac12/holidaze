@@ -8,7 +8,9 @@ const VenueInfoCard = ({ venue, className = '', titleLevel = 2 }) => {
   const TitleTag = `h${titleLevel}`
 
   return (
-    <div className={`${className} shadow rounded-lg bg-cardBg `}>
+    <div
+      className={`${className} flex flex-col shadow rounded-lg bg-cardBg h-full overflow-hidden`}
+    >
       <VenueMedia media={venue.media || []} />
       <div className="p-4 space-y-2">
         <TitleTag className={titleClasses}>

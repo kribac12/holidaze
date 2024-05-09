@@ -3,7 +3,12 @@ import FormattedDate from '@/lib/FormattedDate'
 
 const VenueBookings = ({ bookings }) => {
   if (!bookings.length) {
-    return <p>No bookings have been made for this venue yet.</p>
+    return (
+      <div>
+        <h2 className="text-h2 font-h2">Bookings</h2>
+        <p>No bookings have been made for this venue yet.</p>
+      </div>
+    )
   }
 
   return (

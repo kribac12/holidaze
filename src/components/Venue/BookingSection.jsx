@@ -54,7 +54,7 @@ const BookingSection = ({ venueId, bookings }) => {
   const disabledDays = getDisabledDays()
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full p-4 border border-secondary shadow rounded-lg">
       <h2 className="font-h2 text-h2 mt-2">Book Your Stay</h2>
       <DayPicker
         mode="range"

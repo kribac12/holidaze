@@ -31,7 +31,7 @@ function SearchForm() {
           type="text"
           value={query}
           onChange={handleChange}
-          placeholder="Find your stay by name or description"
+          placeholder="Find your stay"
           className="flex-grow px-4 py-3 border rounded-l-md text-primaryText border-secondaryText focus:outline-none focus:border-accent"
         />
         <button

@@ -40,9 +40,9 @@ function VenueList() {
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value)}
-          className="p-2 border rounded-lg"
+          className="text-lg px-9 py-4 border rounded-lg"
         >
-          <option value="created,desc">Newest</option>
+          <option value="created,desc">Newest destinations</option>
           <option value="name,asc">Name A-Z</option>
           <option value="name,desc">Name Z-A</option>
           <option value="rating,desc">Most Popular</option>

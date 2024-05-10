@@ -37,7 +37,10 @@ function LoginForm({ onLogin }) {
         className="input-field"
       />
       <p>{errors.password?.message}</p>
-      <button type="submit" className="submit-button">
+      <button
+        type="submit"
+        className="bg-primary text-white font-bold py-2 px-8  rounded hover:bg-red-700"
+      >
         Login
       </button>
     </form>

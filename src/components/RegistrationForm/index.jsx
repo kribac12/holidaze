@@ -115,16 +115,22 @@ function RegisterForm({ onSubmit }) {
         placeholder="Banner Alt Text"
         className="input-field"
       />
-      <label>
-        <input {...register('venueManager')} type="checkbox" />
-        Register as a Venue Manager
-      </label>
-      <button
-        type="submit"
-        className="bg-primary text-white font-bold py-2 px-4 rounded hover:bg-red-700"
-      >
-        Register
-      </button>
+      <div className="flex flex-row gap-4 items-center">
+        <label>
+          <input
+            {...register('venueManager')}
+            type="checkbox"
+            className="me-2"
+          />
+          Register as a Venue Manager
+        </label>
+        <button
+          type="submit"
+          className="bg-primary text-white font-bold py-2 px-8  rounded hover:bg-red-700"
+        >
+          Register
+        </button>
+      </div>
     </form>
   )
 }

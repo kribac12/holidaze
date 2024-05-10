@@ -10,14 +10,14 @@ import useStore from '@/store'
 import { fetchApiKey } from '@/services/Api/ApiKey'
 
 function ModalLogSignin() {
-  const { isOpen, closeModal, setAuth } = useStore((state) => ({
+  const { isOpen, isRegister, closeModal, setAuth } = useStore((state) => ({
     isOpen: state.isOpen,
+    isRegister: state.isRegister,
     closeModal: state.closeModal,
     setAuth: state.setAuth,
   }))
   const { sendRequest, isLoading, isError } = useApi()
   const navigate = useNavigate()
-  const [isRegister, setIsRegister] = useState(true)
   const [notification, setNotification] = useState({ message: '', type: '' })
 
   const clearNotification = useCallback(() => {
@@ -39,7 +39,7 @@ function ModalLogSignin() {
         data: formattedData,
       })
       setAuth({ user: result.data })
-      setIsRegister(false)
+      useStore.getState().openModal(false)
       setNotification({
         message: 'Registration successful, please log in.',
         type: 'success',
@@ -94,7 +94,7 @@ function ModalLogSignin() {
       onClose={closeModal}
       center
       overlayClassName="bg-gray-900 bg-opacity-50 fixed inset-0 z-40"
-      modalClassName="bg-white rounded-lg p-6 mx-auto my-12 max-w-md shadow-lg custom-modal-padding"
+      modalClassName="bg-white rounded-lg  my-12 shadow-lg custom-modal-padding"
       closeIconClassName="text-gray-500 hover:text-gray-800"
     >
       {notification.message && (
@@ -107,14 +107,20 @@ function ModalLogSignin() {
       )}
       <div className="tabs mb-4">
         <button
-          onClick={() => setIsRegister(true)}
-          className={`mr-2 px-4 py-2 rounded ${isRegister ? 'bg-primary text-white' : 'bg-transparent text-primary'}`}
+          onClick={() => useStore.getState().openModal(true)}
+          className={`mr-2 px-4 py-2 rounded ${
+            isRegister ? 'bg-primary text-white' : 'bg-transparent text-primary'
+          }`}
         >
           Register
         </button>
         <button
-          onClick={() => setIsRegister(false)}
-          className={`px-4 py-2 rounded ${!isRegister ? 'bg-primary text-white' : 'bg-transparent text-primary'}`}
+          onClick={() => useStore.getState().openModal(false)}
+          className={`px-4 py-2 rounded ${
+            !isRegister
+              ? 'bg-primary text-white'
+              : 'bg-transparent text-primary'
+          }`}
         >
           Login
         </button>

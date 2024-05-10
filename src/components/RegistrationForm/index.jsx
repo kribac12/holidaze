@@ -73,47 +73,47 @@ function RegisterForm({ onSubmit }) {
       <input
         {...register('name')}
         placeholder="Username"
-        className="input-field"
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       <p>{errors.name?.message}</p>
       <input
         {...register('email')}
         placeholder="Email (stud.noroff.no)"
-        className="input-field"
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       <p>{errors.email?.message}</p>
       <input
         {...register('password')}
         type="password"
         placeholder="Password"
-        className="input-field"
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       <p>{errors.password?.message}</p>
       <textarea
         {...register('bio')}
         placeholder="Bio"
-        className="input-field"
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       <p>{errors.bio?.message}</p>
       <input
         {...register('avatar.url')}
-        placeholder="Avatar URL"
-        className="input-field"
+        placeholder="Avatar URL (optional)"
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       <input
         {...register('avatar.alt')}
-        placeholder="Avatar Alt Text"
-        className="input-field"
+        placeholder="Avatar Alt Text (optional)"
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       <input
         {...register('banner.url')}
-        placeholder="Banner URL"
-        className="input-field"
+        placeholder="Banner URL (optional)"
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       <input
         {...register('banner.alt')}
-        placeholder="Banner Alt Text"
-        className="input-field"
+        placeholder="Banner Alt Text (optional)"
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       <div className="flex flex-row gap-4 items-center">
         <label>
@@ -122,11 +122,11 @@ function RegisterForm({ onSubmit }) {
             type="checkbox"
             className="me-2"
           />
-          Register as a Venue Manager
+          Become Venue Manager
         </label>
         <button
           type="submit"
-          className="bg-primary text-white font-bold py-2 px-8  rounded hover:bg-red-700"
+          className="bg-primary text-white font-bold py-2 px-4 md:px-6 rounded hover:bg-red-700"
         >
           Register
         </button>

@@ -27,14 +27,14 @@ function LoginForm({ onLogin }) {
       <input
         {...register('email')}
         placeholder="Email"
-        className="input-field"
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       <p>{errors.email?.message}</p>
       <input
         {...register('password')}
         type="password"
         placeholder="Password"
-        className="input-field"
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       <p>{errors.password?.message}</p>
       <button

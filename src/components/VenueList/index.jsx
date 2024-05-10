@@ -40,8 +40,9 @@ function VenueList() {
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value)}
-          className="p-2 border rounded-lg"
+          className="text-lg px-9 py-4 border rounded-lg"
         >
+          <option value="created,desc">Newest destinations</option>
           <option value="name,asc">Name A-Z</option>
           <option value="name,desc">Name Z-A</option>
           <option value="rating,desc">Most Popular</option>
@@ -49,9 +50,9 @@ function VenueList() {
           <option value="price,desc">Price Highest to Lowest</option>
         </select>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {venues.map((venue) => (
-          <Link to={`/venues/${venue.id}`} key={venue.id}>
+          <Link to={`/venues/${venue.id}`} key={venue.id} className="h-full">
             <VenueInfoCard
               venue={venue}
               titleLevel={2}

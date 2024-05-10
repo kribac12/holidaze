@@ -9,8 +9,6 @@ function Home() {
         <SearchForm />
       </section>
       <section className="mt-section">
-        <h1 className="mb-heading text-h1 font-h1">Destinations</h1>
-
         <VenueList />
       </section>
       <section className="mt-section">

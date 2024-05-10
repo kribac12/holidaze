@@ -8,7 +8,9 @@ const VenueInfoCard = ({ venue, className = '', titleLevel = 2 }) => {
   const TitleTag = `h${titleLevel}`
 
   return (
-    <div className={`${className} shadow rounded-lg bg-cardBg `}>
+    <div
+      className={`${className} flex flex-col shadow rounded-lg bg-cardBg h-full overflow-hidden`}
+    >
       <VenueMedia media={venue.media || []} />
       <div className="p-4 space-y-2">
         <TitleTag className={titleClasses}>
@@ -16,13 +18,15 @@ const VenueInfoCard = ({ venue, className = '', titleLevel = 2 }) => {
         </TitleTag>
         <div className="flex flex-row gap-2 items-center">
           <FaMapMarkerAlt className="text-accent text-lg" />
-          <p>{venue.location?.country || 'Unknown location'}</p>
+          <p className="truncate">
+            {venue.location?.country || 'Unknown location'}
+          </p>
         </div>
         <div className="flex flex-row gap-2 items-center">
           <FaStar className="text-accent text-lg" />
           <p>{venue.rating || 'Not rated'}</p>
         </div>
-        <p>Price: ${venue.price} per night</p>
+        <p className="truncate">Price: ${venue.price} per night</p>
       </div>
     </div>
   )

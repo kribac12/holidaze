@@ -88,14 +88,19 @@ function ModalLogSignin() {
     }
   }
 
+  const modalPadding = isRegister
+    ? 'p-8 sm:p-12 md:p-16'
+    : 'p-10 sm:p-20 md:p-30'
+
   return (
     <ResponsiveModal
       open={isOpen}
       onClose={closeModal}
       center
-      overlayClassName="bg-gray-900 bg-opacity-50 fixed inset-0 z-40"
-      modalClassName="bg-white rounded-lg  my-12 shadow-lg custom-modal-padding"
-      closeIconClassName="text-gray-500 hover:text-gray-800"
+      classNames={{
+        modal: `bg-white rounded-lg mx-auto my-12 shadow-lg ${modalPadding}`,
+        closeButton: 'text-gray-500 hover:text-gray-800',
+      }}
     >
       {notification.message && (
         <Notification

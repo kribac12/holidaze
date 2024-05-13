@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { useState } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import PropTypes from 'prop-types'
@@ -66,6 +67,8 @@ function RegisterForm({ onSubmit }) {
     errors: storeErrors,
   } = useStore()
 
+  const [showOptionalFields, setShowOptionalFields] = useState(false)
+
   const onSubmitWrapper = async (data) => {
     try {
       await onSubmit(data)
@@ -130,91 +133,104 @@ function RegisterForm({ onSubmit }) {
       />
       {errors.password && <ErrorMessage message={errors.password.message} />}
 
-      <p className="pt-4">Optional fields (May be added later):</p>
-      <textarea
-        {...register('bio', {
-          onChange: () => {
-            clearErrors('bio')
-            clearStoreError('bio')
-          },
-        })}
-        placeholder="Bio"
-        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      />
-      <p>{errors.bio?.message}</p>
-
-      <input
-        {...register('avatar.url', {
-          onChange: () => {
-            clearErrors('avatar.url')
-            clearStoreError('avatar.url')
-          },
-        })}
-        placeholder="Avatar URL (optional)"
-        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      />
-      {errors.avatar?.url && (
-        <ErrorMessage message={errors.avatar.url.message} />
-      )}
-
-      <input
-        {...register('avatar.alt', {
-          onChange: () => {
-            clearErrors('avatar.alt')
-            clearStoreError('avatar.alt')
-          },
-        })}
-        placeholder="Avatar Alt Text (optional)"
-        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      />
-      {errors.avatar?.alt && (
-        <ErrorMessage message={errors.avatar.alt.message} />
-      )}
-
-      <input
-        {...register('banner.url', {
-          onChange: () => {
-            clearErrors('banner.url')
-            clearStoreError('banner.url')
-          },
-        })}
-        placeholder="Banner URL (optional)"
-        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      />
-      {errors.banner?.url && (
-        <ErrorMessage message={errors.banner.url.message} />
-      )}
-
-      <input
-        {...register('banner.alt', {
-          onChange: () => {
-            clearErrors('banner.alt')
-            clearStoreError('banner.alt')
-          },
-        })}
-        placeholder="Banner Alt Text (optional)"
-        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      />
-      {errors.banner?.alt && (
-        <ErrorMessage message={errors.banner.alt.message} />
-      )}
-
-      <div className="flex flex-row gap-4 items-center">
-        <label>
-          <input
-            {...register('venueManager')}
-            type="checkbox"
-            className="me-2"
-          />
-          Become Venue Manager
-        </label>
+      {/* Toggle for showing optional fields */}
+      <div>
         <button
-          type="submit"
-          className="bg-primary text-white font-bold py-2 px-4 md:px-6 rounded hover:bg-red-700"
+          type="button"
+          onClick={() => setShowOptionalFields(!showOptionalFields)}
+          className="bg-gray-200 text-black py-1 px-4 rounded focus:outline-none"
         >
-          Register
+          {showOptionalFields ? 'Hide Optional Fields' : 'Show Optional Fields'}
         </button>
       </div>
+      {showOptionalFields && (
+        <div className="space-y-4">
+          {/* Optional fields */}
+          <p>You may add these on your profile page later</p>
+          <textarea
+            {...register('bio', {
+              onChange: () => {
+                clearErrors('bio')
+                clearStoreError('bio')
+              },
+            })}
+            placeholder="Bio"
+            className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          {errors.bio && <ErrorMessage message={errors.bio.message} />}
+
+          <input
+            {...register('avatar.url', {
+              onChange: () => {
+                clearErrors('avatar.url')
+                clearStoreError('avatar.url')
+              },
+            })}
+            placeholder="Avatar URL (optional)"
+            className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          {errors.avatar?.url && (
+            <ErrorMessage message={errors.avatar.url.message} />
+          )}
+
+          <input
+            {...register('avatar.alt', {
+              onChange: () => {
+                clearErrors('avatar.alt')
+                clearStoreError('avatar.alt')
+              },
+            })}
+            placeholder="Avatar Alt Text (optional)"
+            className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          {errors.avatar?.alt && (
+            <ErrorMessage message={errors.avatar.alt.message} />
+          )}
+
+          <input
+            {...register('banner.url', {
+              onChange: () => {
+                clearErrors('banner.url')
+                clearStoreError('banner.url')
+              },
+            })}
+            placeholder="Banner URL (optional)"
+            className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          {errors.banner?.url && (
+            <ErrorMessage message={errors.banner.url.message} />
+          )}
+
+          <input
+            {...register('banner.alt', {
+              onChange: () => {
+                clearErrors('banner.alt')
+                clearStoreError('banner.alt')
+              },
+            })}
+            placeholder="Banner Alt Text (optional)"
+            className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          {errors.banner?.alt && (
+            <ErrorMessage message={errors.banner.alt.message} />
+          )}
+          <label>
+            <input
+              {...register('venueManager')}
+              type="checkbox"
+              className="me-2 mt-4"
+            />
+            Become Venue Manager
+          </label>
+        </div>
+      )}
+
+      <button
+        type="submit"
+        className="bg-primary text-white font-bold py-2 px-10 md:px-14 rounded hover:bg-red-700"
+      >
+        Register
+      </button>
     </form>
   )
 }

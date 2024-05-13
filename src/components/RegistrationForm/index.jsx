@@ -2,6 +2,8 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import PropTypes from 'prop-types'
+import useStore from '@/store'
+import ErrorMessage from '@/lib/ErrorMessage'
 
 const schema = yup
   .object({
@@ -15,7 +17,7 @@ const schema = yup
     email: yup
       .string()
       .required('Email is required')
-      .email('Email must be a valid email')
+      .email('Email must be a valid email address')
       .matches(/@stud.noroff.no$/, "Email must be from 'stud.noroff.no'"),
     password: yup
       .string()
@@ -52,69 +54,151 @@ function RegisterForm({ onSubmit }) {
     handleSubmit,
     formState: { errors },
     setError,
+    clearErrors,
   } = useForm({
     resolver: yupResolver(schema),
+    mode: 'onBlur',
   })
+
+  const {
+    setError: setStoreError,
+    clearError: clearStoreError,
+    errors: storeErrors,
+  } = useStore()
 
   const onSubmitWrapper = async (data) => {
     try {
       await onSubmit(data)
+      clearStoreError() // Clear all global errors
+      clearErrors() // Clear all form errors
     } catch (error) {
+      console.error('Submission error:', error)
       if (error.response && error.response.data && error.response.data.errors) {
         error.response.data.errors.forEach((err) => {
-          setError(err.path[0], { type: 'server', message: err.message })
+          setStoreError(err.path, err.message) // Set store-specific errors
+          setError(err.path, { type: 'server', message: err.message }) // Set form-specific errors
         })
+      } else {
+        setStoreError('apiError', 'Failed to submit form')
       }
     }
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmitWrapper)} className="space-y-4">
+      {storeErrors.apiError && (
+        <ErrorMessage
+          message={storeErrors.apiError}
+          onClose={() => clearStoreError('apiError')}
+        />
+      )}
+
       <input
-        {...register('name')}
+        {...register('name', {
+          onChange: () => {
+            clearErrors('name')
+            clearStoreError('name')
+          },
+        })}
         placeholder="Username"
-        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
-      <p>{errors.name?.message}</p>
+      {errors.name && <ErrorMessage message={errors.name.message} />}
+
       <input
-        {...register('email')}
+        {...register('email', {
+          onChange: () => {
+            clearErrors('email')
+            clearStoreError('email')
+          },
+        })}
         placeholder="Email (stud.noroff.no)"
-        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
-      <p>{errors.email?.message}</p>
+      {errors.email && <ErrorMessage message={errors.email.message} />}
+
       <input
-        {...register('password')}
+        {...register('password', {
+          onChange: () => {
+            clearErrors('password')
+            clearStoreError('password')
+          },
+        })}
         type="password"
         placeholder="Password"
-        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
-      <p>{errors.password?.message}</p>
+      {errors.password && <ErrorMessage message={errors.password.message} />}
+
+      <p className="pt-4">Optional fields (May be added later):</p>
       <textarea
-        {...register('bio')}
+        {...register('bio', {
+          onChange: () => {
+            clearErrors('bio')
+            clearStoreError('bio')
+          },
+        })}
         placeholder="Bio"
-        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       <p>{errors.bio?.message}</p>
+
       <input
-        {...register('avatar.url')}
+        {...register('avatar.url', {
+          onChange: () => {
+            clearErrors('avatar.url')
+            clearStoreError('avatar.url')
+          },
+        })}
         placeholder="Avatar URL (optional)"
-        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
+      {errors.avatar?.url && (
+        <ErrorMessage message={errors.avatar.url.message} />
+      )}
+
       <input
-        {...register('avatar.alt')}
+        {...register('avatar.alt', {
+          onChange: () => {
+            clearErrors('avatar.alt')
+            clearStoreError('avatar.alt')
+          },
+        })}
         placeholder="Avatar Alt Text (optional)"
-        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
+      {errors.avatar?.alt && (
+        <ErrorMessage message={errors.avatar.alt.message} />
+      )}
+
       <input
-        {...register('banner.url')}
+        {...register('banner.url', {
+          onChange: () => {
+            clearErrors('banner.url')
+            clearStoreError('banner.url')
+          },
+        })}
         placeholder="Banner URL (optional)"
-        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
+      {errors.banner?.url && (
+        <ErrorMessage message={errors.banner.url.message} />
+      )}
+
       <input
-        {...register('banner.alt')}
+        {...register('banner.alt', {
+          onChange: () => {
+            clearErrors('banner.alt')
+            clearStoreError('banner.alt')
+          },
+        })}
         placeholder="Banner Alt Text (optional)"
-        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
+      {errors.banner?.alt && (
+        <ErrorMessage message={errors.banner.alt.message} />
+      )}
+
       <div className="flex flex-row gap-4 items-center">
         <label>
           <input

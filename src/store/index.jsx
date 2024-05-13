@@ -32,6 +32,21 @@ const useStore = create((set) => ({
     set({ auth: { token: null, apiKey: null, user: { venueManager: false } } })
     localStorage.removeItem('auth')
   },
+
+  // Error management
+
+  errors: {},
+  setErrors: (errors) =>
+    set((state) => ({ errors: { ...state.errors, ...errors } })),
+  clearErrors: () => set({ errors: {} }),
+  setError: (field, error) =>
+    set((state) => ({ errors: { ...state.errors, [field]: error } })),
+  clearError: (field) =>
+    set((state) => {
+      const newErrors = { ...state.errors }
+      delete newErrors[field]
+      return { errors: newErrors }
+    }),
 }))
 
 export default useStore

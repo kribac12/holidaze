@@ -88,9 +88,7 @@ function ModalLogSignin() {
     }
   }
 
-  const modalPadding = isRegister
-    ? 'p-8 sm:p-12 md:p-16'
-    : 'p-10 sm:p-20 md:p-30'
+  const modalWidth = 'sm:w.full md:w-1/2 lg:w-1/3 xl:w-1/4'
 
   return (
     <ResponsiveModal
@@ -98,7 +96,7 @@ function ModalLogSignin() {
       onClose={closeModal}
       center
       classNames={{
-        modal: `bg-white rounded-lg mx-auto my-12 shadow-lg ${modalPadding}`,
+        modal: `bg-white rounded-lg mx-auto my-12 shadow-lg ${modalWidth}`,
         closeButton: 'text-gray-500 hover:text-gray-800',
       }}
     >

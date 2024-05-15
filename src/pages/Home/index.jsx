@@ -1,12 +1,13 @@
 import VenueList from '@/components/VenueList'
 import FeatureSection from '@/components/FeatureSection'
-import SearchForm from '@/components/SearchForm'
+
+import HeroSection from '@/components/HeroSection'
 
 function Home() {
   return (
     <div>
       <section className="mt-section">
-        <SearchForm />
+        <HeroSection />
       </section>
       <section className="mt-section">
         <VenueList />

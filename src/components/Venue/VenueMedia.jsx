@@ -1,13 +1,25 @@
 import PropTypes from 'prop-types'
+import { useState } from 'react'
 
 const VenueMedia = ({ media }) => {
-  if (!media || media.length === 0) return null // Check if media is not provided or empty
+  const [imgError, setImgError] = useState(false)
+  const hasMedia = media && media.length > 0
+
   return (
-    <img
-      src={media[0].url}
-      alt={media[0].alt || 'Venue image'}
-      className="w-full h-48 object-cover rounded-t-lg"
-    />
+    <div className="w-full h-48 object-cover rounded-t-lg flex items-center justify-center bg-gray-200">
+      {!hasMedia || imgError ? (
+        <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
+          Image missing
+        </div>
+      ) : (
+        <img
+          src={media[0].url}
+          alt={media[0].alt || 'Venue image'}
+          className="w-full h-full object-cover rounded-t-lg"
+          onError={() => setImgError(true)}
+        />
+      )}
+    </div>
   )
 }
 

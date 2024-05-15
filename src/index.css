@@ -46,6 +46,8 @@ h1 {
 /*Modal styles*/
 .react-responsive-modal-modal {
   max-width: 100%;
+  max-width: 500px;
+  min-height: 500px;
   display: inline-block;
   text-align: left;
   vertical-align: middle;

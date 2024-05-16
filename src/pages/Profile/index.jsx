@@ -62,6 +62,7 @@ const ProfilePage = () => {
         isOpen={isEditing}
         onClose={handleModalClose}
         profile={profileData.data}
+        setMessage={setMessage}
       />
       {profileData.data.banner && (
         <div className="relative h-40 bg-gray-200">

@@ -1,85 +1,81 @@
-import { useState, useEffect } from 'react'
-import useApi from '@/services/Api'
-import { Link } from 'react-router-dom'
+import { useState, useCallback, useEffect } from 'react'
 import debounce from 'lodash.debounce'
-import VenueInfoCard from '../Venue/VenueInfoCard' // Import the VenueInfoCard
+import useApi from '@/services/Api'
+import PropTypes from 'prop-types'
 
-function SearchForm() {
+function SearchForm({ onResults }) {
   const [query, setQuery] = useState('')
-  const { data, isLoading, isError, sendRequest } = useApi()
-  const [debouncedSearch, setDebouncedSearch] = useState(() =>
-    debounce(() => {}, 300)
+  const { sendRequest } = useApi()
+
+  // Create a debounced function that only changes if `sendRequest` changes.
+  const debouncedSearch = useCallback(
+    debounce((nextQuery) => {
+      if (nextQuery.trim()) {
+        sendRequest({
+          url: `https://v2.api.noroff.dev/holidaze/venues/search?q=${encodeURIComponent(nextQuery)}`,
+          method: 'get',
+        })
+          .then((data) => {
+            if (onResults) {
+              onResults(data.data, false, false) // Update based on received data
+            }
+          })
+          .catch((error) => {
+            console.error('Search API error:', error)
+            if (onResults) {
+              onResults([], false, true) // Update to reflect error state
+            }
+          })
+      }
+    }, 300),
+    [sendRequest, onResults]
   )
 
   useEffect(() => {
-    // Create a debounced function that only changes when sendRequest changes
-    const newDebouncedSearch = debounce((query) => {
-      if (query.trim()) {
-        sendRequest({
-          url: `https://v2.api.noroff.dev/holidaze/venues/search?q=${encodeURIComponent(query)}`,
-          method: 'get',
-        })
-      }
-    }, 300)
-
-    setDebouncedSearch(() => newDebouncedSearch)
-
-    // Cleanup function to cancel the debounce on component unmount or dependency change
-    return () => {
-      newDebouncedSearch.cancel()
-    }
-  }, [sendRequest]) // Dependency array for useEffect
+    // Cleanup function to cancel the debounce when the component unmounts
+    return () => debouncedSearch.cancel()
+  }, [debouncedSearch])
 
   const handleChange = (e) => {
-    setQuery(e.target.value)
-    debouncedSearch(e.target.value)
+    const newQuery = e.target.value
+    setQuery(newQuery)
+    if (!newQuery.trim()) {
+      onResults([], false, false) // Clear results when query is empty
+    } else {
+      debouncedSearch(newQuery)
+    }
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (query.trim()) {
+      debouncedSearch(query)
+    }
   }
 
   return (
     <div className="relative z-10 w-full max-w-2xl mx-auto p-0 md:p-4">
-      <form onSubmit={handleChange} className="flex items-center space-x-0   ">
-        <div className="flex w-full shadow-lg">
-          <input
-            type="text"
-            value={query}
-            onChange={handleChange}
-            placeholder="Find your stay"
-            className="flex-grow px-4 py-6 border rounded-l-full text-primaryText placeholder-primaryText focus:outline-none focus:border-primary"
-          />
-          <button
-            type="submit"
-            className="bg-primary text-white font-semibold px-4 py-3 md:px-6 lg:px-10 border border-primary rounded-r-full hover:bg-teal-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
-          >
-            Search
-          </button>
-        </div>
+      <form onSubmit={handleSubmit} className="flex items-center space-0">
+        <input
+          type="text"
+          value={query}
+          onChange={handleChange}
+          placeholder="Find your stay"
+          className="flex-grow px-4 py-3 border rounded-l-full text-primaryText placeholder-primaryText focus:outline-none focus:border-primary"
+        />
+        <button
+          type="submit"
+          className="bg-primary text-white font-semibold px-4 py-3 md:px-6 lg:px-10 border border-primary rounded-r-full hover:bg-teal-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
+        >
+          Search
+        </button>
       </form>
-
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : isError ? (
-        <div className="text-red-500">Error occurred</div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-          {data &&
-            Array.isArray(data.data) &&
-            (data.data.length > 0 ? (
-              data.data.map((venue) => (
-                <Link
-                  to={`/venues/${venue.id}`}
-                  key={venue.id}
-                  className="h-full"
-                >
-                  <VenueInfoCard venue={venue} titleLevel={3} />
-                </Link>
-              ))
-            ) : (
-              <div>No venues found.</div>
-            ))}
-        </div>
-      )}
     </div>
   )
+}
+
+SearchForm.propTypes = {
+  onResults: PropTypes.func.isRequired,
 }
 
 export default SearchForm

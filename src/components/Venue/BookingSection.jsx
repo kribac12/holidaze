@@ -1,17 +1,27 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import useApi from '@/services/Api'
 import { DayPicker } from 'react-day-picker'
 import 'react-day-picker/dist/style.css'
 import { formatISO, addDays } from 'date-fns'
 import Button from '@/lib/Buttons'
+import useStore from '@/store'
+import ModalLogSignin from '@/components/ModalLogSignin'
 
 const BookingSection = ({ venueId, bookings }) => {
   const { sendRequest, isLoading } = useApi()
+  const { auth, openModal } = useStore((state) => ({
+    auth: state.auth,
+    openModal: state.openModal,
+  }))
   const [range, setRange] = useState({ from: undefined, to: undefined })
   const [guests, setGuests] = useState(1)
+  const [isAuthenticated, setIsAuthenticated] = useState(!!auth.token)
 
-  // Function to collect all dates within each booking range for disabling
+  useEffect(() => {
+    setIsAuthenticated(!!auth.token)
+  }, [auth.token])
+
   const getDisabledDays = () => {
     let days = []
     bookings.forEach((booking) => {
@@ -26,6 +36,11 @@ const BookingSection = ({ venueId, bookings }) => {
   }
 
   const handleBooking = async () => {
+    if (!isAuthenticated) {
+      openModal(true) // Open login/register modal if the user is not logged in
+      return
+    }
+
     if (!venueId || !range.from || !range.to) {
       alert('Please select a valid date range.')
       return
@@ -88,6 +103,7 @@ const BookingSection = ({ venueId, bookings }) => {
           Book Now
         </Button>
       </div>
+      <ModalLogSignin />
     </div>
   )
 }

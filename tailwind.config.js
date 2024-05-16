@@ -10,7 +10,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#ED0010',
+        primary: '#0F766E',
         primaryBg: '#FFFFFF',
         primaryText: '#333333',
         secondary: '#89CFF0',
@@ -18,7 +18,7 @@ module.exports = {
         secondaryDark: '#567D98',
         extraDark: '#CC9500',
         accent: '#FFBA08',
-        cardBg: '#F1F1F1',
+        cardBg: '#FAFAFA',
       },
       safeList: ['font-h1', 'text-h1', 'font-h2', 'text-h2'],
       spacing: {

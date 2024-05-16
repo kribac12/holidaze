@@ -2,45 +2,59 @@ import { useCallback, useEffect, useState } from 'react'
 import useApi from '@/services/Api'
 import { Link } from 'react-router-dom'
 import VenueInfoCard from '../Venue/VenueInfoCard'
+import Button from '@/lib/Buttons'
 
 function VenueList() {
   const { isLoading, isError, sendRequest } = useApi()
   const [venues, setVenues] = useState([])
   const [sort, setSort] = useState('created,desc') // Default sort by newly added
+  const [page, setPage] = useState(1)
+  const [limit] = useState(12)
+  const [totalVenues, setTotalVenues] = useState(0)
 
   const fetchVenues = useCallback(() => {
     const [sortField, sortOrder] = sort.split(',')
     sendRequest({
-      url: `https://v2.api.noroff.dev/holidaze/venues?sort=${sortField}&sortOrder=${sortOrder}`,
+      url: `https://v2.api.noroff.dev/holidaze/venues?sort=${sortField}&sortOrder=${sortOrder}&limit=${limit}&page=${page}`,
       method: 'get',
     })
       .then((response) => {
         if (!response.data || response.data.length === 0) {
           console.error('No venues data received', response)
         } else {
-          setVenues(response.data) // Update state with the fetched venues
+          setVenues((prevVenues) =>
+            page === 1 ? response.data : [...prevVenues, ...response.data]
+          ) // Update state with the fetched venues
+          setTotalVenues(response.meta.totalCount) // Update the total number of venues
         }
       })
       .catch((error) => {
         console.error('Error fetching venues:', error)
       })
-  }, [sendRequest, sort]) // Only recreate the function when `sendRequest` or `sort` changes
+  }, [sendRequest, sort, limit, page]) // Only recreate the function when dependencies change
 
   useEffect(() => {
     fetchVenues()
   }, [fetchVenues]) // Reacts to changes in `fetchVenues`
 
-  if (isLoading) return <div>Loading...</div>
+  const handleShowMore = () => {
+    setPage((prevPage) => prevPage + 1)
+  }
+
+  if (isLoading && page === 1) return <div>Loading...</div>
   if (isError) return <div>Error loading venues.</div>
   if (!venues || venues.length === 0) return <div>No venues available.</div>
 
   return (
     <div>
-      <div className="mb-4">
+      <div className="flex justify-end mb-4">
         <select
           value={sort}
-          onChange={(e) => setSort(e.target.value)}
-          className="text-lg px-9 py-4 border rounded-lg"
+          onChange={(e) => {
+            setSort(e.target.value)
+            setPage(1) // Reset to first page on sort change
+          }}
+          className="text-lg px-6 py-3 border border-accent rounded-lg"
         >
           <option value="created,desc">Newest destinations</option>
           <option value="name,asc">Name A-Z</option>
@@ -61,7 +75,15 @@ function VenueList() {
           </Link>
         ))}
       </div>
+      <div className="flex justify-center mt-4">
+        {totalVenues > venues.length && (
+          <Button type="primary" onClick={handleShowMore}>
+            Show More
+          </Button>
+        )}
+      </div>
     </div>
   )
 }
+
 export default VenueList

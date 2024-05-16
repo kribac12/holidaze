@@ -4,7 +4,7 @@ import VenueInfoCard from '../Venue/VenueInfoCard'
 
 function SearchResults({ data, isLoading, isError }) {
   return (
-    <div className="bg-primaryBg container mx-auto px-4 py-8">
+    <div className="bg-primaryBg container mx-auto px-4 py-2">
       {isLoading ? (
         <div>Loading...</div>
       ) : isError ? (
@@ -28,11 +28,7 @@ function SearchResults({ data, isLoading, isError }) {
                 ))}
               </div>
             </>
-          ) : (
-            <div>
-              <h2 className="text-xl font-bold text-center">No venues found</h2>
-            </div>
-          )}
+          ) : null}
         </>
       )}
     </div>

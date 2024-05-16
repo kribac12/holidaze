@@ -27,7 +27,7 @@ function Home() {
   return (
     <div>
       <HeroSection onResults={handleResults} />
-      <section className="mt-section">
+      <section>
         {isLoading ? (
           <div>Loading...</div>
         ) : isError ? (
@@ -48,7 +48,9 @@ function Home() {
             )}
           </>
         ) : hasSearched && !isLoading ? (
-          <div>No venues found.</div>
+          <div className="my-0 md:my-6 text-xl text-center">
+            No venues found, try another search.
+          </div>
         ) : null}
       </section>
       <section className="mt-section">

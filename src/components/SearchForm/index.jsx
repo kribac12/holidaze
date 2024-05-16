@@ -61,11 +61,11 @@ function SearchForm({ onResults }) {
           value={query}
           onChange={handleChange}
           placeholder="Find your stay"
-          className="flex-grow px-4 py-3 border rounded-l-full text-primaryText placeholder-primaryText focus:outline-none focus:border-primary"
+          className="flex-grow px-4 py-4 border rounded-l-full border-primary text-primaryText placeholder-primaryText focus:outline-none focus:border-primary"
         />
         <button
           type="submit"
-          className="bg-primary text-white font-semibold px-4 py-3 md:px-6 lg:px-10 border border-primary rounded-r-full hover:bg-teal-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
+          className="bg-primary text-white font-semibold px-4 py-4 md:px-6 lg:px-10 border border-primary rounded-r-full hover:bg-teal-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
         >
           Search
         </button>

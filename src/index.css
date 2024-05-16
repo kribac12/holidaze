@@ -24,15 +24,15 @@ h1 {
 }
 
 .button-primary {
-  @apply bg-primary text-white font-semibold py-3 px-6  mb-4 rounded-md;
+  @apply bg-primary text-white font-semibold py-4 px-8  mb-4 rounded-md;
 }
 
 .button-secondary {
-  @apply bg-primaryBg text-primaryText border border-primaryText  py-2 px-4 rounded-md;
+  @apply bg-primaryBg text-primaryText border border-primaryText  py-4 px-8 rounded-md;
 }
 
 .button-extra {
-  @apply bg-primaryBg border-primary text-primaryText border-2 py-2 px-4 rounded-md;
+  @apply bg-primaryBg border-primary text-primaryText border-2 py-4 px-8 rounded-md;
 }
 
 .card {

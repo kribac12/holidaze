@@ -1,7 +1,13 @@
 import { useEffect } from 'react'
 import PropTypes from 'prop-types'
 
-const Notification = ({ message, type, onDismiss, duration = 5000 }) => {
+const Notification = ({
+  message,
+  type,
+  onDismiss,
+  duration = 5000,
+  className,
+}) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       onDismiss()
@@ -15,7 +21,7 @@ const Notification = ({ message, type, onDismiss, duration = 5000 }) => {
 
   return (
     <div
-      className={`${backgroundColor} text-white p-4 rounded-md fixed top-5 right-5 z-50`}
+      className={`${backgroundColor} text-white p-4 rounded-md ${className}`}
     >
       {message}
       <button
@@ -33,6 +39,7 @@ Notification.propTypes = {
   type: PropTypes.oneOf(['success', 'error']).isRequired,
   onDismiss: PropTypes.func.isRequired,
   duration: PropTypes.number,
+  className: PropTypes.string,
 }
 
 export default Notification

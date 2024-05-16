@@ -14,8 +14,9 @@ const setLocalStorageAuth = (authData) => {
 const useStore = create((set) => ({
   isOpen: false,
   isRegister: true,
+  loginMessage: '',
   openModal: (register = true) => set({ isOpen: true, isRegister: register }),
-  closeModal: () => set({ isOpen: false }),
+  closeModal: () => set({ isOpen: false, loginMessage: '' }),
   auth: getLocalStorageAuth(),
   setAuth: (authData) => {
     // Fetch the current auth state from local storage to ensure all data is up-to-date
@@ -47,6 +48,8 @@ const useStore = create((set) => ({
       delete newErrors[field]
       return { errors: newErrors }
     }),
+  // Login message management
+  setLoginMessage: (message) => set({ loginMessage: message }),
 }))
 
 export default useStore

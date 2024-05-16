@@ -6,6 +6,7 @@ import ProfilePage from './pages/Profile'
 import NotFound from './pages/NotFound'
 import VenueSpecific from './pages/VenueSpecific'
 import CreateVenueForm from './pages/CreateVenue'
+import ModalLogSignin from './components/ModalLogSignin'
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
+        <ModalLogSignin />
       </Suspense>
     </Router>
   )

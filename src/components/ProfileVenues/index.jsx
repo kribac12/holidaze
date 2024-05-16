@@ -50,13 +50,12 @@ const ProfileVenues = ({ profileName, isOwnProfile }) => {
             key={venue.id}
             className="border border-gray-200 rounded-lg shadow-sm p-4 flex space-x-4"
           >
-            {/* Venue Image */}
             <img
               src={venue.media[0]?.url}
               alt={venue.media[0]?.alt || 'Venue Image'}
               className="w-24 h-24 rounded-lg object-cover"
             />
-            {/* Venue Details */}
+
             <div className="flex flex-col">
               <Link
                 to={`/venues/${venue.id}`}
@@ -70,7 +69,10 @@ const ProfileVenues = ({ profileName, isOwnProfile }) => {
                 <p>Guests: {venue.maxGuests}</p>
                 <p>Rating: {venue.rating}</p>
                 <p>
-                  Address: {venue.location.country}, {venue.location.city}
+                  Place:{' '}
+                  {[venue.location.country, venue.location.city]
+                    .filter(Boolean)
+                    .join(', ')}
                 </p>
               </div>
             </div>

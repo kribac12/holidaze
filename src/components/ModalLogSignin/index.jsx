@@ -92,7 +92,6 @@ function ModalLogSignin() {
       navigate(`/profile/${loginResponse.data.name}`)
     } catch (error) {
       console.error('Login failed:', error.response?.data || error)
-      // Display an error message to the user
       alert('Login failed: ' + (error.response?.data?.message || error.message))
     }
   }
@@ -150,7 +149,6 @@ function ModalLogSignin() {
       ) : (
         <LoginForm onLogin={handleLogin} />
       )}
-      {/* Loading and Error Handling */}
       {isLoading && <p>Loading...</p>}
       {isError && (
         <p className="text-red-500">An error occurred during the operation.</p>

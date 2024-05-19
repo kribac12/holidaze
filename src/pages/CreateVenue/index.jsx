@@ -1,418 +1,101 @@
 import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as Yup from 'yup'
 import { useParams, useNavigate } from 'react-router-dom'
 import useApi from '@/services/Api'
+import useStore from '@/store'
+import Button from '@/lib/Buttons'
+import VenueHeader from '@/components/Venue/VenueHeader'
+import Facilities from '@/components/Venue/Facilities'
+import Description from '@/components/Venue/Description'
+import BookingSection from '@/components/Venue/BookingSection'
+import VenueBookings from '@/components/Venue/VenueBookings'
+import VenueDetails from '@/components/Venue/Details'
 
-const venueSchema = Yup.object().shape({
-  name: Yup.string().required('Venue name is required'),
-  description: Yup.string().required('Description is required'),
-  price: Yup.number()
-    .positive('Price must be greater than zero')
-    .required('Price is required'),
-  maxGuests: Yup.number()
-    .positive('Must be at least one guest')
-    .integer('Must be an integer')
-    .required('Maximum guests is required'),
-  mediaUrl: Yup.string().url('Must be a valid URL'),
-  mediaAlt: Yup.string(),
-  wifi: Yup.boolean(),
-  parking: Yup.boolean(),
-  breakfast: Yup.boolean(),
-  pets: Yup.boolean(),
-  address: Yup.string().nullable(),
-  zip: Yup.string().nullable(),
-  country: Yup.string().nullable(),
-  continent: Yup.string().nullable(),
-  lat: Yup.number()
-    .transform((value) => (isNaN(value) ? undefined : value))
-    .nullable(true),
-  lng: Yup.number()
-    .transform((value) => (isNaN(value) ? undefined : value))
-    .nullable(true),
-})
-
-const CreateVenueForm = () => {
+function VenueSpecific() {
   const { venueId } = useParams()
+  const { isLoading, isError, sendRequest } = useApi()
   const navigate = useNavigate()
-  const { sendRequest } = useApi()
-  const [showAdditional, setShowAdditional] = useState(false)
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: yupResolver(venueSchema),
-  })
+  const [venue, setVenue] = useState(null)
+  const { auth } = useStore((state) => ({ auth: state.auth }))
 
   useEffect(() => {
-    if (venueId) {
-      sendRequest({
-        url: `https://v2.api.noroff.dev/holidaze/venues/${venueId}`,
-        method: 'get',
+    sendRequest({
+      url: `https://v2.api.noroff.dev/holidaze/venues/${venueId}?_bookings=true&_owner=true`,
+      method: 'get',
+    })
+      .then((response) => {
+        if (response && response.data) {
+          setVenue(response.data)
+        }
       })
-        .then((response) => {
-          const fields = [
-            'name',
-            'description',
-            'price',
-            'maxGuests',
-            'mediaUrl',
-            'mediaAlt',
-            'wifi',
-            'parking',
-            'breakfast',
-            'pets',
-            'address',
-            'zip',
-            'country',
-            'continent',
-            'lat',
-            'lng',
-          ]
-          fields.forEach((field) => setValue(field, response.data[field]))
-          setShowAdditional(true) // Automatically show additional information if editing
+      .catch((error) => {
+        console.error('Error fetching venue details:', error)
+      })
+  }, [venueId, sendRequest])
+
+  const handleEdit = () => {
+    navigate(`/edit-venue/${venueId}`)
+  }
+
+  const handleDelete = async () => {
+    if (window.confirm('Are you sure you want to delete this venue?')) {
+      try {
+        await sendRequest({
+          url: `https://v2.api.noroff.dev/holidaze/venues/${venueId}`,
+          method: 'delete',
         })
-        .catch((error) => console.error('Fetching venue data failed:', error))
-    }
-  }, [venueId, sendRequest, setValue])
-
-  const onSubmit = async (data) => {
-    const formattedData = {
-      ...data,
-      location: {
-        address: data.address,
-        city: data.city,
-        zip: data.zip,
-        country: data.country,
-        continent: data.continent,
-        lat: data.lat,
-        lng: data.lng,
-      },
-    }
-
-    const url = venueId
-      ? `https://v2.api.noroff.dev/holidaze/venues/${venueId}`
-      : 'https://v2.api.noroff.dev/holidaze/venues'
-    const method = venueId ? 'put' : 'post'
-
-    try {
-      const response = await sendRequest({
-        url: url,
-        method: method,
-        data: formattedData,
-        headers: { 'Content-Type': 'application/json' },
-      })
-      alert(`Venue ${venueId ? 'updated' : 'created'} successfully!`)
-      reset()
-      navigate(`/venues/${response.data.id}`)
-    } catch (error) {
-      console.error(`Failed to ${venueId ? 'update' : 'create'} venue:`, error)
-      alert(
-        `Error ${venueId ? 'updating' : 'creating'} venue. Please try again.`
-      )
+        alert('Venue deleted successfully!')
+        navigate('/')
+      } catch (error) {
+        console.error('Failed to delete venue:', error)
+        alert('Error deleting venue. Please try again.')
+      }
     }
   }
 
+  if (isLoading) return <div>Loading...</div>
+  if (isError || !venue) return <div>Error loading venue details.</div>
+
+  // Ensure the user is the venue manager and the owner of the venue
+  const isOwner =
+    venue.owner &&
+    auth.user &&
+    venue.owner.email === auth.user.email &&
+    auth.user.venueManager
+
+  const venueDetails = {
+    maxGuests: venue.maxGuests,
+    location: venue.location,
+  }
+
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-8 p-4 bg-white shadow-md rounded-lg"
-    >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label htmlFor="name" className="block text-lg  font-semibold mb-1">
-            Venue Name
-          </label>
-          <input
-            {...register('name')}
-            id="name"
-            placeholder="Venue Name"
-            className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
-          />
-          <p className="text-red-500 text-sm mt-1">{errors.name?.message}</p>
-        </div>
+    <div className="flex flex-col ">
+      <VenueHeader venue={venue} />
 
-        <div>
-          <label htmlFor="price" className="block text-lg font-semibold mb-1">
-            Price
-          </label>
-          <input
-            {...register('price')}
-            id="price"
-            placeholder="Price"
-            type="number"
-            className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
-          />
-          <p className="text-red-500 text-sm mt-1">{errors.price?.message}</p>
+      <div className="flex flex-col md:flex-row mt-4">
+        <div className="md:w-1/2 lg:w-2/3 mr-2">
+          <Description description={venue.description} />
+          <Facilities meta={venue.meta} />
+          <VenueDetails details={venueDetails} />
+        </div>
+        <div className="md:w-1/2 lg:w-1/3 mt-4 md:mt-0">
+          <BookingSection venueId={venueId} bookings={venue.bookings || []} />
         </div>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {isOwner && (
         <div>
-          <label
-            htmlFor="description"
-            className="block text-lg font-semibold mb-1"
-          >
-            Description
-          </label>
-          <textarea
-            {...register('description')}
-            id="description"
-            placeholder="Description"
-            className="textarea border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
-            rows="4"
-          />
-          <p className="text-red-500 text-sm mt-1">
-            {errors.description?.message}
-          </p>
-        </div>
-
-        <div>
-          <label
-            htmlFor="maxGuests"
-            className="block text-lg font-semibold mb-1"
-          >
-            Maximum Guests
-          </label>
-          <input
-            {...register('maxGuests')}
-            id="maxGuests"
-            placeholder="Maximum Guests"
-            type="number"
-            className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
-          />
-          <p className="text-red-500 text-sm mt-1">
-            {errors.maxGuests?.message}
-          </p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label
-            htmlFor="mediaUrl"
-            className="block text-lg font-semibold mb-1"
-          >
-            Media URL{' '}
-            <span className="text-sm font-normal text-secondaryText">
-              (Optional)
-            </span>
-          </label>
-          <input
-            {...register('mediaUrl')}
-            id="mediaUrl"
-            placeholder="https://example.com/photo.jpg"
-            className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
-          />
-          <p className="text-red-500 text-sm mt-1">
-            {errors.mediaUrl?.message}
-          </p>
-        </div>
-
-        <div>
-          <label
-            htmlFor="mediaAlt"
-            className="block text-lg font-semibold mb-1"
-          >
-            Media Description{' '}
-            <span className="text-sm font-normal text-secondaryText">
-              (Optional)
-            </span>
-          </label>
-          <input
-            {...register('mediaAlt')}
-            id="mediaAlt"
-            placeholder="Describe the image"
-            className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
-          />
-        </div>
-      </div>
-
-      <div className="flex gap-5 flex-wrap">
-        <div>
-          <label htmlFor="wifi" className="inline-flex items-center">
-            <input
-              type="checkbox"
-              {...register('wifi')}
-              id="wifi"
-              className="checkbox mr-2"
-            />
-            <p className="text-lg">Wifi</p>
-            <span className="ml-2 text-sm text-secondaryText"> (Optional)</span>
-          </label>
-        </div>
-
-        <div>
-          <label htmlFor="parking" className="inline-flex items-center">
-            <input
-              type="checkbox"
-              {...register('parking')}
-              id="parking"
-              className="checkbox mr-2"
-            />{' '}
-            <p className="text-lg">Parking</p>
-            <span className="text-sm  text-secondaryText"> (Optional)</span>
-          </label>
-        </div>
-
-        <div>
-          <label htmlFor="breakfast" className="inline-flex items-center">
-            <input
-              type="checkbox"
-              {...register('breakfast')}
-              id="breakfast"
-              className="checkbox mr-2"
-            />{' '}
-            <p className="text-lg">Breakfast</p>
-            <span className="text-sm text-secondaryText">(Optional)</span>
-          </label>
-        </div>
-
-        <div>
-          <label htmlFor="pets" className="inline-flex items-center">
-            <input
-              type="checkbox"
-              {...register('pets')}
-              id="pets"
-              className="checkbox mr-2"
-            />{' '}
-            <p className="text-lg">Pets Allowed</p>
-            <span className="text-sm  text-secondaryText">(Optional)</span>
-          </label>
-        </div>
-      </div>
-
-      <div>
-        <button
-          type="button"
-          onClick={() => setShowAdditional(!showAdditional)}
-          className="underline py-4"
-        >
-          {showAdditional
-            ? 'No Additional Information'
-            : 'Add Additional Information'}
-        </button>
-        {showAdditional && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-            <div>
-              <label
-                htmlFor="country"
-                className="block text-lg font-semibold mb-1"
-              >
-                Country{' '}
-                <span className="text-sm font-normal text-secondaryText">
-                  (Optional)
-                </span>
-              </label>
-              <input
-                {...register('country')}
-                id="country"
-                placeholder="Norway"
-                className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="address"
-                className="block text-lg font-semibold mb-1"
-              >
-                Address{' '}
-                <span className="text-sm font-normal text-secondaryText">
-                  (Optional)
-                </span>
-              </label>
-              <input
-                {...register('address')}
-                id="address"
-                placeholder="1234 Street"
-                className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="zip" className="block text-lg font-semibold mb-1">
-                Zip Code{' '}
-                <span className="text-sm font-normal text-secondaryText">
-                  (Optional)
-                </span>
-              </label>
-              <input
-                {...register('zip')}
-                id="zip"
-                placeholder="1234"
-                className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="continent"
-                className="block text-lg font-semibold mb-1"
-              >
-                Continent{' '}
-                <span className="text-sm font-normal text-secondaryText">
-                  (Optional)
-                </span>
-              </label>
-              <input
-                {...register('continent')}
-                id="continent"
-                placeholder="Europe"
-                className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="lat" className="block text-lg font-semibold mb-1">
-                Latitude{' '}
-                <span className="text-sm font-normal text-secondaryText">
-                  (Optional)
-                </span>
-              </label>
-              <input
-                {...register('lat')}
-                id="lat"
-                placeholder="47.1234"
-                type="number"
-                step="0.0001"
-                className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="lng" className="block text-lg font-semibold mb-1">
-                Longitude{' '}
-                <span className="text-sm font-normal text-secondaryText">
-                  (Optional)
-                </span>
-              </label>
-              <input
-                {...register('lng')}
-                id="lng"
-                placeholder="-122.1234"
-                type="number"
-                step="0.0001"
-                className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
-              />
-            </div>
+          <VenueBookings bookings={venue.bookings || []} />
+          <div className="flex space-x-2 mt-5">
+            <Button type="secondary" onClick={handleEdit}>
+              Edit Venue
+            </Button>
+            <Button type="extra" onClick={handleDelete}>
+              Delete Venue
+            </Button>
           </div>
-        )}
-      </div>
-
-      <button
-        type="submit"
-        className="bg-primary text-white font-bold py-2 px-4 rounded hover:bg-primary-dark"
-        disabled={isSubmitting}
-      >
-        {venueId ? 'Update Venue' : 'Create Venue'}
-      </button>
-    </form>
+        </div>
+      )}
+    </div>
   )
 }
 
-export default CreateVenueForm
+export default VenueSpecific

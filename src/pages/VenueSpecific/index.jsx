@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import useApi from '@/services/Api'
 import useStore from '@/store'
@@ -17,26 +17,20 @@ function VenueSpecific() {
   const navigate = useNavigate()
   const location = useLocation()
   const [venue, setVenue] = useState(null)
-  const { auth } = useStore((state) => ({ auth: state.auth }))
-  const { notification, clearNotification, setNotification } = useStore(
+  const { auth, notification, setNotification, clearNotification } = useStore(
     (state) => ({
+      auth: state.auth,
       notification: state.notification,
-      clearNotification: state.clearNotification,
       setNotification: state.setNotification,
+      clearNotification: state.clearNotification,
     })
   )
 
   useEffect(() => {
-    if (location.state?.message) {
-      setNotification({
-        message: location.state.message,
-        type: location.state.type,
-      })
-      navigate(location.pathname, { replace: true, state: {} })
+    if (location.state && location.state.message) {
+      setNotification(location.state)
     }
-  }, [location, navigate, setNotification])
 
-  useEffect(() => {
     sendRequest({
       url: `https://v2.api.noroff.dev/holidaze/venues/${venueId}?_bookings=true&_owner=true`,
       method: 'get',
@@ -49,7 +43,11 @@ function VenueSpecific() {
       .catch((error) => {
         console.error('Error fetching venue details:', error)
       })
-  }, [venueId, sendRequest])
+
+    return () => {
+      clearNotification()
+    }
+  }, [venueId, sendRequest, location.state, setNotification, clearNotification])
 
   const handleEdit = () => {
     navigate(`/edit-venue/${venueId}`)
@@ -62,28 +60,19 @@ function VenueSpecific() {
           url: `https://v2.api.noroff.dev/holidaze/venues/${venueId}`,
           method: 'delete',
         })
-        setNotification({
-          message: 'Venue deleted successfully!',
-          type: 'success',
-        })
+        alert('Venue deleted successfully!')
         navigate('/')
       } catch (error) {
         console.error('Failed to delete venue:', error)
-        setNotification({
-          message: 'Error deleting venue. Please try again.',
-          type: 'error',
-        })
+        alert('Error deleting venue. Please try again.')
       }
     }
   }
 
-  const clearNotificationHandler = useCallback(() => {
-    clearNotification()
-  }, [clearNotification])
-
   if (isLoading) return <div>Loading...</div>
   if (isError || !venue) return <div>Error loading venue details.</div>
 
+  // Ensure the user is the venue manager and the owner of the venue
   const isOwner =
     venue.owner &&
     auth.user &&
@@ -101,7 +90,7 @@ function VenueSpecific() {
         <Notification
           message={notification.message}
           type={notification.type}
-          onDismiss={clearNotificationHandler}
+          onDismiss={clearNotification}
         />
       )}
       <VenueHeader venue={venue} />

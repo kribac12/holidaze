@@ -30,11 +30,18 @@ const useApi = () => {
       } catch (error) {
         console.error('API request error:', error.response || error)
         setIsError(true)
-        if (error.response && error.response.status === 429) {
-          // Handle rate limiting specifically
-          console.error('Rate limit exceeded, please try again later')
+        // Provide more detailed error information
+        if (error.response) {
+          if (error.response.status === 429) {
+            // Handle rate limiting specifically
+            console.error('Rate limit exceeded, please try again later')
+            error.response.data.message =
+              'Rate limit exceeded, please try again later'
+          }
+          throw error.response.data
+        } else {
+          throw error
         }
-        throw error
       } finally {
         setIsLoading(false)
       }
@@ -42,7 +49,11 @@ const useApi = () => {
     [token, apiKey]
   )
 
-  return { data, isLoading, isError, sendRequest }
+  const clearError = useCallback(() => {
+    setIsError(false)
+  }, [])
+
+  return { data, isLoading, isError, sendRequest, clearError }
 }
 
 export default useApi

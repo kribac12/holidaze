@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import useApi from '@/services/Api'
+import Loader from '../Loader'
 
 const ProfileVenues = ({ profileName, isOwnProfile }) => {
   const { isLoading, isError, sendRequest } = useApi()
@@ -20,7 +21,7 @@ const ProfileVenues = ({ profileName, isOwnProfile }) => {
     }
   }, [profileName, sendRequest])
 
-  if (isLoading) return <div>Loading venues...</div>
+  if (isLoading) return <Loader />
   if (isError) return <div>Error fetching venues.</div>
   if (venues.length === 0) {
     return (

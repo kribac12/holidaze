@@ -10,6 +10,7 @@ import BookingSection from '@/components/Venue/BookingSection'
 import VenueBookings from '@/components/Venue/VenueBookings'
 import VenueDetails from '@/components/Venue/Details'
 import Notification from '@/components/Notifications'
+import Loader from '@/components/Loader'
 
 function VenueSpecific() {
   const { venueId } = useParams()
@@ -69,7 +70,7 @@ function VenueSpecific() {
     }
   }
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) return <Loader />
   if (isError || !venue) return <div>Error loading venue details.</div>
 
   // Ensure the user is the venue manager and the owner of the venue
@@ -96,7 +97,7 @@ function VenueSpecific() {
       <VenueHeader venue={venue} />
 
       <div className="flex flex-col md:flex-row mt-4">
-        <div className="md:w-1/2 lg:w-2/3 mr-2">
+        <div className="md:w-1/2 lg:w-2/3 mr-2 md:mr-20">
           <Description description={venue.description} />
           <Facilities meta={venue.meta} />
           <VenueDetails details={venueDetails} />

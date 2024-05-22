@@ -3,6 +3,7 @@ import useApi from '@/services/Api'
 import { Link } from 'react-router-dom'
 import VenueInfoCard from '../Venue/VenueInfoCard'
 import Button from '@/lib/Buttons'
+import Loader from '../Loader'
 
 function VenueList() {
   const { isLoading, isError, sendRequest } = useApi()
@@ -41,7 +42,7 @@ function VenueList() {
     setPage((prevPage) => prevPage + 1)
   }
 
-  if (isLoading && page === 1) return <div>Loading...</div>
+  if (isLoading && page === 1) return <Loader />
   if (isError) return <div>Error loading venues.</div>
   if (!venues || venues.length === 0) return <div>No venues available.</div>
 

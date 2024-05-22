@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types'
 import { FaStar, FaMapMarkerAlt } from 'react-icons/fa'
-import VenueMedia from './VenueMedia'
+
 import { truncateText } from '@/lib/TextUtils'
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
+import VenueCarousel from './VenueCarousel'
 
 const VenueInfoCard = ({ venue, className = '', titleLevel = 2 }) => {
   const titleClasses = `font-${titleLevel} text-h${titleLevel}`
@@ -11,7 +14,7 @@ const VenueInfoCard = ({ venue, className = '', titleLevel = 2 }) => {
     <div
       className={`${className} flex flex-col shadow rounded-lg bg-cardBg h-full overflow-hidden`}
     >
-      <VenueMedia media={venue.media || []} />
+      <VenueCarousel media={venue.media || []} />
       <div className="p-4 space-y-2">
         <TitleTag className={titleClasses}>
           {truncateText(venue.name, 50)}

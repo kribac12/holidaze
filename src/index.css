@@ -24,21 +24,40 @@ h1 {
 }
 
 .button-primary {
-  @apply bg-primary text-white font-semibold py-4 px-8  mb-4 rounded-md;
+  @apply bg-primary text-white font-semibold py-3 px-8 mb-4 rounded-md;
+}
+
+.button-primary:hover {
+  @apply bg-teal-500;
 }
 
 .button-secondary {
-  @apply bg-primaryBg text-primaryText border border-primaryText  py-4 px-8 rounded-md;
+  @apply bg-primaryBg text-primaryText border border-primaryText py-4 px-8 rounded-md;
+}
+
+.button-secondary:hover {
+  @apply bg-primaryText bg-opacity-10;
 }
 
 .button-extra {
   @apply bg-primaryBg border-primary text-primaryText border-2 py-2 px-4 rounded-md;
 }
 
+.button-extra:hover {
+  @apply bg-primary text-white;
+}
+
 .button-red {
   @apply bg-red-500 text-white p-2 rounded;
 }
 
+.button-red:hover {
+  @apply bg-red-700;
+}
+
+.button-small {
+  @apply py-2 px-4;
+}
 .card {
   @apply bg-cardBg;
 }

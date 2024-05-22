@@ -7,6 +7,7 @@ import ProfileBookings from '@/components/ProfileBookings'
 import ProfileVenues from '@/components/ProfileVenues'
 import Notification from '@/components/Notifications'
 import Loader from '@/components/Loader'
+import Button from '@/lib/Buttons'
 
 const ProfilePage = () => {
   const { name: profileName } = useParams()
@@ -84,13 +85,10 @@ const ProfilePage = () => {
       <div className="pt-16 pb-8 px-4 text-center">
         <h1 className="text-h1 font-h1">{profileData.data.name}</h1>
         <p className="text-secondaryText">Email: {profileData.data.email}</p>
-        <p className="text-primaryText"> {profileData.data.bio}</p>
-        <button
-          onClick={() => setIsEditing(true)}
-          className="mt-4 py-2 px-4 bg-primary text-white rounded hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500"
-        >
+        <p className="text-primaryText mb-6"> {profileData.data.bio}</p>
+        <Button type="primary" onClick={() => setIsEditing(true)}>
           Edit Profile
-        </button>
+        </Button>
       </div>
       <div className="pb-4">
         <p className="text-secondaryText">

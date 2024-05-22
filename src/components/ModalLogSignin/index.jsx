@@ -9,6 +9,7 @@ import useApi from '@/services/Api'
 import useStore from '@/store'
 import { fetchApiKey } from '@/services/Api/ApiKey'
 import Loader from '../Loader'
+import Button from '@/lib/Buttons'
 
 function ModalLogSignin() {
   const {
@@ -145,24 +146,20 @@ function ModalLogSignin() {
         )}
       </div>
       <div className="tabs mb-4">
-        <button
+        <Button
+          type={isRegister ? 'primary' : 'secondary'}
+          size="small"
           onClick={() => handleTabSwitch(true)}
-          className={`mr-2 px-4 py-2 rounded ${
-            isRegister ? 'bg-primary text-white' : 'bg-transparent text-primary'
-          }`}
         >
           Register
-        </button>
-        <button
+        </Button>
+        <Button
+          type={!isRegister ? 'primary' : 'secondary'}
+          size="small"
           onClick={() => handleTabSwitch(false)}
-          className={`px-4 py-2 rounded ${
-            !isRegister
-              ? 'bg-primary text-white'
-              : 'bg-transparent text-primary'
-          }`}
         >
           Login
-        </button>
+        </Button>
       </div>
       {isRegister ? (
         <RegisterForm onSubmit={handleRegister} />

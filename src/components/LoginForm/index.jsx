@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import PropTypes from 'prop-types'
 import ErrorMessage from '@/lib/ErrorMessage'
+import Button from '@/lib/Buttons'
 
 const loginSchema = yup
   .object({
@@ -59,12 +60,7 @@ function LoginForm({ onLogin }) {
         {errors.password && <ErrorMessage message={errors.password.message} />}
       </div>
       {errors.api && <ErrorMessage message={errors.api.message} />}
-      <button
-        type="submit"
-        className="bg-primary text-white font-bold py-2 px-8 rounded hover:bg-red-700"
-      >
-        Login
-      </button>
+      <Button type="primary">Login</Button>
     </form>
   )
 }

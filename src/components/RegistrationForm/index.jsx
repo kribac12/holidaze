@@ -5,6 +5,7 @@ import * as yup from 'yup'
 import PropTypes from 'prop-types'
 import useStore from '@/store'
 import ErrorMessage from '@/lib/ErrorMessage'
+import Button from '@/lib/Buttons'
 
 const schema = yup
   .object({
@@ -225,12 +226,7 @@ function RegisterForm({ onSubmit }) {
         </div>
       )}
 
-      <button
-        type="submit"
-        className="bg-primary text-white font-bold py-2 px-10 md:px-14 rounded hover:bg-red-700"
-      >
-        Register
-      </button>
+      <Button type="primary">Register</Button>
     </form>
   )
 }

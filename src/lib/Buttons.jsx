@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 const Button = ({
   children,
   type = 'primary',
+  size = 'regular',
   onClick,
   disabled = false,
   ...props
@@ -27,6 +28,11 @@ const Button = ({
       buttonClass = 'button-primary' // Default to primary if type is unspecified or incorrect
   }
 
+  // Append small size styles if size is small
+  if (size === 'small') {
+    buttonClass += ' button-small'
+  }
+
   // Append disabled styles if the button is disabled
   if (disabled) {
     buttonClass += ' opacity-50 cursor-not-allowed'
@@ -47,6 +53,7 @@ const Button = ({
 Button.propTypes = {
   children: PropTypes.node.isRequired,
   type: PropTypes.oneOf(['primary', 'secondary', 'extra', 'red']),
+  size: PropTypes.oneOf(['regular', 'small']),
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
 }

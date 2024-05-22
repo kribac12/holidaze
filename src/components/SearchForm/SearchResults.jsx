@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import VenueInfoCard from '../Venue/VenueInfoCard'
+import Loader from '../Loader'
 
 function SearchResults({ data, isLoading, isError }) {
   return (
     <div className="bg-primaryBg container mx-auto px-4 py-2">
       {isLoading ? (
-        <div>Loading...</div>
+        <Loader />
       ) : isError ? (
         <div className="text-red-500">Error occurred</div>
       ) : (

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { Modal as ResponsiveModal } from 'react-responsive-modal'
 import 'react-responsive-modal/styles.css'
 import RegisterForm from '../RegistrationForm'
@@ -8,6 +8,7 @@ import Notification from '../Notifications'
 import useApi from '@/services/Api'
 import useStore from '@/store'
 import { fetchApiKey } from '@/services/Api/ApiKey'
+import Loader from '../Loader'
 
 function ModalLogSignin() {
   const {
@@ -25,13 +26,21 @@ function ModalLogSignin() {
     loginMessage: state.loginMessage,
     setLoginMessage: state.setLoginMessage,
   }))
-  const { sendRequest, isLoading, isError } = useApi()
+  const { sendRequest, isLoading, isError, clearError } = useApi()
   const navigate = useNavigate()
   const [notification, setNotification] = useState({ message: '', type: '' })
 
   const clearNotification = useCallback(() => {
     setNotification({ message: '', type: '' })
   }, [])
+
+  useEffect(() => {
+    if (!isOpen) {
+      clearNotification()
+      setLoginMessage('')
+      clearError()
+    }
+  }, [isOpen, clearNotification, setLoginMessage, clearError])
 
   const handleRegister = async (data) => {
     const { avatar, banner, ...otherData } = data
@@ -56,8 +65,8 @@ function ModalLogSignin() {
     } catch (error) {
       console.error('Registration failed:', error)
       let errorMessage = 'Registration failed, please try again.'
-      if (error.response && error.response.data && error.response.data.errors) {
-        error.response.data.errors.forEach((err) => {
+      if (error.errors) {
+        error.errors.forEach((err) => {
           console.error(
             `Error in ${err.path ? err.path.join('.') : 'request'}: ${err.message}`
           )
@@ -92,8 +101,19 @@ function ModalLogSignin() {
       navigate(`/profile/${loginResponse.data.name}`)
     } catch (error) {
       console.error('Login failed:', error.response?.data || error)
-      alert('Login failed: ' + (error.response?.data?.message || error.message))
+      setNotification({
+        message:
+          'Login failed: ' + (error.response?.data?.message || error.message),
+        type: 'error',
+      })
     }
+  }
+
+  const handleTabSwitch = (register) => {
+    useStore.getState().openModal(register)
+    clearNotification()
+    setLoginMessage('')
+    clearError()
   }
 
   const modalWidth = 'sm:w.full md:w-1/2 lg:w-1/3 xl:w-1/4'
@@ -126,7 +146,7 @@ function ModalLogSignin() {
       </div>
       <div className="tabs mb-4">
         <button
-          onClick={() => useStore.getState().openModal(true)}
+          onClick={() => handleTabSwitch(true)}
           className={`mr-2 px-4 py-2 rounded ${
             isRegister ? 'bg-primary text-white' : 'bg-transparent text-primary'
           }`}
@@ -134,7 +154,7 @@ function ModalLogSignin() {
           Register
         </button>
         <button
-          onClick={() => useStore.getState().openModal(false)}
+          onClick={() => handleTabSwitch(false)}
           className={`px-4 py-2 rounded ${
             !isRegister
               ? 'bg-primary text-white'
@@ -149,7 +169,7 @@ function ModalLogSignin() {
       ) : (
         <LoginForm onLogin={handleLogin} />
       )}
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <Loader />}
       {isError && (
         <p className="text-red-500">An error occurred during the operation.</p>
       )}

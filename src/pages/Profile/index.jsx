@@ -6,6 +6,7 @@ import EditProfileModal from '@/components/EditProfileModal'
 import ProfileBookings from '@/components/ProfileBookings'
 import ProfileVenues from '@/components/ProfileVenues'
 import Notification from '@/components/Notifications'
+import Loader from '@/components/Loader'
 
 const ProfilePage = () => {
   const { name: profileName } = useParams()
@@ -45,7 +46,7 @@ const ProfilePage = () => {
     }
   }
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) return <Loader />
   if (isError || !profileData || !profileData.data)
     return <div>Error fetching profile data.</div>
 

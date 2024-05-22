@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import useApi from '@/services/Api'
 import FormattedDate from '@/lib/FormattedDate'
+import Loader from '../Loader'
 
 const ProfileBookings = ({ profileName, isOwnProfile }) => {
   const { isLoading, isError, sendRequest } = useApi()
@@ -21,7 +22,7 @@ const ProfileBookings = ({ profileName, isOwnProfile }) => {
     }
   }, [profileName, sendRequest])
 
-  if (isLoading) return <div>Loading bookings...</div>
+  if (isLoading) return <Loader />
   if (isError) return <div>Error fetching bookings.</div>
   if (bookings.length === 0)
     return (

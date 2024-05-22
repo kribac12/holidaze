@@ -20,6 +20,9 @@ const Button = ({
     case 'extra':
       buttonClass = 'button-extra'
       break
+    case 'red':
+      buttonClass = 'button-red'
+      break
     default:
       buttonClass = 'button-primary' // Default to primary if type is unspecified or incorrect
   }
@@ -43,7 +46,7 @@ const Button = ({
 
 Button.propTypes = {
   children: PropTypes.node.isRequired,
-  type: PropTypes.oneOf(['primary', 'secondary', 'extra']),
+  type: PropTypes.oneOf(['primary', 'secondary', 'extra', 'red']),
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
 }

@@ -4,6 +4,7 @@ import SearchResults from '@/components/SearchForm/SearchResults'
 import VenueList from '@/components/VenueList'
 import FeatureSection from '@/components/FeatureSection'
 import Button from '@/lib/Buttons'
+import Loader from '@/components/Loader'
 
 function Home() {
   const [searchResults, setSearchResults] = useState([])
@@ -29,7 +30,7 @@ function Home() {
       <HeroSection onResults={handleResults} />
       <section>
         {isLoading ? (
-          <div>Loading...</div>
+          <Loader />
         ) : isError ? (
           <div className="text-red-500">An error occurred.</div>
         ) : searchResults.length > 0 ? (

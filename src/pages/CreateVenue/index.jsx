@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, useFieldArray } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import { useParams, useNavigate } from 'react-router-dom'
@@ -7,23 +7,31 @@ import useApi from '@/services/Api'
 import useStore from '@/store'
 import ErrorMessage from '@/lib/ErrorMessage'
 import Notification from '@/components/Notifications'
+import Button from '@/lib/Buttons'
 
 const venueSchema = Yup.object().shape({
   name: Yup.string().required('Venue name is required'),
   description: Yup.string().required('Description is required'),
   price: Yup.number()
+    .typeError('Price must be a number')
     .positive('Price must be greater than zero')
     .required('Price is required'),
   maxGuests: Yup.number()
+    .typeError('Maximum guests must be a number')
     .positive('Must be at least one guest')
     .integer('Must be an integer')
     .required('Maximum guests is required'),
-  media: Yup.array().of(
-    Yup.object().shape({
-      url: Yup.string().url('Must be a valid URL').required('URL is required'),
-      alt: Yup.string(),
-    })
-  ),
+
+  media: Yup.array()
+    .of(
+      Yup.object().shape({
+        url: Yup.string()
+          .url('Must be a valid URL')
+          .required('URL is required'),
+        alt: Yup.string(),
+      })
+    )
+    .min(1, 'At least one media entry is required'),
   wifi: Yup.boolean(),
   parking: Yup.boolean(),
   breakfast: Yup.boolean(),
@@ -49,11 +57,17 @@ const CreateVenueForm = () => {
   const {
     register,
     handleSubmit,
+    control,
     setValue,
     reset,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(venueSchema),
+  })
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'media',
   })
 
   useEffect(() => {
@@ -184,7 +198,7 @@ const CreateVenueForm = () => {
               {...register('description')}
               id="description"
               placeholder="Description"
-              className="textarea border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
+              className="textarea border-primary focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
               rows="4"
             />
             {errors.description && (
@@ -212,48 +226,31 @@ const CreateVenueForm = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label
-              htmlFor="media[0].url"
-              className="block text-lg font-semibold mb-1"
-            >
-              Media URL{' '}
-              <span className="text-sm font-normal text-secondaryText">
-                (Optional)
-              </span>
-            </label>
-            <input
-              {...register('media[0].url')}
-              id="media[0].url"
-              placeholder="https://example.com/photo.jpg"
-              className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
-            />
-            {errors.media?.[0]?.url && (
-              <ErrorMessage message={errors.media[0].url.message} />
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="media[0].alt"
-              className="block text-lg font-semibold mb-1"
-            >
-              Media Description{' '}
-              <span className="text-sm font-normal text-secondaryText">
-                (Optional)
-              </span>
-            </label>
-            <input
-              {...register('media[0].alt')}
-              id="media[0].alt"
-              placeholder="Describe the image"
-              className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
-            />
-            {errors.media?.[0]?.alt && (
-              <ErrorMessage message={errors.media[0].alt.message} />
-            )}
-          </div>
+        <div>
+          <label className="block text-lg font-semibold mb-1">Media</label>
+          {fields.map((item, index) => (
+            <div key={item.id} className="flex items-center space-x-2 mb-2">
+              <input
+                {...register(`media.${index}.url`)}
+                placeholder="Media URL"
+                className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
+              />
+              <input
+                {...register(`media.${index}.alt`)}
+                placeholder="Alt text(optional)"
+                className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
+              />
+              <Button type="red" onClick={() => remove(index)}>
+                Remove
+              </Button>
+            </div>
+          ))}
+          <Button type="extra" onClick={() => append({ url: '', alt: '' })}>
+            Add Media
+          </Button>
+          {errors.media && errors.media.message && (
+            <ErrorMessage message={errors.media.message} />
+          )}
         </div>
 
         <div className="flex gap-5 flex-wrap">
@@ -381,13 +378,9 @@ const CreateVenueForm = () => {
           )}
         </div>
 
-        <button
-          type="submit"
-          className="bg-primary text-white font-bold py-2 px-4 rounded hover:bg-primary-dark"
-          disabled={isSubmitting}
-        >
+        <Button type="primary" disabled={isSubmitting}>
           {venueId ? 'Update Venue' : 'Create Venue'}
-        </button>
+        </Button>
       </form>
       {notification.message && (
         <Notification

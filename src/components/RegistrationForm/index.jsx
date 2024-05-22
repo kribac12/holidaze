@@ -154,7 +154,7 @@ function RegisterForm({ onSubmit }) {
                 clearStoreError('bio')
               },
             })}
-            placeholder="Bio"
+            placeholder="Bio(optional)"
             className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
           {errors.bio && <ErrorMessage message={errors.bio.message} />}

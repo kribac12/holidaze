@@ -49,7 +49,8 @@ const useStore = create((set) => ({
 
   // Notification management
   setNotification: (notification) => set({ notification }),
-  clearNotification: () => set({ notification: { message: '', type: '' } }),
+  clearNotification: () =>
+    set({ notification: { message: '', type: 'success' } }),
 }))
 
 export default useStore

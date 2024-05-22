@@ -6,17 +6,21 @@ import 'react-day-picker/dist/style.css'
 import { formatISO, addDays } from 'date-fns'
 import Button from '@/lib/Buttons'
 import useStore from '@/store'
-import ModalLogSignin from '@/components/ModalLogSignin'
+import Notification from '@/components/Notifications'
+import { useNavigate } from 'react-router-dom'
 
 const BookingSection = ({ venueId, bookings }) => {
   const { sendRequest, isLoading } = useApi()
-  const { auth, openModal } = useStore((state) => ({
+  const { auth, openModal, setLoginMessage } = useStore((state) => ({
     auth: state.auth,
     openModal: state.openModal,
+    setLoginMessage: state.setLoginMessage,
   }))
+  const navigate = useNavigate()
   const [range, setRange] = useState({ from: undefined, to: undefined })
   const [guests, setGuests] = useState(1)
   const [isAuthenticated, setIsAuthenticated] = useState(!!auth.token)
+  const [notification, setNotification] = useState({ message: '', type: '' })
 
   useEffect(() => {
     setIsAuthenticated(!!auth.token)
@@ -37,12 +41,20 @@ const BookingSection = ({ venueId, bookings }) => {
 
   const handleBooking = async () => {
     if (!isAuthenticated) {
-      openModal(true) // Open login/register modal if the user is not logged in
+      setLoginMessage('You must be logged in to book a stay.')
+      openModal(true)
+      setNotification({
+        message: 'You must be logged in to book a stay.',
+        type: 'error',
+      })
       return
     }
 
     if (!venueId || !range.from || !range.to) {
-      alert('Please select a valid date range.')
+      setNotification({
+        message: 'Please select a valid date range.',
+        type: 'error',
+      })
       return
     }
 
@@ -59,10 +71,13 @@ const BookingSection = ({ venueId, bookings }) => {
         method: 'post',
         data: bookingData,
       })
-      alert('Booking successful!')
+      setNotification({ message: 'Booking successful!', type: 'success' })
+      navigate(`/profile/${auth.user.name}`, {
+        state: { message: 'Booking successful!' },
+      })
     } catch (error) {
       console.error('Booking failed:', error)
-      alert('Booking failed.')
+      setNotification({ message: 'Booking failed.', type: 'error' })
     }
   }
 
@@ -103,7 +118,13 @@ const BookingSection = ({ venueId, bookings }) => {
           Book Now
         </Button>
       </div>
-      <ModalLogSignin />
+      {notification.message && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          onDismiss={() => setNotification({ message: '', type: '' })}
+        />
+      )}
     </div>
   )
 }

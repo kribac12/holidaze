@@ -26,7 +26,7 @@ const ProfileBookings = ({ profileName, isOwnProfile }) => {
   if (bookings.length === 0)
     return (
       <div>
-        <h2 className="font-h2 text-h2">Venues</h2>
+        <h2 className="font-h2 text-h2">Bookings</h2>
         {isOwnProfile ? (
           <p>
             You currently have no bookings. Book your stay{' '}
@@ -48,19 +48,27 @@ const ProfileBookings = ({ profileName, isOwnProfile }) => {
         {bookings.map((booking) => (
           <li
             key={booking.id}
-            className="border border-gray-200 rounded-lg shadow-sm p-4"
+            className="border border-gray-200 rounded-lg shadow-sm p-4 flex space-x-4"
           >
-            <Link
-              to={`/venues/${booking.venue.id}`}
-              className="hover:underline"
-            >
-              <p className="text-lg font-semibold">{booking.venue.name}</p>
-            </Link>
-            <p className="text-sm">
-              From: <FormattedDate date={booking.dateFrom} /> - To:{' '}
-              <FormattedDate date={booking.dateTo} />
-            </p>
-            <p className="text-sm">{booking.guests} guests</p>
+            <img
+              src={booking.venue.media[0]?.url}
+              alt={booking.venue.media[0]?.alt || 'Venue Image'}
+              className="w-24 h-24 rounded-lg object-cover"
+            />
+
+            <div className="flex flex-col">
+              <Link
+                to={`/venues/${booking.venue.id}`}
+                className="text-lg font-semibold hover:underline"
+              >
+                {booking.venue.name}
+              </Link>
+              <p className="text-sm">
+                From: <FormattedDate date={booking.dateFrom} /> - To:{' '}
+                <FormattedDate date={booking.dateTo} />
+              </p>
+              <p className="text-sm">{booking.guests} guests</p>
+            </div>
           </li>
         ))}
       </ul>

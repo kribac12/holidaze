@@ -10,11 +10,20 @@ import useStore from '@/store'
 import { fetchApiKey } from '@/services/Api/ApiKey'
 
 function ModalLogSignin() {
-  const { isOpen, isRegister, closeModal, setAuth } = useStore((state) => ({
+  const {
+    isOpen,
+    isRegister,
+    closeModal,
+    setAuth,
+    loginMessage,
+    setLoginMessage,
+  } = useStore((state) => ({
     isOpen: state.isOpen,
     isRegister: state.isRegister,
     closeModal: state.closeModal,
     setAuth: state.setAuth,
+    loginMessage: state.loginMessage,
+    setLoginMessage: state.setLoginMessage,
   }))
   const { sendRequest, isLoading, isError } = useApi()
   const navigate = useNavigate()
@@ -83,7 +92,6 @@ function ModalLogSignin() {
       navigate(`/profile/${loginResponse.data.name}`)
     } catch (error) {
       console.error('Login failed:', error.response?.data || error)
-      // Display an error message to the user
       alert('Login failed: ' + (error.response?.data?.message || error.message))
     }
   }
@@ -100,14 +108,22 @@ function ModalLogSignin() {
         closeButton: 'text-gray-500 hover:text-gray-800',
       }}
     >
-      {notification.message && (
-        <Notification
-          message={notification.message}
-          type={notification.type}
-          onDismiss={clearNotification}
-          className="absolute top-0 w-full text-center"
-        />
-      )}
+      <div className="relative w-full text-center">
+        {notification.message && (
+          <Notification
+            message={notification.message}
+            type={notification.type}
+            onDismiss={clearNotification}
+          />
+        )}
+        {loginMessage && (
+          <Notification
+            message={loginMessage}
+            type="error"
+            onDismiss={() => setLoginMessage('')}
+          />
+        )}
+      </div>
       <div className="tabs mb-4">
         <button
           onClick={() => useStore.getState().openModal(true)}
@@ -133,7 +149,6 @@ function ModalLogSignin() {
       ) : (
         <LoginForm onLogin={handleLogin} />
       )}
-      {/* Loading and Error Handling */}
       {isLoading && <p>Loading...</p>}
       {isError && (
         <p className="text-red-500">An error occurred during the operation.</p>

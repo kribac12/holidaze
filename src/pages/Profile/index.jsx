@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import useApi from '@/services/Api'
 import useStore from '@/store'
 import EditProfileModal from '@/components/EditProfileModal'
 import ProfileBookings from '@/components/ProfileBookings'
 import ProfileVenues from '@/components/ProfileVenues'
+import Notification from '@/components/Notifications'
 
 const ProfilePage = () => {
   const { name: profileName } = useParams()
@@ -12,6 +13,8 @@ const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false)
   const { auth } = useStore()
   const isOwnProfile = auth.user && auth.user.name === profileName
+  const location = useLocation()
+  const [message, setMessage] = useState(location.state?.message || '')
 
   useEffect(() => {
     sendRequest({
@@ -48,10 +51,18 @@ const ProfilePage = () => {
 
   return (
     <div className="relative pb-16">
+      {message && (
+        <Notification
+          message={message}
+          type="success"
+          onDismiss={() => setMessage('')}
+        />
+      )}
       <EditProfileModal
         isOpen={isEditing}
         onClose={handleModalClose}
         profile={profileData.data}
+        setMessage={setMessage}
       />
       {profileData.data.banner && (
         <div className="relative h-40 bg-gray-200">

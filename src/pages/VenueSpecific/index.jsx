@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import useApi from '@/services/Api'
 import useStore from '@/store'
 import Button from '@/lib/Buttons'
@@ -9,15 +9,28 @@ import Description from '@/components/Venue/Description'
 import BookingSection from '@/components/Venue/BookingSection'
 import VenueBookings from '@/components/Venue/VenueBookings'
 import VenueDetails from '@/components/Venue/Details'
+import Notification from '@/components/Notifications'
 
 function VenueSpecific() {
   const { venueId } = useParams()
   const { isLoading, isError, sendRequest } = useApi()
   const navigate = useNavigate()
+  const location = useLocation()
   const [venue, setVenue] = useState(null)
-  const { auth } = useStore((state) => ({ auth: state.auth }))
+  const { auth, notification, setNotification, clearNotification } = useStore(
+    (state) => ({
+      auth: state.auth,
+      notification: state.notification,
+      setNotification: state.setNotification,
+      clearNotification: state.clearNotification,
+    })
+  )
 
   useEffect(() => {
+    if (location.state && location.state.message) {
+      setNotification(location.state)
+    }
+
     sendRequest({
       url: `https://v2.api.noroff.dev/holidaze/venues/${venueId}?_bookings=true&_owner=true`,
       method: 'get',
@@ -30,7 +43,11 @@ function VenueSpecific() {
       .catch((error) => {
         console.error('Error fetching venue details:', error)
       })
-  }, [venueId, sendRequest])
+
+    return () => {
+      clearNotification()
+    }
+  }, [venueId, sendRequest, location.state, setNotification, clearNotification])
 
   const handleEdit = () => {
     navigate(`/edit-venue/${venueId}`)
@@ -69,6 +86,13 @@ function VenueSpecific() {
 
   return (
     <div className="flex flex-col ">
+      {notification.message && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          onDismiss={clearNotification}
+        />
+      )}
       <VenueHeader venue={venue} />
 
       <div className="flex flex-col md:flex-row mt-4">

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import VenueInfoCard from '../Venue/VenueInfoCard'
-import Loader from '../Loader'
+import Loader from '../Shared/Loader'
 
 function SearchResults({ data, isLoading, isError }) {
   return (

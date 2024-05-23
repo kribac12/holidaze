@@ -1,15 +1,15 @@
 import { useState, useCallback, useEffect } from 'react'
 import { Modal as ResponsiveModal } from 'react-responsive-modal'
 import 'react-responsive-modal/styles.css'
-import RegisterForm from '../RegistrationForm'
+import RegisterForm from '../RegisterForm'
 import { useNavigate } from 'react-router-dom'
 import LoginForm from '../LoginForm'
-import Notification from '../Notifications'
-import useApi from '@/services/Api'
+import Notification from '../../Shared/Notifications'
+import useApi from '@/services/Api/UseApi'
 import useStore from '@/store'
 import { fetchApiKey } from '@/services/Api/ApiKey'
-import Loader from '../Loader'
-import Button from '@/lib/Buttons'
+import Loader from '../../Shared/Loader'
+import Button from '@/components/Shared/Buttons'
 
 function ModalLogSignin() {
   const {

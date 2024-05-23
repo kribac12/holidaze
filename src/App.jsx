@@ -6,7 +6,7 @@ import ProfilePage from './pages/Profile'
 import NotFound from './pages/NotFound'
 import VenueSpecific from './pages/VenueSpecific'
 import CreateVenueForm from './pages/CreateVenue'
-import ModalLogSignin from './components/ModalLogSignin'
+import ModalLogSignin from './components/Auth/ModalLogSignin'
 
 const App = () => {
   return (

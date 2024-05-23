@@ -5,6 +5,7 @@ import * as yup from 'yup'
 import PropTypes from 'prop-types'
 import useStore from '@/store'
 import ErrorMessage from '@/lib/ErrorMessage'
+import Button from '@/lib/Buttons'
 
 const schema = yup
   .object({
@@ -138,7 +139,7 @@ function RegisterForm({ onSubmit }) {
         <button
           type="button"
           onClick={() => setShowOptionalFields(!showOptionalFields)}
-          className="bg-gray-200 text-black py-1 px-4 rounded focus:outline-none"
+          className="bg-secondary text-black underline py-2 px-4 rounded focus:outline-none"
         >
           {showOptionalFields ? 'Hide Optional Fields' : 'Show Optional Fields'}
         </button>
@@ -225,12 +226,7 @@ function RegisterForm({ onSubmit }) {
         </div>
       )}
 
-      <button
-        type="submit"
-        className="bg-primary text-white font-bold py-2 px-10 md:px-14 rounded hover:bg-red-700"
-      >
-        Register
-      </button>
+      <Button type="primary">Register</Button>
     </form>
   )
 }

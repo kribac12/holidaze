@@ -8,6 +8,7 @@ import useApi from '@/services/Api'
 import PropTypes from 'prop-types'
 import ErrorMessage from '@/lib/ErrorMessage'
 import Notification from '../Notifications'
+import Button from '@/lib/Buttons'
 
 Modal.setAppElement('#root') // Prevents screen readers from reading background content
 
@@ -113,7 +114,7 @@ function EditProfileModal({ isOpen, onClose, profile, setMessage }) {
       isOpen={isOpen}
       onRequestClose={() => onClose(false)}
       contentLabel="Edit Profile"
-      className="m-auto bg-white rounded-lg p-6 outline-none"
+      className="m-auto bg-white rounded-lg p-6 outline-none max-h-screen overflow-y-auto"
       overlayClassName="fixed inset-0 bg-gray-900 bg-opacity-50 z-50"
     >
       {notification.message && (
@@ -125,76 +126,97 @@ function EditProfileModal({ isOpen, onClose, profile, setMessage }) {
       )}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <h2 className="font-h2 text-h2">Edit your profile</h2>
-        <label className="block text-sm font-medium text-gray-700">
-          Bio:
-          <input
+        <div>
+          <label htmlFor="bio" className="label-base">
+            Bio:
+          </label>
+          <textarea
             {...register('bio')}
-            className=" mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+            id="bio"
+            placeholder="Bio"
+            className="input-base mt-1"
+            rows="4"
           />
-        </label>
-        {errors.bio && <ErrorMessage message={errors.bio.message} />}
-        <label className="block text-sm font-medium text-gray-700">
-          Avatar URL:
-          <input
-            {...register('avatar.url')}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-          />
-          {errors.avatar?.url && (
-            <ErrorMessage message={errors.avatar.url.message} />
-          )}
-        </label>
-        <label className="block text-sm font-medium text-gray-700">
-          Avatar Alt Text:
-          <input
-            {...register('avatar.alt')}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-          />
-          {errors.avatar?.alt && (
-            <ErrorMessage message={errors.avatar.alt.message} />
-          )}
-        </label>
-        <label className="block text-sm font-medium text-gray-700">
-          Banner URL:
-          <input
-            {...register('banner.url')}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-          />
-          {errors.banner?.url && (
-            <ErrorMessage message={errors.banner.url.message} />
-          )}
-        </label>
-        <label className="block text-sm font-medium text-gray-700">
-          Banner Alt Text:
-          <input
-            {...register('banner.alt')}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-          />
-          {errors.banner?.alt && (
-            <ErrorMessage message={errors.banner.alt.message} />
-          )}
-        </label>
-        <label className="block text-sm font-medium text-gray-700">
-          Venue Manager:
+          {errors.bio && <ErrorMessage message={errors.bio.message} />}
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label htmlFor="avatar.url" className="label-base">
+              Avatar URL:
+            </label>
+            <input
+              {...register('avatar.url')}
+              id="avatar.url"
+              placeholder="Avatar URL"
+              className="input-base mt-1"
+            />
+            {errors.avatar?.url && (
+              <ErrorMessage message={errors.avatar.url.message} />
+            )}
+          </div>
+          <div>
+            <label htmlFor="avatar.alt" className="label-base">
+              Avatar Alt Text:
+            </label>
+            <input
+              {...register('avatar.alt')}
+              id="avatar.alt"
+              placeholder="Avatar Alt Text"
+              className="input-base mt-1"
+            />
+            {errors.avatar?.alt && (
+              <ErrorMessage message={errors.avatar.alt.message} />
+            )}
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label htmlFor="banner.url" className="label-base">
+              Banner URL:
+            </label>
+            <input
+              {...register('banner.url')}
+              id="banner.url"
+              placeholder="Banner URL"
+              className="input-base mt-1"
+            />
+            {errors.banner?.url && (
+              <ErrorMessage message={errors.banner.url.message} />
+            )}
+          </div>
+          <div>
+            <label htmlFor="banner.alt" className="label-base">
+              Banner Alt Text:
+            </label>
+            <input
+              {...register('banner.alt')}
+              id="banner.alt"
+              placeholder="Banner Alt Text"
+              className="input-base mt-1"
+            />
+            {errors.banner?.alt && (
+              <ErrorMessage message={errors.banner.alt.message} />
+            )}
+          </div>
+        </div>
+        <div className="flex items-center space-x-4">
+          <label htmlFor="venueManager" className="label-base">
+            Venue Manager:
+          </label>
           <input
             type="checkbox"
             {...register('venueManager')}
-            className="ml-2 align-middle"
+            id="venueManager"
+            className="checkbox mt-1"
           />
-        </label>
+        </div>
         <div className="flex justify-end space-x-4">
-          <button
-            type="submit"
-            className="py-2 px-4 bg-primary text-white rounded hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500"
-          >
+          <Button type="primary" onClick={() => {}}>
             Update Profile
-          </button>
-          <button
-            type="button"
-            onClick={() => onClose(false)}
-            className="py-2 px-4 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
-          >
+          </Button>
+          <Button type="red" onClick={() => onClose(false)}>
             Cancel
-          </button>
+          </Button>
         </div>
       </form>
     </Modal>

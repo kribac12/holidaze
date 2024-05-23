@@ -42,7 +42,7 @@ function UserMenu() {
           {auth.user.venueManager && (
             <Link
               to="/create-venue"
-              className="block px-4 py-2 text-sm text-primaryText"
+              className="block px-4 py-2 text-sm text-primaryText hover:bg-gray-100"
               onClick={() => setDropdownOpen(false)}
             >
               Add a Venue

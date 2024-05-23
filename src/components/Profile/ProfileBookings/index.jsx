@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import useApi from '@/services/Api'
-import FormattedDate from '@/lib/FormattedDate'
-import Loader from '../Loader'
+import useApi from '@/services/Api/UseApi'
+import FormattedDate from '@/utils/FormattedDate'
+import Loader from '../../Shared/Loader'
 
 const ProfileBookings = ({ profileName, isOwnProfile }) => {
   const { isLoading, isError, sendRequest } = useApi()
@@ -64,11 +64,11 @@ const ProfileBookings = ({ profileName, isOwnProfile }) => {
               >
                 {booking.venue.name}
               </Link>
-              <p className="text-sm">
+              <p>
                 From: <FormattedDate date={booking.dateFrom} /> - To:{' '}
                 <FormattedDate date={booking.dateTo} />
               </p>
-              <p className="text-sm">{booking.guests} guests</p>
+              <p>{booking.guests} guests</p>
             </div>
           </li>
         ))}

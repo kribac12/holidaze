@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
-import useApi from '@/services/Api'
+import useApi from '@/services/Api/UseApi'
 import useStore from '@/store'
-import Button from '@/lib/Buttons'
+import Button from '@/components/Shared/Buttons'
 import VenueHeader from '@/components/Venue/VenueHeader'
 import Facilities from '@/components/Venue/Facilities'
 import Description from '@/components/Venue/Description'
 import BookingSection from '@/components/Venue/BookingSection'
 import VenueBookings from '@/components/Venue/VenueBookings'
 import VenueDetails from '@/components/Venue/Details'
-import Notification from '@/components/Notifications'
-import Loader from '@/components/Loader'
+import Notification from '@/components/Shared/Notifications'
+import Loader from '@/components/Shared/Loader'
 
 function VenueSpecific() {
   const { venueId } = useParams()

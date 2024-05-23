@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react'
 import debounce from 'lodash.debounce'
-import useApi from '@/services/Api'
+import useApi from '@/services/Api/UseApi'
 import PropTypes from 'prop-types'
 
 function SearchForm({ onResults }) {

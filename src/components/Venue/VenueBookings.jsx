@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import FormattedDate from '@/lib/FormattedDate'
+import FormattedDate from '@/utils/FormattedDate'
 
 const VenueBookings = ({ bookings }) => {
   if (!bookings.length) {

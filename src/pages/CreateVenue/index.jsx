@@ -3,11 +3,11 @@ import { useForm, useFieldArray } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import { useParams, useNavigate } from 'react-router-dom'
-import useApi from '@/services/Api'
+import useApi from '@/services/Api/UseApi'
 import useStore from '@/store'
-import ErrorMessage from '@/lib/ErrorMessage'
-import Notification from '@/components/Notifications'
-import Button from '@/lib/Buttons'
+import ErrorMessage from '@/utils/ErrorMessage'
+import Notification from '@/components/Shared/Notifications'
+import Button from '@/components/Shared/Buttons'
 
 const venueSchema = Yup.object().shape({
   name: Yup.string().required('Venue name is required'),

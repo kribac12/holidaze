@@ -1,6 +1,6 @@
 import useStore from '@/store'
 import UserMenu from '../UserMenu'
-import Button from '@/lib/Buttons'
+import Button from '@/components/Shared/Buttons'
 import { FaUserPlus, FaSignInAlt } from 'react-icons/fa'
 
 function Nav() {

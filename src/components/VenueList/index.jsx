@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
-import useApi from '@/services/Api'
+import useApi from '@/services/Api/UseApi'
 import { Link } from 'react-router-dom'
 import VenueInfoCard from '../Venue/VenueInfoCard'
-import Button from '@/lib/Buttons'
-import Loader from '../Loader'
+import Button from '@/components/Shared/Buttons'
+import Loader from '../Shared/Loader'
 
 function VenueList() {
   const { isLoading, isError, sendRequest } = useApi()

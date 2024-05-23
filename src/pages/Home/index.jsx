@@ -3,8 +3,8 @@ import HeroSection from '@/components/HeroSection'
 import SearchResults from '@/components/SearchForm/SearchResults'
 import VenueList from '@/components/VenueList'
 import FeatureSection from '@/components/FeatureSection'
-import Button from '@/lib/Buttons'
-import Loader from '@/components/Loader'
+import Button from '@/components/Shared/Buttons'
+import Loader from '@/components/Shared/Loader'
 
 function Home() {
   const [searchResults, setSearchResults] = useState([])

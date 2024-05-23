@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { FaStar, FaMapMarkerAlt } from 'react-icons/fa'
 
-import { truncateText } from '@/lib/TextUtils'
+import { truncateText } from '@/utils/TextUtils'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import VenueCarousel from './VenueCarousel'

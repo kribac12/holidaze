@@ -4,11 +4,11 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import useStore from '@/store'
 import Modal from 'react-modal'
-import useApi from '@/services/Api'
+import useApi from '@/services/Api/UseApi'
 import PropTypes from 'prop-types'
-import ErrorMessage from '@/lib/ErrorMessage'
-import Notification from '../Notifications'
-import Button from '@/lib/Buttons'
+import ErrorMessage from '@/utils/ErrorMessage'
+import Notification from '../../Shared/Notifications'
+import Button from '@/components/Shared/Buttons'
 
 Modal.setAppElement('#root') // Prevents screen readers from reading background content
 

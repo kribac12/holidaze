@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import useApi from '@/services/Api'
-import Loader from '../Loader'
+import useApi from '@/services/Api/UseApi'
+import Loader from '../../Shared/Loader'
 
 const ProfileVenues = ({ profileName, isOwnProfile }) => {
   const { isLoading, isError, sendRequest } = useApi()
@@ -64,8 +64,8 @@ const ProfileVenues = ({ profileName, isOwnProfile }) => {
               >
                 {venue.name}
               </Link>
-              <p className="text-sm">{venue.description}</p>
-              <div className="text-sm mt-2">
+              <p>{venue.description}</p>
+              <div className="mt-2">
                 <p>Price: ${venue.price}</p>
                 <p>Guests: {venue.maxGuests}</p>
                 <p>Rating: {venue.rating}</p>

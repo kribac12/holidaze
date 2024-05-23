@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useParams, useLocation } from 'react-router-dom'
-import useApi from '@/services/Api'
+import useApi from '@/services/Api/UseApi'
 import useStore from '@/store'
-import EditProfileModal from '@/components/EditProfileModal'
-import ProfileBookings from '@/components/ProfileBookings'
-import ProfileVenues from '@/components/ProfileVenues'
-import Notification from '@/components/Notifications'
-import Loader from '@/components/Loader'
-import Button from '@/lib/Buttons'
+import EditProfileModal from '@/components/Profile/EditProfileModal'
+import ProfileBookings from '@/components/Profile/ProfileBookings'
+import ProfileVenues from '@/components/Profile/ProfileVenues'
+import Notification from '@/components/Shared/Notifications'
+import Loader from '@/components/Shared/Loader'
+import Button from '@/components/Shared/Buttons'
 
 const ProfilePage = () => {
   const { name: profileName } = useParams()

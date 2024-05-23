@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import useApi from '@/services/Api'
+import useApi from '@/services/Api/UseApi'
 import { DayPicker } from 'react-day-picker'
 import 'react-day-picker/dist/style.css'
 import { formatISO, addDays } from 'date-fns'
-import Button from '@/lib/Buttons'
+import Button from '@/components/Shared/Buttons'
 import useStore from '@/store'
-import Notification from '@/components/Notifications'
+import Notification from '@/components/Shared/Notifications'
 import { useNavigate } from 'react-router-dom'
 
 const BookingSection = ({ venueId, bookings }) => {

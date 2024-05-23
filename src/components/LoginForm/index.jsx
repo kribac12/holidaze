@@ -60,7 +60,7 @@ function LoginForm({ onLogin }) {
         {errors.password && <ErrorMessage message={errors.password.message} />}
       </div>
       {errors.api && <ErrorMessage message={errors.api.message} />}
-      <Button type="primary">Login</Button>
+      <Button type="primary">Log in</Button>
     </form>
   )
 }

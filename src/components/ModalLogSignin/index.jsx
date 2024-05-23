@@ -150,6 +150,7 @@ function ModalLogSignin() {
           type={isRegister ? 'primary' : 'secondary'}
           size="small"
           onClick={() => handleTabSwitch(true)}
+          className="mr-2"
         >
           Register
         </Button>
@@ -158,7 +159,7 @@ function ModalLogSignin() {
           size="small"
           onClick={() => handleTabSwitch(false)}
         >
-          Login
+          Log in
         </Button>
       </div>
       {isRegister ? (

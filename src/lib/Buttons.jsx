@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types'
+import clsx from 'clsx'
 
 const Button = ({
   children,
   type = 'primary',
-  size = 'regular',
+  size,
   onClick,
   disabled = false,
+  className,
   ...props
 }) => {
   let buttonClass
@@ -24,23 +26,25 @@ const Button = ({
     case 'red':
       buttonClass = 'button-red'
       break
+    case 'link-button':
+      buttonClass = 'link-button'
+      break
     default:
       buttonClass = 'button-primary' // Default to primary if type is unspecified or incorrect
   }
 
-  // Append small size styles if size is small
-  if (size === 'small') {
-    buttonClass += ' button-small'
-  }
+  // Append size-specific styles if size is provided
+  const sizeClass = size === 'small' ? 'button-small' : ''
 
   // Append disabled styles if the button is disabled
-  if (disabled) {
-    buttonClass += ' opacity-50 cursor-not-allowed'
-  }
+  const disabledClass = disabled ? 'opacity-50 cursor-not-allowed' : ''
+
+  // Merge all classes using clsx
+  const combinedClass = clsx(buttonClass, sizeClass, disabledClass, className)
 
   return (
     <button
-      className={buttonClass}
+      className={combinedClass}
       onClick={onClick}
       disabled={disabled}
       {...props}
@@ -52,10 +56,17 @@ const Button = ({
 
 Button.propTypes = {
   children: PropTypes.node.isRequired,
-  type: PropTypes.oneOf(['primary', 'secondary', 'extra', 'red']),
-  size: PropTypes.oneOf(['regular', 'small']),
+  type: PropTypes.oneOf([
+    'primary',
+    'secondary',
+    'extra',
+    'red',
+    'link-button',
+  ]),
+  size: PropTypes.oneOf(['small']),
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
+  className: PropTypes.string,
 }
 
 export default Button

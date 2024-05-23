@@ -157,22 +157,23 @@ const CreateVenueForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="space-y-8 p-4 bg-white shadow-md rounded-lg"
       >
+        <h2 className="font-h2 text-h2">Add a Venue</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label htmlFor="name" className="block text-lg font-semibold mb-1">
+            <label htmlFor="name" className="label-base">
               Venue Name
             </label>
             <input
               {...register('name')}
               id="name"
               placeholder="Venue Name"
-              className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
+              className="input-base"
             />
             {errors.name && <ErrorMessage message={errors.name.message} />}
           </div>
 
           <div>
-            <label htmlFor="price" className="block text-lg font-semibold mb-1">
+            <label htmlFor="price" className="label-base">
               Price
             </label>
             <input
@@ -180,7 +181,7 @@ const CreateVenueForm = () => {
               id="price"
               placeholder="Price"
               type="number"
-              className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
+              className="input-base"
             />
             {errors.price && <ErrorMessage message={errors.price.message} />}
           </div>
@@ -188,17 +189,14 @@ const CreateVenueForm = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label
-              htmlFor="description"
-              className="block text-lg font-semibold mb-1"
-            >
+            <label htmlFor="description" className="label-base">
               Description
             </label>
             <textarea
               {...register('description')}
               id="description"
               placeholder="Description"
-              className="textarea border-primary focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
+              className="input-base"
               rows="4"
             />
             {errors.description && (
@@ -207,10 +205,7 @@ const CreateVenueForm = () => {
           </div>
 
           <div>
-            <label
-              htmlFor="maxGuests"
-              className="block text-lg font-semibold mb-1"
-            >
+            <label htmlFor="maxGuests" className="label-base">
               Maximum Guests
             </label>
             <input
@@ -218,7 +213,7 @@ const CreateVenueForm = () => {
               id="maxGuests"
               placeholder="Maximum Guests"
               type="number"
-              className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
+              className="input-base"
             />
             {errors.maxGuests && (
               <ErrorMessage message={errors.maxGuests.message} />
@@ -227,18 +222,18 @@ const CreateVenueForm = () => {
         </div>
 
         <div>
-          <label className="block text-lg font-semibold mb-1">Media</label>
+          <label className="label-base">Media</label>
           {fields.map((item, index) => (
             <div key={item.id} className="flex items-center space-x-2 mb-2">
               <input
                 {...register(`media.${index}.url`)}
                 placeholder="Media URL"
-                className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
+                className="input-base"
               />
               <input
                 {...register(`media.${index}.alt`)}
                 placeholder="Alt text(optional)"
-                className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
+                className="input-base"
               />
               <Button type="red" onClick={() => remove(index)}>
                 Remove
@@ -246,67 +241,77 @@ const CreateVenueForm = () => {
             </div>
           ))}
           <Button type="extra" onClick={() => append({ url: '', alt: '' })}>
-            Add Media
+            Add Image
           </Button>
           {errors.media && errors.media.message && (
             <ErrorMessage message={errors.media.message} />
           )}
         </div>
 
-        <div className="flex gap-5 flex-wrap">
+        <div className="flex flex-col gap-2">
+          <p className="label-base">Facilities</p>
           <div>
-            <label htmlFor="wifi" className="inline-flex items-center">
-              <input
-                type="checkbox"
-                {...register('wifi')}
-                id="wifi"
-                className="checkbox mr-2"
-              />
-              <p className="text-lg">Wifi</p>
-              <span className="ml-2 text-sm text-secondaryText">
-                {' '}
-                (Optional)
-              </span>
-            </label>
+            <p className="text-secondaryText">
+              If not selected, options will default to &quot;Not
+              included/allowed/available&quot;.
+            </p>
           </div>
 
-          <div>
-            <label htmlFor="parking" className="inline-flex items-center">
-              <input
-                type="checkbox"
-                {...register('parking')}
-                id="parking"
-                className="checkbox mr-2"
-              />{' '}
-              <p className="text-lg">Parking</p>
-              <span className="text-sm  text-secondaryText"> (Optional)</span>
-            </label>
-          </div>
+          <div className="flex gap-5 flex-wrap">
+            <div>
+              <label htmlFor="wifi" className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  {...register('wifi')}
+                  id="wifi"
+                  className="checkbox mr-2"
+                />
+                <p className="text-lg">Wifi</p>
+                <span className="ml-2 text-sm text-secondaryText">
+                  {' '}
+                  (Optional)
+                </span>
+              </label>
+            </div>
 
-          <div>
-            <label htmlFor="breakfast" className="inline-flex items-center">
-              <input
-                type="checkbox"
-                {...register('breakfast')}
-                id="breakfast"
-                className="checkbox mr-2"
-              />{' '}
-              <p className="text-lg">Breakfast</p>
-              <span className="text-sm text-secondaryText">(Optional)</span>
-            </label>
-          </div>
+            <div>
+              <label htmlFor="parking" className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  {...register('parking')}
+                  id="parking"
+                  className="checkbox mr-2"
+                />{' '}
+                <p className="text-lg">Parking</p>
+                <span className="text-sm  text-secondaryText"> (Optional)</span>
+              </label>
+            </div>
 
-          <div>
-            <label htmlFor="pets" className="inline-flex items-center">
-              <input
-                type="checkbox"
-                {...register('pets')}
-                id="pets"
-                className="checkbox mr-2"
-              />{' '}
-              <p className="text-lg">Pets Allowed</p>
-              <span className="text-sm  text-secondaryText">(Optional)</span>
-            </label>
+            <div>
+              <label htmlFor="breakfast" className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  {...register('breakfast')}
+                  id="breakfast"
+                  className="checkbox mr-2"
+                />{' '}
+                <p className="text-lg">Breakfast</p>
+                <span className="text-sm text-secondaryText">(Optional)</span>
+              </label>
+            </div>
+
+            <div>
+              <label htmlFor="pets" className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  {...register('pets')}
+                  id="pets"
+                  className="checkbox mr-2"
+                />{' '}
+                <p className="text-lg">Pets Allowed</p>
+                <span className="text-sm  text-secondaryText">(Optional)</span>
+              </label>
+            </div>
           </div>
         </div>
 
@@ -314,7 +319,7 @@ const CreateVenueForm = () => {
           <button
             type="button"
             onClick={() => setShowAdditional(!showAdditional)}
-            className="underline py-4"
+            className="text-lg underline  focus:outline-none"
           >
             {showAdditional
               ? 'No Additional Information'

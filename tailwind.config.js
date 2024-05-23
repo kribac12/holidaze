@@ -13,12 +13,16 @@ module.exports = {
         primary: '#0F766E',
         primaryBg: '#FFFFFF',
         primaryText: '#333333',
-        secondary: '#89CFF0',
+        secondary: '#D3D3D3',
         secondaryText: '#626567',
-        secondaryDark: '#567D98',
+        secondaryDark: '#A9A9A9',
         extraDark: '#CC9500',
         accent: '#FFBA08',
         cardBg: '#FAFAFA',
+        teal: {
+          500: '#14B8A6',
+          600: '#0D9488',
+        },
       },
       safeList: ['font-h1', 'text-h1', 'font-h2', 'text-h2'],
       spacing: {

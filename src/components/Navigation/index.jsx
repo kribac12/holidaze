@@ -1,5 +1,7 @@
 import useStore from '@/store'
 import UserMenu from '../UserMenu'
+import Button from '@/lib/Buttons'
+import { FaUserPlus, FaSignInAlt } from 'react-icons/fa'
 
 function Nav() {
   const { auth, openModal } = useStore((state) => ({
@@ -12,22 +14,26 @@ function Nav() {
       {auth.token ? (
         <UserMenu />
       ) : (
-        <ul className="flex space-x-4">
+        <ul className="flex ">
           <li>
-            <button
+            <Button
+              type="link-button"
               onClick={() => openModal(true)}
-              className="text-primaryText hover:text-primary"
+              className="flex items-center space-x-2"
             >
-              Register
-            </button>
+              <FaUserPlus />
+              <span>Register</span>
+            </Button>
           </li>
           <li>
-            <button
+            <Button
+              type="link-button"
               onClick={() => openModal(false)}
-              className="text-primaryText hover:text-primary"
+              className="flex items-center space-x-2 "
             >
-              Login
-            </button>
+              <FaSignInAlt />
+              <span>Login</span>
+            </Button>
           </li>
         </ul>
       )}

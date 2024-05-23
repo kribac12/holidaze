@@ -23,8 +23,10 @@ h1 {
   @apply text-primary;
 }
 
+/*Buttons*/
+
 .button-primary {
-  @apply bg-primary text-white font-semibold py-3 px-8 mb-4 rounded-md;
+  @apply bg-primary text-white border border-primary py-3 px-8  rounded-md;
 }
 
 .button-primary:hover {
@@ -32,7 +34,7 @@ h1 {
 }
 
 .button-secondary {
-  @apply bg-primaryBg text-primaryText border border-primaryText py-4 px-8 rounded-md;
+  @apply bg-primaryBg text-primaryText border border-primaryText py-3 px-8 rounded-md;
 }
 
 .button-secondary:hover {
@@ -48,7 +50,7 @@ h1 {
 }
 
 .button-red {
-  @apply bg-red-500 text-white p-2 rounded;
+  @apply bg-red-500 text-white py-2 px-4 rounded;
 }
 
 .button-red:hover {
@@ -56,8 +58,35 @@ h1 {
 }
 
 .button-small {
-  @apply py-2 px-4;
+  @apply py-2 px-3;
 }
+.link-button {
+  @apply text-primaryText text-lg py-2 px-3 rounded transition duration-200;
+}
+
+.link-button:hover {
+  @apply text-white bg-primary;
+}
+
+.link-button-small {
+  @apply text-sm;
+}
+
+/*Inputs*/
+@layer components {
+  .input-base {
+    @apply mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary;
+  }
+
+  .textarea-base {
+    @apply mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary;
+  }
+
+  .label-base {
+    @apply block text-lg font-semibold mb-1 text-gray-700;
+  }
+}
+
 .card {
   @apply bg-cardBg;
 }

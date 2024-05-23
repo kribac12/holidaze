@@ -55,7 +55,7 @@ function VenueList() {
             setSort(e.target.value)
             setPage(1) // Reset to first page on sort change
           }}
-          className="text-lg px-6 py-3 border-2 border-accent rounded-lg"
+          className="text-lg p-3 md:px-6 md:py-4 border-2 border-accent rounded-lg"
         >
           <option value="created,desc">Newest destinations</option>
           <option value="name,asc">Name A-Z</option>

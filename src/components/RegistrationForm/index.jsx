@@ -139,7 +139,7 @@ function RegisterForm({ onSubmit }) {
         <button
           type="button"
           onClick={() => setShowOptionalFields(!showOptionalFields)}
-          className="bg-gray-200 text-black py-1 px-4 rounded focus:outline-none"
+          className="bg-secondary text-black underline py-2 px-4 rounded focus:outline-none"
         >
           {showOptionalFields ? 'Hide Optional Fields' : 'Show Optional Fields'}
         </button>

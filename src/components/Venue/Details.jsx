@@ -29,16 +29,6 @@ const VenueDetails = ({ details }) => (
           <strong>Continent:</strong> {details.location.continent}
         </li>
       )}
-      {details.location?.lat && (
-        <li>
-          <strong>Latitude:</strong> {details.location.lat}
-        </li>
-      )}
-      {details.location?.lng && (
-        <li>
-          <strong>Longitude:</strong> {details.location.lng}
-        </li>
-      )}
     </ul>
   </div>
 )

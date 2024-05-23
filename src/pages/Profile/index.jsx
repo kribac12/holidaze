@@ -13,7 +13,10 @@ const ProfilePage = () => {
   const { name: profileName } = useParams()
   const { data: profileData, isLoading, isError, sendRequest } = useApi()
   const [isEditing, setIsEditing] = useState(false)
-  const { auth } = useStore()
+  const { auth, setNotification } = useStore((state) => ({
+    auth: state.auth,
+    setNotification: state.setNotification,
+  }))
   const isOwnProfile = auth.user && auth.user.name === profileName
   const location = useLocation()
   const [message, setMessage] = useState(location.state?.message || '')
@@ -47,6 +50,11 @@ const ProfilePage = () => {
     }
   }
 
+  useEffect(() => {
+    if (location.state && location.state.message) {
+      setNotification(location.state)
+    }
+  }, [location.state, setNotification])
   if (isLoading) return <Loader />
   if (isError || !profileData || !profileData.data)
     return <div>Error fetching profile data.</div>

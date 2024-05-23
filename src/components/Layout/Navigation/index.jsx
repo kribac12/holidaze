@@ -14,7 +14,7 @@ function Nav() {
       {auth.token ? (
         <UserMenu />
       ) : (
-        <ul className="flex ">
+        <ul className="flex">
           <li>
             <Button
               type="link-button"
@@ -22,7 +22,7 @@ function Nav() {
               className="flex items-center space-x-2"
             >
               <FaUserPlus />
-              <span>Register</span>
+              <span className="text-base md:text-lg">Register</span>
             </Button>
           </li>
           <li>
@@ -32,7 +32,12 @@ function Nav() {
               className="flex items-center space-x-2 "
             >
               <FaSignInAlt />
-              <span>Login</span>
+              <span
+                className="text-base md:text-lg
+            "
+              >
+                Login
+              </span>
             </Button>
           </li>
         </ul>

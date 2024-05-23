@@ -22,16 +22,13 @@ const venueSchema = Yup.object().shape({
     .integer('Must be an integer')
     .required('Maximum guests is required'),
 
-  media: Yup.array()
-    .of(
-      Yup.object().shape({
-        url: Yup.string()
-          .url('Must be a valid URL')
-          .required('URL is required'),
-        alt: Yup.string(),
-      })
-    )
-    .min(1, 'At least one media entry is required'),
+  media: Yup.array().of(
+    Yup.object().shape({
+      url: Yup.string().url('Must be a valid URL').required('URL is required'),
+      alt: Yup.string(),
+    })
+  ),
+
   wifi: Yup.boolean(),
   parking: Yup.boolean(),
   breakfast: Yup.boolean(),

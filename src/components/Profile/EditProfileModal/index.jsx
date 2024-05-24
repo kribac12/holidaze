@@ -91,7 +91,7 @@ function EditProfileModal({ isOpen, onClose, profile, setMessage }) {
             venueManager: data.venueManager,
           },
         })
-        setMessage('Profile updated successfully.')
+        setMessage('You may view the changes.')
         onClose(true) // Close the modal with a state that updates can reflect immediately
       }
     } catch (error) {

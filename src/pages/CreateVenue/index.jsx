@@ -22,16 +22,13 @@ const venueSchema = Yup.object().shape({
     .integer('Must be an integer')
     .required('Maximum guests is required'),
 
-  media: Yup.array()
-    .of(
-      Yup.object().shape({
-        url: Yup.string()
-          .url('Must be a valid URL')
-          .required('URL is required'),
-        alt: Yup.string(),
-      })
-    )
-    .min(1, 'At least one media entry is required'),
+  media: Yup.array().of(
+    Yup.object().shape({
+      url: Yup.string().url('Must be a valid URL').required('URL is required'),
+      alt: Yup.string(),
+    })
+  ),
+
   wifi: Yup.boolean(),
   parking: Yup.boolean(),
   breakfast: Yup.boolean(),
@@ -127,13 +124,10 @@ const CreateVenueForm = () => {
         data: formattedData,
         headers: { 'Content-Type': 'application/json' },
       })
-      setNotification({
-        message: `Venue ${venueId ? 'updated' : 'created'} successfully!`,
-        type: 'success',
-      })
       reset()
       navigate(`/venues/${response.data.id}`, {
         state: {
+          title: `Venue ${venueId ? 'Updated' : 'Created'}`,
           message: `Venue ${venueId ? 'updated' : 'created'} successfully!`,
           type: 'success',
         },
@@ -141,6 +135,7 @@ const CreateVenueForm = () => {
     } catch (error) {
       console.error(`Failed to ${venueId ? 'update' : 'create'} venue:`, error)
       setNotification({
+        title: `Venue ${venueId ? 'Update' : 'Creation'} Failed`,
         message: `Error ${venueId ? 'updating' : 'creating'} venue. Please try again.`,
         type: 'error',
       })
@@ -389,6 +384,7 @@ const CreateVenueForm = () => {
       </form>
       {notification.message && (
         <Notification
+          title={notification.title}
           message={notification.message}
           type={notification.type}
           onDismiss={clearNotificationCallback}

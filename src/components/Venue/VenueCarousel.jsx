@@ -1,5 +1,6 @@
 import Slider from 'react-slick'
 import PropTypes from 'prop-types'
+import VenueMedia from './VenueMedia' // Import VenueMedia component
 
 const VenueCarousel = ({ media }) => {
   const settings = {
@@ -13,25 +14,17 @@ const VenueCarousel = ({ media }) => {
   if (media.length === 1) {
     return (
       <div className="w-full h-48 md:h-96 lg:h-120">
-        <img
-          src={media[0].url}
-          alt={media[0].alt || 'Venue image'}
-          className="w-full h-full object-cover rounded-t-lg"
-        />
+        <VenueMedia url={media[0].url} alt={media[0].alt} />
       </div>
     )
   }
 
   return (
-    <div className=" w-full h-48 md:h-96 lg:h-120 mb-3">
+    <div className="w-full h-48 md:h-96 lg:h-120 mb-3">
       <Slider {...settings}>
         {media.map((item, index) => (
           <div key={index} className="w-full h-48 md:h-96 lg:h-120">
-            <img
-              src={item.url}
-              alt={item.alt || 'Venue image'}
-              className="w-full h-full object-cover rounded-t-lg "
-            />
+            <VenueMedia url={item.url} alt={item.alt} />
           </div>
         ))}
       </Slider>

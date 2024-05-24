@@ -46,6 +46,7 @@ function LoginForm({ onLogin }) {
         <input
           {...register('email')}
           placeholder="Email"
+          autoComplete="email"
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         />
         {errors.email && <ErrorMessage message={errors.email.message} />}
@@ -55,6 +56,7 @@ function LoginForm({ onLogin }) {
           {...register('password')}
           type="password"
           placeholder="Password"
+          autoComplete="current-password"
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         />
         {errors.password && <ErrorMessage message={errors.password.message} />}

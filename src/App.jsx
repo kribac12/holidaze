@@ -1,17 +1,19 @@
-import { Suspense } from 'react'
+import { Suspense, lazy } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
-import Home from './pages/Home'
-import ProfilePage from './pages/Profile'
-import NotFound from './pages/NotFound'
-import VenueSpecific from './pages/VenueSpecific'
-import CreateVenueForm from './pages/CreateVenue'
 import ModalLogSignin from './components/Auth/ModalLogSignin'
+import Loader from './components/Shared/Loader'
+
+const Home = lazy(() => import('./pages/Home'))
+const ProfilePage = lazy(() => import('./pages/Profile'))
+const NotFound = lazy(() => import('./pages/NotFound'))
+const VenueSpecific = lazy(() => import('./pages/VenueSpecific'))
+const CreateVenueForm = lazy(() => import('./pages/CreateVenue'))
 
 const App = () => {
   return (
     <Router>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />

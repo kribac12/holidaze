@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import LazyLoad from 'react-lazyload'
 import useApi from '@/services/Api/UseApi'
 import { Link } from 'react-router-dom'
 import VenueInfoCard from '../Venue/VenueInfoCard'
@@ -67,13 +68,15 @@ function VenueList() {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {venues.map((venue) => (
-          <Link to={`/venues/${venue.id}`} key={venue.id} className="h-full">
-            <VenueInfoCard
-              venue={venue}
-              titleLevel={2}
-              className="venue-list-item"
-            />
-          </Link>
+          <LazyLoad key={venue.id} height={200} offset={100} once>
+            <Link to={`/venues/${venue.id}`} className="h-full">
+              <VenueInfoCard
+                venue={venue}
+                titleLevel={2}
+                className="venue-list-item"
+              />
+            </Link>
+          </LazyLoad>
         ))}
       </div>
       <div className="flex justify-center mt-4">

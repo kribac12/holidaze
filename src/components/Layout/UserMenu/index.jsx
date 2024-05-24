@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import useStore from '@/store'
-import { FaUserCircle } from 'react-icons/fa'
+import { FaUserCircle, FaBars } from 'react-icons/fa'
 
 function UserMenu() {
   const navigate = useNavigate()
@@ -18,7 +18,13 @@ function UserMenu() {
 
   const handleLogout = () => {
     clearAuth()
-    navigate('/')
+    navigate('/', {
+      state: {
+        title: 'Logout Successful',
+        message: 'Hope to see you again soon!',
+        type: 'success',
+      },
+    })
     setDropdownOpen(false)
   }
 
@@ -26,9 +32,10 @@ function UserMenu() {
     <div className="relative">
       <button
         onClick={toggleDropdown}
-        className="text-primaryText hover:text-primary"
+        className="flex items-center text-primaryText hover:text-primary"
       >
-        <FaUserCircle size="1.5em" />
+        <FaBars size="1.3em" className="mr-2" />
+        <FaUserCircle size="1.7em" />
       </button>
       {dropdownOpen && (
         <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">

@@ -20,7 +20,11 @@ const BookingSection = ({ venueId, bookings }) => {
   const [range, setRange] = useState({ from: undefined, to: undefined })
   const [guests, setGuests] = useState(1)
   const [isAuthenticated, setIsAuthenticated] = useState(!!auth.token)
-  const [notification, setNotification] = useState({ message: '', type: '' })
+  const [notification, setNotification] = useState({
+    title: '',
+    message: '',
+    type: '',
+  })
 
   useEffect(() => {
     setIsAuthenticated(!!auth.token)
@@ -44,6 +48,7 @@ const BookingSection = ({ venueId, bookings }) => {
       setLoginMessage('You must be logged in to book a stay.')
       openModal(true)
       setNotification({
+        title: 'Login Required',
         message: 'You must be logged in to book a stay.',
         type: 'error',
       })
@@ -52,6 +57,7 @@ const BookingSection = ({ venueId, bookings }) => {
 
     if (!venueId || !range.from || !range.to) {
       setNotification({
+        title: 'Invalid Date Range',
         message: 'Please select a valid date range.',
         type: 'error',
       })
@@ -71,38 +77,52 @@ const BookingSection = ({ venueId, bookings }) => {
         method: 'post',
         data: bookingData,
       })
-      setNotification({ message: 'Booking successful!', type: 'success' })
+      setNotification({
+        title: 'Booking Successful!',
+        message: 'Venue was booked successfully. Enjoy your stay!',
+        type: 'success',
+      })
       navigate(`/profile/${auth.user.name}`, {
-        state: { message: 'Booking successful!' },
+        state: {
+          title: 'Booking successful!',
+          message: 'Venue was booked successfully. Enjoy your stay!',
+          type: 'success',
+        },
       })
     } catch (error) {
       console.error('Booking failed:', error)
-      setNotification({ message: 'Booking failed.', type: 'error' })
+      setNotification({
+        title: 'Booking Failed',
+        message: 'Booking failed. Please try again.',
+        type: 'error',
+      })
     }
   }
 
   const disabledDays = getDisabledDays()
 
   return (
-    <div className="flex flex-col w-full p-4 border border-secondary shadow rounded-lg">
+    <div className="flex flex-col p-2 shadow rounded-lg bg-cardBg max-w-sm mx-auto">
       <h2 className="font-h2 text-h2 mt-2">Book Your Stay</h2>
-      <DayPicker
-        mode="range"
-        selected={range}
-        onSelect={setRange}
-        disabled={disabledDays}
-        modifiersStyles={{
-          selected: {
-            backgroundColor: '#FFBA08',
-            color: '#333333',
-          },
-          disabled: {
-            backgroundColor: '#F1F1F1',
-            color: '#626567',
-          },
-        }}
-        className="mx-0"
-      />
+      <div className="mt-2">
+        <DayPicker
+          mode="range"
+          selected={range}
+          onSelect={setRange}
+          disabled={disabledDays}
+          modifiersStyles={{
+            selected: {
+              backgroundColor: '#FFBA08',
+              color: '#333333',
+            },
+            disabled: {
+              backgroundColor: '#F1F1F1',
+              color: '#626567',
+            },
+          }}
+          className="mx-0"
+        />
+      </div>
       <div className="mt-4">
         <div className="flex flex-row gap-3 items-center">
           <p> Number of guests: </p>
@@ -114,15 +134,23 @@ const BookingSection = ({ venueId, bookings }) => {
             className="block h-10 w-14 p-2 border rounded"
           />
         </div>
-        <Button onClick={handleBooking} disabled={isLoading} type="primary">
+        <Button
+          onClick={handleBooking}
+          disabled={isLoading}
+          type="primary"
+          className="mt-4"
+        >
           Book Now
         </Button>
       </div>
       {notification.message && (
         <Notification
+          title={notification.title}
           message={notification.message}
           type={notification.type}
-          onDismiss={() => setNotification({ message: '', type: '' })}
+          onDismiss={() =>
+            setNotification({ title: '', message: '', type: '' })
+          }
         />
       )}
     </div>

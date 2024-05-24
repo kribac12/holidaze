@@ -13,10 +13,17 @@ const ProfilePage = () => {
   const { name: profileName } = useParams()
   const { data: profileData, isLoading, isError, sendRequest } = useApi()
   const [isEditing, setIsEditing] = useState(false)
-  const { auth } = useStore()
+  const { auth, setNotification } = useStore((state) => ({
+    auth: state.auth,
+    setNotification: state.setNotification,
+  }))
   const isOwnProfile = auth.user && auth.user.name === profileName
   const location = useLocation()
-  const [message, setMessage] = useState(location.state?.message || '')
+  const [notification, setNotificationState] = useState({
+    title: location.state?.title || '',
+    message: location.state?.message || '',
+    type: location.state?.type || '',
+  })
 
   useEffect(() => {
     sendRequest({
@@ -25,7 +32,6 @@ const ProfilePage = () => {
     })
       .then((data) => {
         if (data && data.data && data.data.venueManager !== undefined) {
-          // Update Zustand store with the latest venueManager status
           useStore.getState().setAuth({
             user: {
               ...useStore.getState().auth.user,
@@ -47,24 +53,39 @@ const ProfilePage = () => {
     }
   }
 
+  useEffect(() => {
+    if (location.state && location.state.message) {
+      setNotification(location.state)
+    }
+  }, [location.state, setNotification])
+
   if (isLoading) return <Loader />
   if (isError || !profileData || !profileData.data)
     return <div>Error fetching profile data.</div>
 
   return (
     <div className="relative pb-16">
-      {message && (
+      {notification.message && (
         <Notification
-          message={message}
-          type="success"
-          onDismiss={() => setMessage('')}
+          title={notification.title}
+          message={notification.message}
+          type={notification.type}
+          onDismiss={() =>
+            setNotificationState({ title: '', message: '', type: '' })
+          }
         />
       )}
       <EditProfileModal
         isOpen={isEditing}
         onClose={handleModalClose}
         profile={profileData.data}
-        setMessage={setMessage}
+        setMessage={(msg) =>
+          setNotificationState({
+            title: 'Profile Successfully Updated!',
+            message: msg,
+            type: 'success',
+          })
+        }
       />
       {profileData.data.banner && (
         <div className="relative h-40 bg-gray-200">
@@ -82,38 +103,29 @@ const ProfilePage = () => {
           )}
         </div>
       )}
-      <div className="pt-16 pb-8 px-4 text-center">
+      <div className="pt-16 pb-8 px-4 space-y-4 text-center">
         <h1 className="text-h1 font-h1">{profileData.data.name}</h1>
+        <p className="text-primaryText">
+          {profileData.data.venueManager ? 'Venue Manager' : ''}
+        </p>
         <p className="text-secondaryText">Email: {profileData.data.email}</p>
-        <p className="text-primaryText mb-6"> {profileData.data.bio}</p>
-        <Button type="primary" onClick={() => setIsEditing(true)}>
-          Edit Profile
-        </Button>
+        <p className="text-primaryText "> {profileData.data.bio}</p>
+        {isOwnProfile && (
+          <Button type="primary" onClick={() => setIsEditing(true)}>
+            Edit Profile
+          </Button>
+        )}
       </div>
-      <div className="pb-4">
-        <p className="text-secondaryText">
-          Venue Manager: {profileData.data.venueManager ? 'Yes' : 'No'}
-        </p>
-        <p className="text-secondaryText">
-          Total Venues: {profileData.data._count.venues}
-        </p>
-        <p className="text-secondaryText">
-          Total Bookings: {profileData.data._count.bookings}
-        </p>
-      </div>
-      <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mt-4">
-        <div className="md:flex-1">
-          <ProfileBookings
-            profileName={profileData.data.name}
-            isOwnProfile={isOwnProfile}
-          />
-        </div>
-        <div className="md:flex-1">
-          <ProfileVenues
-            profileName={profileData.data.name}
-            isOwnProfile={isOwnProfile}
-          />
-        </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        <ProfileBookings
+          profileName={profileData.data.name}
+          isOwnProfile={isOwnProfile}
+        />
+        <ProfileVenues
+          profileName={profileData.data.name}
+          isOwnProfile={isOwnProfile}
+        />
       </div>
     </div>
   )

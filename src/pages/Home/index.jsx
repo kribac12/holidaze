@@ -69,7 +69,7 @@ function Home() {
               isError={isError}
             />
             {visibleResults < searchResults.length && (
-              <div className="flex justify-center mt-4">
+              <div className="mt-4 flex justify-center">
                 <Button type="primary" onClick={handleShowMore}>
                   Show More
                 </Button>
@@ -77,7 +77,7 @@ function Home() {
             )}
           </>
         ) : hasSearched && !isLoading ? (
-          <div className="my-0 md:my-6 text-xl text-center">
+          <div className="my-0 text-center text-xl md:my-6">
             No venues found, try another search.
           </div>
         ) : null}

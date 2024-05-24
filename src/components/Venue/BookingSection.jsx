@@ -102,8 +102,8 @@ const BookingSection = ({ venueId, bookings }) => {
   const disabledDays = getDisabledDays()
 
   return (
-    <div className="flex flex-col p-2 shadow rounded-lg bg-cardBg max-w-sm mx-auto">
-      <h2 className="font-h2 text-h2 mt-2">Book Your Stay</h2>
+    <div className="mx-auto flex max-w-sm flex-col rounded-lg bg-cardBg p-2 shadow">
+      <h2 className="mt-2 text-h2 font-h2">Book Your Stay</h2>
       <div className="mt-2">
         <DayPicker
           mode="range"
@@ -124,14 +124,14 @@ const BookingSection = ({ venueId, bookings }) => {
         />
       </div>
       <div className="mt-4">
-        <div className="flex flex-row gap-3 items-center">
+        <div className="flex flex-row items-center gap-3">
           <p> Number of guests: </p>
           <input
             type="number"
             value={guests}
             onChange={(e) => setGuests(parseInt(e.target.value, 10))}
             min="1"
-            className="block h-10 w-14 p-2 border rounded"
+            className="block h-10 w-14 rounded border p-2"
           />
         </div>
         <Button

@@ -114,7 +114,7 @@ function EditProfileModal({ isOpen, onClose, profile, setMessage }) {
       isOpen={isOpen}
       onRequestClose={() => onClose(false)}
       contentLabel="Edit Profile"
-      className="m-auto bg-white rounded-lg p-6 outline-none max-h-screen overflow-y-auto"
+      className="m-auto max-h-screen overflow-y-auto rounded-lg bg-white p-6 outline-none"
       overlayClassName="fixed inset-0 bg-gray-900 bg-opacity-50 z-50"
     >
       {notification.message && (
@@ -125,7 +125,7 @@ function EditProfileModal({ isOpen, onClose, profile, setMessage }) {
         />
       )}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <h2 className="font-h2 text-h2">Edit your profile</h2>
+        <h2 className="text-h2 font-h2">Edit your profile</h2>
         <div>
           <label htmlFor="bio" className="label-base">
             Bio:
@@ -139,7 +139,7 @@ function EditProfileModal({ isOpen, onClose, profile, setMessage }) {
           />
           {errors.bio && <ErrorMessage message={errors.bio.message} />}
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
             <label htmlFor="avatar.url" className="label-base">
               Avatar URL:
@@ -169,7 +169,7 @@ function EditProfileModal({ isOpen, onClose, profile, setMessage }) {
             )}
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
             <label htmlFor="banner.url" className="label-base">
               Banner URL:

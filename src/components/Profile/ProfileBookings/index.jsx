@@ -27,7 +27,7 @@ const ProfileBookings = ({ profileName, isOwnProfile }) => {
   if (bookings.length === 0)
     return (
       <div className="flex-1">
-        <h2 className="font-h2 text-h2">Bookings</h2>
+        <h2 className="text-h2 font-h2">Bookings</h2>
         {isOwnProfile ? (
           <p>
             You currently have no bookings. Book your stay{' '}
@@ -44,22 +44,22 @@ const ProfileBookings = ({ profileName, isOwnProfile }) => {
 
   return (
     <div className="flex-1">
-      <h2 className="font-h2 text-h2 mb-4">Bookings</h2>
+      <h2 className="mb-4 text-h2 font-h2">Bookings</h2>
       <ul className="space-y-4">
         {bookings.map((booking) => (
           <li
             key={booking.id}
-            className="bg-cardBg border border-gray-200 rounded-lg shadow-sm p-4 flex space-x-4"
+            className="flex space-x-4 rounded-lg border border-gray-200 bg-cardBg p-4 shadow-sm"
           >
-            <div className="w-24 h-24 flex items-center justify-center bg-gray-200">
+            <div className="flex h-24 w-24 items-center justify-center bg-gray-200">
               {booking.venue.media[0]?.url ? (
                 <img
                   src={booking.venue.media[0].url}
                   alt={booking.venue.media[0].alt || 'Venue image'}
-                  className="w-24 h-24 object-cover rounded-lg"
+                  className="h-24 w-24 rounded-lg object-cover"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
+                <div className="flex h-full w-full items-center justify-center bg-gray-200 text-gray-500">
                   Image missing
                 </div>
               )}
@@ -67,7 +67,7 @@ const ProfileBookings = ({ profileName, isOwnProfile }) => {
             <div className="flex flex-col overflow-hidden">
               <Link
                 to={`/venues/${booking.venue.id}`}
-                className="text-lg font-semibold hover:underline truncate"
+                className="truncate text-lg font-semibold hover:underline"
               >
                 {booking.venue.name}
               </Link>

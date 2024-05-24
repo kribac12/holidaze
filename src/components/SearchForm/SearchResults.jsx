@@ -5,7 +5,7 @@ import Loader from '../Shared/Loader'
 
 function SearchResults({ data, isLoading, isError }) {
   return (
-    <div className="bg-primaryBg container mx-auto px-4 py-2">
+    <div className="container mx-auto bg-primaryBg px-4 py-2">
       {isLoading ? (
         <Loader />
       ) : isError ? (
@@ -14,10 +14,10 @@ function SearchResults({ data, isLoading, isError }) {
         <>
           {data && data.length > 0 ? (
             <>
-              <h2 className="font-h2 text-h2 text-center mb-4">
+              <h2 className="mb-4 text-center text-h2 font-h2">
                 Search Results
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {data.map((venue) => (
                   <Link
                     to={`/venues/${venue.id}`}

@@ -13,17 +13,17 @@ const VenueCarousel = ({ media }) => {
 
   if (media.length === 1) {
     return (
-      <div className="w-full h-48 md:h-96 lg:h-120">
+      <div className="lg:h-120 h-48 w-full md:h-96">
         <VenueMedia url={media[0].url} alt={media[0].alt} />
       </div>
     )
   }
 
   return (
-    <div className="w-full h-48 md:h-96 lg:h-120 mb-3">
+    <div className="lg:h-120 mb-3 h-48 w-full md:h-96">
       <Slider {...settings}>
         {media.map((item, index) => (
-          <div key={index} className="w-full h-48 md:h-96 lg:h-120">
+          <div key={index} className="lg:h-120 h-48 w-full md:h-96">
             <VenueMedia url={item.url} alt={item.alt} />
           </div>
         ))}

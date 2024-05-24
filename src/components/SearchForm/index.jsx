@@ -54,18 +54,18 @@ function SearchForm({ onResults }) {
   }
 
   return (
-    <div className="relative z-10 w-full max-w-2xl mx-auto p-0 md:p-4">
-      <form onSubmit={handleSubmit} className="flex items-center space-0">
+    <div className="relative z-10 mx-auto w-full max-w-2xl p-0 md:p-4">
+      <form onSubmit={handleSubmit} className="space-0 flex items-center">
         <input
           type="text"
           value={query}
           onChange={handleChange}
           placeholder="Find your stay"
-          className="flex-grow px-4 py-4 border rounded-l-full border-primary text-primaryText placeholder-primaryText focus:outline-none focus:border-primary"
+          className="flex-grow rounded-l-full border border-primary px-4 py-4 text-primaryText placeholder-primaryText focus:border-primary focus:outline-none"
         />
         <button
           type="submit"
-          className="bg-primary text-white font-semibold px-4 py-4 md:px-6 lg:px-10 border border-primary rounded-r-full hover:bg-teal-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
+          className="focus:ring-primary-500 rounded-r-full border border-primary bg-primary px-4 py-4 font-semibold text-white hover:bg-teal-500 focus:outline-none focus:ring-2 md:px-6 lg:px-10"
         >
           Search
         </button>

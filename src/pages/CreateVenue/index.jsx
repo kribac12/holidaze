@@ -150,10 +150,10 @@ const CreateVenueForm = () => {
     <div>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-8 p-4 bg-white shadow-md rounded-lg"
+        className="space-y-8 rounded-lg bg-white p-4 shadow-md"
       >
-        <h2 className="font-h2 text-h2">Add a Venue</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <h2 className="text-h2 font-h2">Add a Venue</h2>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
             <label htmlFor="name" className="label-base">
               Venue Name
@@ -182,7 +182,7 @@ const CreateVenueForm = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
             <label htmlFor="description" className="label-base">
               Description
@@ -219,7 +219,7 @@ const CreateVenueForm = () => {
         <div>
           <label className="label-base">Media</label>
           {fields.map((item, index) => (
-            <div key={item.id} className="flex items-center space-x-2 mb-2">
+            <div key={item.id} className="mb-2 flex items-center space-x-2">
               <input
                 {...register(`media.${index}.url`)}
                 placeholder="Media URL"
@@ -252,7 +252,7 @@ const CreateVenueForm = () => {
             </p>
           </div>
 
-          <div className="flex gap-5 flex-wrap">
+          <div className="flex flex-wrap gap-5">
             <div>
               <label htmlFor="wifi" className="inline-flex items-center">
                 <input
@@ -321,11 +321,11 @@ const CreateVenueForm = () => {
               : 'Add Additional Information'}
           </button>
           {showAdditional && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+            <div className="mt-4 grid grid-cols-1 gap-6 md:grid-cols-2">
               <div>
                 <label
                   htmlFor="country"
-                  className="block text-lg font-semibold mb-1"
+                  className="mb-1 block text-lg font-semibold"
                 >
                   Country{' '}
                   <span className="text-sm font-normal text-secondaryText">
@@ -336,13 +336,13 @@ const CreateVenueForm = () => {
                   {...register('country')}
                   id="country"
                   placeholder="Norway"
-                  className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
+                  className="input w-full rounded-lg border-gray-300 p-2 focus:border-primary focus:ring-primary"
                 />
               </div>
               <div>
                 <label
                   htmlFor="address"
-                  className="block text-lg font-semibold mb-1"
+                  className="mb-1 block text-lg font-semibold"
                 >
                   Address{' '}
                   <span className="text-sm font-normal text-secondaryText">
@@ -353,14 +353,14 @@ const CreateVenueForm = () => {
                   {...register('address')}
                   id="address"
                   placeholder="1234 Street"
-                  className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
+                  className="input w-full rounded-lg border-gray-300 p-2 focus:border-primary focus:ring-primary"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="zip"
-                  className="block text-lg font-semibold mb-1"
+                  className="mb-1 block text-lg font-semibold"
                 >
                   Zip Code{' '}
                   <span className="text-sm font-normal text-secondaryText">
@@ -371,7 +371,7 @@ const CreateVenueForm = () => {
                   {...register('zip')}
                   id="zip"
                   placeholder="1234"
-                  className="input border-gray-300 focus:border-primary focus:ring-primary rounded-lg p-2 w-full"
+                  className="input w-full rounded-lg border-gray-300 p-2 focus:border-primary focus:ring-primary"
                 />
               </div>
             </div>

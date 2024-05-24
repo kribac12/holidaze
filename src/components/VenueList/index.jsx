@@ -49,14 +49,14 @@ function VenueList() {
 
   return (
     <div>
-      <div className="flex justify-end mb-4">
+      <div className="mb-4 flex justify-end">
         <select
           value={sort}
           onChange={(e) => {
             setSort(e.target.value)
             setPage(1) // Reset to first page on sort change
           }}
-          className="text-lg p-3 md:px-6 md:py-4 border-2 border-accent rounded-lg"
+          className="rounded-lg border-2 border-accent p-3 text-lg md:px-6 md:py-4"
         >
           <option value="created,desc">Newest destinations</option>
           <option value="name,asc">Name A-Z</option>
@@ -66,7 +66,7 @@ function VenueList() {
           <option value="price,desc">Price Highest to Lowest</option>
         </select>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {venues.map((venue) => (
           <LazyLoad key={venue.id} height={200} offset={100} once>
             <Link to={`/venues/${venue.id}`} className="h-full">
@@ -79,7 +79,7 @@ function VenueList() {
           </LazyLoad>
         ))}
       </div>
-      <div className="flex justify-center mt-4">
+      <div className="mt-4 flex justify-center">
         {totalVenues > venues.length && (
           <Button type="primary" onClick={handleShowMore}>
             Show More

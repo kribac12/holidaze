@@ -11,23 +11,23 @@ function FeatureSection() {
 
   return (
     <div className="w-full">
-      <div className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-4 px-4 py-8 md:grid-cols-2">
         <div>
-          <h1 className="font-h1 text-h1">
+          <h1 className="text-h1 font-h1">
             Should your home be <strong>holidazed?</strong>
           </h1>
           <p className="mt-2">
             With only a few steps, you can make money on your home too.
           </p>
         </div>
-        <div className="relative w-full h-auto max-w-xl mx-auto">
-          <img src={campingImage} alt="Camping" className="w-full h-auto" />
+        <div className="relative mx-auto h-auto w-full max-w-xl">
+          <img src={campingImage} alt="Camping" className="h-auto w-full" />
           <div className="absolute inset-0 bg-white opacity-50"></div>
           <Button
             type="primary"
             onClick={handleRegisterClick}
             size="small"
-            className="absolute bottom-20 left-1/2 transform -translate-x-1/2 md:py-3 md:px-8"
+            className="absolute bottom-20 left-1/2 -translate-x-1/2 transform md:px-8 md:py-3"
           >
             Register Here
           </Button>

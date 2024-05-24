@@ -123,21 +123,21 @@ function VenueSpecific() {
       )}
       <VenueHeader venue={venue} />
 
-      <div className="flex flex-col md:flex-row mt-4">
-        <div className="md:w-1/2 lg:w-2/3 mr-2 md:mr-20">
+      <div className="mt-4 flex flex-col md:flex-row">
+        <div className="mr-2 md:mr-20 md:w-1/2 lg:w-2/3">
           <Description description={venue.description} />
           <Facilities meta={venue.meta} />
           <VenueDetails details={venueDetails} />
           {auth.token && <OwnerDetails owner={venue.owner} />}
         </div>
-        <div className="md:w-1/2 lg:w-1/3 mt-4 md:mt-0">
+        <div className="mt-4 md:mt-0 md:w-1/2 lg:w-1/3">
           {!isOwner && (
             <BookingSection venueId={venueId} bookings={venue.bookings || []} />
           )}
           {isOwner && (
             <div>
               <VenueBookings bookings={venue.bookings || []} />
-              <div className="flex space-x-2 mt-8">
+              <div className="mt-8 flex space-x-2">
                 <Button type="secondary" onClick={handleEdit}>
                   Edit Venue
                 </Button>
@@ -155,10 +155,10 @@ function VenueSpecific() {
         isOpen={showDeleteModal}
         onRequestClose={() => setShowDeleteModal(false)}
         contentLabel="Confirm Delete"
-        className="bg-white p-6 rounded shadow-md"
+        className="rounded bg-white p-6 shadow-md"
         overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
       >
-        <h2 className="text-xl mb-4">
+        <h2 className="mb-4 text-xl">
           Are you sure you want to delete this venue?
         </h2>
         <div className="flex justify-end space-x-4">

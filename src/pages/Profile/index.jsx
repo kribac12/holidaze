@@ -92,18 +92,18 @@ const ProfilePage = () => {
           <img
             src={profileData.data.banner.url}
             alt={profileData.data.banner.alt || 'Profile Banner'}
-            className="w-full h-full object-cover"
+            className="h-full w-full object-cover"
           />
           {profileData.data.avatar && (
             <img
               src={profileData.data.avatar.url}
               alt={profileData.data.avatar.alt || 'Profile Avatar'}
-              className="absolute w-24 h-24 rounded-full border-4 border-primaryBg bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2"
+              className="absolute bottom-0 left-1/2 h-24 w-24 -translate-x-1/2 translate-y-1/2 transform rounded-full border-4 border-primaryBg"
             />
           )}
         </div>
       )}
-      <div className="pt-16 pb-8 px-4 space-y-4 text-center">
+      <div className="space-y-4 px-4 pb-8 pt-16 text-center">
         <h1 className="text-h1 font-h1">{profileData.data.name}</h1>
         <p className="text-primaryText">
           {profileData.data.venueManager ? 'Venue Manager' : ''}
@@ -117,7 +117,7 @@ const ProfilePage = () => {
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
         <ProfileBookings
           profileName={profileData.data.name}
           isOwnProfile={isOwnProfile}

@@ -10,7 +10,7 @@ function HeroSection({ onResults }) {
         style={{ backgroundImage: `url(${campingImage})` }}
       ></div>
       <div className="absolute inset-0 bg-white opacity-50"></div>
-      <div className="relative z-10 flex items-center justify-center h-full">
+      <div className="relative z-10 flex h-full items-center justify-center">
         <SearchForm onResults={onResults} />
       </div>
     </section>

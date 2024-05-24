@@ -3,12 +3,15 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import useApi from '@/services/Api/UseApi'
 import useStore from '@/store'
 import Button from '@/components/Shared/Buttons'
-import VenueHeader from '@/components/Venue/VenueHeader'
-import Facilities from '@/components/Venue/Facilities'
-import Description from '@/components/Venue/Description'
-import BookingSection from '@/components/Venue/BookingSection'
-import VenueBookings from '@/components/Venue/VenueBookings'
-import VenueDetails from '@/components/Venue/Details'
+import {
+  VenueHeader,
+  Facilities,
+  Description,
+  BookingSection,
+  VenueBookings,
+  VenueDetails,
+  OwnerDetails,
+} from '@/components/Venue'
 import Notification from '@/components/Shared/Notifications'
 import Loader from '@/components/Shared/Loader'
 import Modal from 'react-modal'
@@ -20,18 +23,21 @@ function VenueSpecific() {
   const location = useLocation()
   const [venue, setVenue] = useState(null)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const { auth, notification, setNotification, clearNotification } = useStore(
-    (state) => ({
-      auth: state.auth,
-      notification: state.notification,
-      setNotification: state.setNotification,
-      clearNotification: state.clearNotification,
-    })
-  )
+  const { auth, setNotification } = useStore((state) => ({
+    auth: state.auth,
+    setNotification: state.setNotification,
+  }))
+  const [notification, setNotificationState] = useState({
+    title: location.state?.title || '',
+    message: location.state?.message || '',
+    type: location.state?.type || '',
+  })
 
   useEffect(() => {
     if (location.state && location.state.message) {
       setNotification(location.state)
+      setNotificationState(location.state)
+      navigate(location.pathname, { replace: true })
     }
 
     sendRequest({
@@ -46,15 +52,22 @@ function VenueSpecific() {
       .catch((error) => {
         console.error('Error fetching venue details:', error)
       })
-
-    return () => {
-      clearNotification()
-    }
-  }, [venueId, sendRequest, location.state, setNotification, clearNotification])
+  }, [
+    venueId,
+    sendRequest,
+    location.state,
+    setNotification,
+    navigate,
+    location.pathname,
+  ])
 
   const handleEdit = () => {
     navigate(`/edit-venue/${venueId}`, {
-      state: { message: 'Venue edited successfully!', type: 'success' },
+      state: {
+        title: 'Venue Edited',
+        message: 'Venue edited successfully!',
+        type: 'success',
+      },
     })
   }
 
@@ -66,11 +79,16 @@ function VenueSpecific() {
         method: 'delete',
       })
       navigate(`/profile/${auth.user.name}`, {
-        state: { message: 'Venue deleted successfully!', type: 'success' },
+        state: {
+          title: 'Venue Deleted',
+          message: 'Venue deleted successfully!',
+          type: 'success',
+        },
       })
     } catch (error) {
       console.error('Failed to delete venue:', error)
       setNotification({
+        title: 'Delete Failed',
         message: 'Error deleting venue. Please try again.',
         type: 'error',
       })
@@ -95,9 +113,12 @@ function VenueSpecific() {
     <div className="flex flex-col ">
       {notification.message && (
         <Notification
+          title={notification.title}
           message={notification.message}
           type={notification.type}
-          onDismiss={clearNotification}
+          onDismiss={() =>
+            setNotificationState({ title: '', message: '', type: '' })
+          }
         />
       )}
       <VenueHeader venue={venue} />
@@ -107,26 +128,27 @@ function VenueSpecific() {
           <Description description={venue.description} />
           <Facilities meta={venue.meta} />
           <VenueDetails details={venueDetails} />
+          {auth.token && <OwnerDetails owner={venue.owner} />}
         </div>
-        {!isOwner && (
-          <div className="md:w-1/2 lg:w-1/3 mt-4 md:mt-0">
+        <div className="md:w-1/2 lg:w-1/3 mt-4 md:mt-0">
+          {!isOwner && (
             <BookingSection venueId={venueId} bookings={venue.bookings || []} />
-          </div>
-        )}
-      </div>
-      {isOwner && (
-        <div>
-          <VenueBookings bookings={venue.bookings || []} />
-          <div className="flex space-x-2 mt-8">
-            <Button type="secondary" onClick={handleEdit}>
-              Edit Venue
-            </Button>
-            <Button type="red" onClick={() => setShowDeleteModal(true)}>
-              Delete Venue
-            </Button>
-          </div>
+          )}
+          {isOwner && (
+            <div>
+              <VenueBookings bookings={venue.bookings || []} />
+              <div className="flex space-x-2 mt-8">
+                <Button type="secondary" onClick={handleEdit}>
+                  Edit Venue
+                </Button>
+                <Button type="red" onClick={() => setShowDeleteModal(true)}>
+                  Delete Venue
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
 
       {/* Delete Confirmation Modal */}
       <Modal

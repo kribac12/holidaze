@@ -18,7 +18,13 @@ function UserMenu() {
 
   const handleLogout = () => {
     clearAuth()
-    navigate('/')
+    navigate('/', {
+      state: {
+        title: 'Logout Successful',
+        message: 'Hope to see you again soon!',
+        type: 'success',
+      },
+    })
     setDropdownOpen(false)
   }
 

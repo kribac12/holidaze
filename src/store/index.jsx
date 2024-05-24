@@ -15,7 +15,7 @@ const useStore = create((set) => ({
   isOpen: false,
   isRegister: true,
   loginMessage: '',
-  notification: { message: '', type: '' },
+  notification: { title: '', message: '', type: '' },
   openModal: (register = true) => set({ isOpen: true, isRegister: register }),
   closeModal: () => set({ isOpen: false, loginMessage: '' }),
   auth: getLocalStorageAuth(),
@@ -50,7 +50,7 @@ const useStore = create((set) => ({
   // Notification management
   setNotification: (notification) => set({ notification }),
   clearNotification: () =>
-    set({ notification: { message: '', type: 'success' } }),
+    set({ notification: { title: '', message: '', type: '' } }),
 }))
 
 export default useStore

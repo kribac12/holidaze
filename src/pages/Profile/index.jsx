@@ -8,6 +8,7 @@ import ProfileVenues from '@/components/Profile/ProfileVenues'
 import Notification from '@/components/Shared/Notifications'
 import Loader from '@/components/Shared/Loader'
 import Button from '@/components/Shared/Buttons'
+import Head from '@/components/HeadMeta'
 
 const ProfilePage = () => {
   const { name: profileName } = useParams()
@@ -65,6 +66,7 @@ const ProfilePage = () => {
 
   return (
     <div className="relative pb-16">
+      <Head title="Holidaze profile" description="Specific user profile" />
       {notification.message && (
         <Notification
           title={notification.title}

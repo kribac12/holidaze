@@ -125,8 +125,11 @@ const BookingSection = ({ venueId, bookings }) => {
       </div>
       <div className="mt-4">
         <div className="flex flex-row items-center gap-3">
-          <p> Number of guests: </p>
+          <label htmlFor="guestsInput" className="mr-2">
+            Number of guests:
+          </label>
           <input
+            id="guestsInput"
             type="number"
             value={guests}
             onChange={(e) => setGuests(parseInt(e.target.value, 10))}

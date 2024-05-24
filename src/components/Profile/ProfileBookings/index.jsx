@@ -59,7 +59,7 @@ const ProfileBookings = ({ profileName, isOwnProfile }) => {
                   className="h-24 w-24 rounded-lg object-cover"
                 />
               ) : (
-                <div className="flex h-full w-full items-center justify-center bg-gray-200 text-gray-500">
+                <div className="text-primarytext flex h-full w-full items-center justify-center bg-gray-200">
                   Image missing
                 </div>
               )}

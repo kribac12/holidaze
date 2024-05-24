@@ -63,7 +63,7 @@ const ProfileVenues = ({ profileName, isOwnProfile }) => {
                   }
                 />
               ) : (
-                <div className="flex h-full w-full items-center justify-center bg-gray-200 text-gray-500">
+                <div className="flex h-full w-full items-center justify-center bg-gray-200 text-primaryText">
                   Image missing
                 </div>
               )}

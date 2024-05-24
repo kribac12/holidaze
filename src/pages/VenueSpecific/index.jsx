@@ -15,6 +15,7 @@ import {
 import Notification from '@/components/Shared/Notifications'
 import Loader from '@/components/Shared/Loader'
 import Modal from 'react-modal'
+import Head from '@/components/HeadMeta'
 
 function VenueSpecific() {
   const { venueId } = useParams()
@@ -111,6 +112,7 @@ function VenueSpecific() {
 
   return (
     <div className="flex flex-col ">
+      <Head title="Holidaze Venue" description="Specific Venue" />
       {notification.message && (
         <Notification
           title={notification.title}

@@ -7,6 +7,7 @@ import FeatureSection from '@/components/FeatureSection'
 import Button from '@/components/Shared/Buttons'
 import Loader from '@/components/Shared/Loader'
 import Notification from '@/components/Shared/Notifications'
+import Head from '@/components/HeadMeta'
 
 function Home() {
   const [searchResults, setSearchResults] = useState([])
@@ -47,6 +48,10 @@ function Home() {
 
   return (
     <div>
+      <Head
+        title="Holidaze home"
+        description="Holidaze, book your dream stay today!"
+      />
       {notification.message && (
         <Notification
           title={notification.title}

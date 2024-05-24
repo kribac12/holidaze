@@ -8,6 +8,7 @@ import useStore from '@/store'
 import ErrorMessage from '@/utils/ErrorMessage'
 import Notification from '@/components/Shared/Notifications'
 import Button from '@/components/Shared/Buttons'
+import Head from '@/components/HeadMeta'
 
 const venueSchema = Yup.object().shape({
   name: Yup.string().required('Venue name is required'),
@@ -148,6 +149,10 @@ const CreateVenueForm = () => {
 
   return (
     <div>
+      <Head
+        title="Holidaze Create Venue"
+        description="Add a Venue for others to enjoy!"
+      />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="space-y-8 rounded-lg bg-white p-4 shadow-md"

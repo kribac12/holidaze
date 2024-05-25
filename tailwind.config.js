@@ -59,9 +59,9 @@ module.exports = {
         h2: '300',
       },
       width: {
-        full: '100%', // Full width
-        '1/2': '50%', // Half width
-        24: '6rem', // Custom width
+        full: '100%',
+        '1/2': '50%',
+        24: '6rem',
       },
       height: {
         40: '10rem',
@@ -74,9 +74,6 @@ module.exports = {
         40: 40,
         50: 50,
         auto: 'auto',
-      },
-      backgroundImage: {
-        'banner-image': "url('/path/to/banner/image.jpg')",
       },
     },
   },

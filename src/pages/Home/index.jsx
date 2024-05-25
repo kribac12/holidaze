@@ -6,6 +6,7 @@ import VenueList from '@/components/VenueList'
 import FeatureSection from '@/components/FeatureSection'
 import { Notification, Loader, Button } from '@/components/Shared'
 import Head from '@/components/HeadMeta'
+import BackToTopButton from '@/components/BackToTopButton'
 
 function Home() {
   const [searchResults, setSearchResults] = useState([])
@@ -87,6 +88,7 @@ function Home() {
       </section>
       <section className="mt-section">
         <VenueList />
+        <BackToTopButton />
       </section>
       <section className="mt-section">
         <FeatureSection />

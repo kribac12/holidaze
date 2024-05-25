@@ -36,7 +36,7 @@ Holidaze is an accommodation booking site that provides a seamless experience fo
   - Zustand
   - Axios
   - Yup
-  - React Icons, React Hook Form, React Date Range, React Day Picker, React Lazyload, React Modal, React Slick (carousel), React Helmet Async (SEO)
+  - React Icons, React Hook Form, React Day Picker, React Lazyload, React Modal, React Slick (carousel), React Helmet Async (SEO)
 
 - **Build Tools:**
 

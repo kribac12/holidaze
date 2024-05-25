@@ -4,10 +4,12 @@ import PropTypes from 'prop-types'
 import useApi from '@/services/Api/UseApi'
 import Loader from '@/components/Shared/Loader'
 import { truncateText } from '@/utils/TextUtils'
+import useStore from '@/store'
 
-const ProfileVenues = ({ profileName, isOwnProfile, isVenueManager }) => {
+const ProfileVenues = ({ profileName, isOwnProfile }) => {
   const { isLoading, isError, sendRequest } = useApi()
   const [venues, setVenues] = useState([])
+  const { user } = useStore((state) => state.auth)
 
   useEffect(() => {
     if (profileName) {
@@ -24,28 +26,26 @@ const ProfileVenues = ({ profileName, isOwnProfile, isVenueManager }) => {
 
   if (isLoading) return <Loader />
   if (isError) return <div>Error fetching venues.</div>
+
   if (venues.length === 0) {
     return (
       <div>
-        <h2 className="mb-4 text-h2 font-h2">Venues</h2>
+        <h2 className="text-h2 font-h2">Venues</h2>
         {isOwnProfile ? (
-          <p>
-            You currently manage no venues.{' '}
-            {isVenueManager ? (
-              <>
-                Add your first venue{' '}
-                <Link to="/create-venue" className="text-primary underline">
-                  here
-                </Link>
-                .
-              </>
-            ) : (
-              <>
-                Edit your profile and check the box for venue manager in order
-                to add venues.
-              </>
-            )}
-          </p>
+          user.venueManager ? (
+            <p>
+              You currently manage no venues. Add your first venue{' '}
+              <Link to="/create-venue" className="text-primary underline">
+                here
+              </Link>
+              .
+            </p>
+          ) : (
+            <p>
+              You have to be a venue manager to add venues. Please edit your
+              profile and check the box for becoming a venue manager.
+            </p>
+          )
         ) : (
           <p>{profileName} currently manages no venues.</p>
         )}

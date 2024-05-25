@@ -4,9 +4,9 @@ import HeroSection from '@/components/HeroSection'
 import SearchResults from '@/components/SearchForm/SearchResults'
 import VenueList from '@/components/VenueList'
 import FeatureSection from '@/components/FeatureSection'
-import Button from '@/components/Shared/Buttons'
-import Loader from '@/components/Shared/Loader'
-import Notification from '@/components/Shared/Notifications'
+import { Notification, Loader, Button } from '@/components/Shared'
+import Head from '@/components/HeadMeta'
+import BackToTopButton from '@/components/BackToTopButton'
 
 function Home() {
   const [searchResults, setSearchResults] = useState([])
@@ -47,6 +47,10 @@ function Home() {
 
   return (
     <div>
+      <Head
+        title="Holidaze home"
+        description="Holidaze, book your dream stay today!"
+      />
       {notification.message && (
         <Notification
           title={notification.title}
@@ -69,7 +73,7 @@ function Home() {
               isError={isError}
             />
             {visibleResults < searchResults.length && (
-              <div className="flex justify-center mt-4">
+              <div className="mt-4 flex justify-center">
                 <Button type="primary" onClick={handleShowMore}>
                   Show More
                 </Button>
@@ -77,13 +81,14 @@ function Home() {
             )}
           </>
         ) : hasSearched && !isLoading ? (
-          <div className="my-0 md:my-6 text-xl text-center">
+          <div className="my-0 text-center text-xl md:my-6">
             No venues found, try another search.
           </div>
         ) : null}
       </section>
       <section className="mt-section">
         <VenueList />
+        <BackToTopButton />
       </section>
       <section className="mt-section">
         <FeatureSection />

@@ -13,7 +13,7 @@ const VenueBookings = ({ bookings }) => {
 
   return (
     <div className="mt-8">
-      <h2 className="text-h2 font-h2 mb-2">Current Bookings</h2>
+      <h2 className="mb-2 text-h2 font-h2">Current Bookings</h2>
       <ul className="list-disc pl-5">
         {bookings.map((booking, index) => (
           <li key={index}>

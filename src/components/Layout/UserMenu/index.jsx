@@ -33,12 +33,13 @@ function UserMenu() {
       <button
         onClick={toggleDropdown}
         className="flex items-center text-primaryText hover:text-primary"
+        aria-label="User menu"
       >
-        <FaBars size="1.3em" className="mr-2" />
-        <FaUserCircle size="1.7em" />
+        <FaBars size="1.4em" className="mr-2" />
+        <FaUserCircle size="1.8em" />
       </button>
       {dropdownOpen && (
-        <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
+        <div className="absolute right-0 z-20 mt-2 w-48 rounded-md bg-white py-2 shadow-xl">
           <a
             href={`/profile/${auth.user.name}`}
             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -57,7 +58,7 @@ function UserMenu() {
           )}
           <button
             onClick={handleLogout}
-            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
           >
             Log out
           </button>

@@ -1,31 +1,31 @@
 import PropTypes from 'prop-types'
 
 const VenueDetails = ({ details }) => (
-  <div className="relative my-4 py-4 overflow-hidden">
-    <div className="absolute top-0 left-0 w-2/3 h-px bg-gradient-to-r from-transparent via-secondaryText to-transparent"></div>
-    <h2 className="font-h2 text-h2 mb-2">Details</h2>
+  <div className="relative my-4 overflow-hidden py-4">
+    <div className="absolute left-0 top-0 h-px w-2/3 bg-gradient-to-r from-transparent via-secondaryText to-transparent"></div>
+    <h2 className="mb-2 text-h2 font-h2">Details</h2>
     <ul>
-      <li>
+      <li className="truncate">
         <strong>Max Guests:</strong>{' '}
         {details.maxGuests || 'No information provided'}
       </li>
       {details.location?.address && (
-        <li>
+        <li className="truncate">
           <strong>Address:</strong> {details.location.address}
         </li>
       )}
       {details.location?.zip && (
-        <li>
+        <li className="truncate">
           <strong>ZIP Code:</strong> {details.location.zip}
         </li>
       )}
       {details.location?.country && (
-        <li>
+        <li className="truncate">
           <strong>Country:</strong> {details.location.country}
         </li>
       )}
       {details.location?.continent && (
-        <li>
+        <li className="truncate">
           <strong>Continent:</strong> {details.location.continent}
         </li>
       )}

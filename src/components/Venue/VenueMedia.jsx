@@ -6,17 +6,17 @@ const VenueMedia = ({ url, alt, className, imgClassName }) => {
 
   return (
     <div
-      className={`w-full h-48 md:h-96 lg:h-120 flex items-center justify-center bg-gray-200 ${className}`}
+      className={`lg:h-120 flex h-48 w-full items-center justify-center bg-gray-200 md:h-96 ${className}`}
     >
       {!url || imgError ? (
-        <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
+        <div className="flex h-full w-full items-center justify-center bg-gray-200 text-primaryText">
           Image missing
         </div>
       ) : (
         <img
           src={url}
           alt={alt || 'Venue image'}
-          className={`w-full h-full object-cover rounded-t-lg ${imgClassName}`}
+          className={`h-full w-full rounded-t-lg object-cover ${imgClassName}`}
           onError={() => setImgError(true)}
         />
       )}

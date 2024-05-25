@@ -73,14 +73,14 @@ function RegisterForm({ onSubmit }) {
   const onSubmitWrapper = async (data) => {
     try {
       await onSubmit(data)
-      clearStoreError() // Clear all global errors
-      clearErrors() // Clear all form errors
+      clearStoreError()
+      clearErrors()
     } catch (error) {
       console.error('Submission error:', error)
       if (error.response && error.response.data && error.response.data.errors) {
         error.response.data.errors.forEach((err) => {
-          setStoreError(err.path, err.message) // Set store-specific errors
-          setError(err.path, { type: 'server', message: err.message }) // Set form-specific errors
+          setStoreError(err.path, err.message)
+          setError(err.path, { type: 'server', message: err.message })
         })
       } else {
         setStoreError('apiError', 'Failed to submit form')
@@ -105,7 +105,7 @@ function RegisterForm({ onSubmit }) {
           },
         })}
         placeholder="Username"
-        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-3 leading-tight text-gray-700 shadow focus:outline-none"
       />
       {errors.name && <ErrorMessage message={errors.name.message} />}
 
@@ -117,7 +117,7 @@ function RegisterForm({ onSubmit }) {
           },
         })}
         placeholder="Email (stud.noroff.no)"
-        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-3 leading-tight text-gray-700 shadow focus:outline-none"
       />
       {errors.email && <ErrorMessage message={errors.email.message} />}
 
@@ -130,7 +130,7 @@ function RegisterForm({ onSubmit }) {
         })}
         type="password"
         placeholder="Password"
-        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-3 leading-tight text-gray-700 shadow focus:outline-none"
       />
       {errors.password && <ErrorMessage message={errors.password.message} />}
 
@@ -139,7 +139,7 @@ function RegisterForm({ onSubmit }) {
         <button
           type="button"
           onClick={() => setShowOptionalFields(!showOptionalFields)}
-          className="bg-secondary text-black underline py-2 px-4 rounded focus:outline-none"
+          className="rounded bg-secondary px-4 py-2 text-black underline focus:outline-none"
         >
           {showOptionalFields ? 'Hide Optional Fields' : 'Show Optional Fields'}
         </button>
@@ -156,7 +156,7 @@ function RegisterForm({ onSubmit }) {
               },
             })}
             placeholder="Bio(optional)"
-            className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="focus:shadow-outline w-full appearance-none rounded border px-3 py-3 leading-tight text-gray-700 shadow focus:outline-none"
           />
           {errors.bio && <ErrorMessage message={errors.bio.message} />}
 
@@ -168,7 +168,7 @@ function RegisterForm({ onSubmit }) {
               },
             })}
             placeholder="Avatar URL (optional)"
-            className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="focus:shadow-outline w-full appearance-none rounded border px-3 py-3 leading-tight text-gray-700 shadow focus:outline-none"
           />
           {errors.avatar?.url && (
             <ErrorMessage message={errors.avatar.url.message} />
@@ -182,7 +182,7 @@ function RegisterForm({ onSubmit }) {
               },
             })}
             placeholder="Avatar Alt Text (optional)"
-            className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="focus:shadow-outline w-full appearance-none rounded border px-3 py-3 leading-tight text-gray-700 shadow focus:outline-none"
           />
           {errors.avatar?.alt && (
             <ErrorMessage message={errors.avatar.alt.message} />
@@ -196,7 +196,7 @@ function RegisterForm({ onSubmit }) {
               },
             })}
             placeholder="Banner URL (optional)"
-            className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="focus:shadow-outline w-full appearance-none rounded border px-3 py-3 leading-tight text-gray-700 shadow focus:outline-none"
           />
           {errors.banner?.url && (
             <ErrorMessage message={errors.banner.url.message} />
@@ -210,7 +210,7 @@ function RegisterForm({ onSubmit }) {
               },
             })}
             placeholder="Banner Alt Text (optional)"
-            className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="focus:shadow-outline w-full appearance-none rounded border px-3 py-3 leading-tight text-gray-700 shadow focus:outline-none"
           />
           {errors.banner?.alt && (
             <ErrorMessage message={errors.banner.alt.message} />

@@ -30,7 +30,7 @@ const ProfileVenues = ({ profileName, isOwnProfile }) => {
   if (venues.length === 0) {
     return (
       <div>
-        <h2 className="text-h2 font-h2">Venues</h2>
+        <h2 className="mb-4 text-h2 font-h2">Venues</h2>
         {isOwnProfile ? (
           user.venueManager ? (
             <p>

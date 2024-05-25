@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import useApi from '@/services/Api/UseApi'
 import useStore from '@/store'
-import Button from '@/components/Shared/Buttons'
 import {
   VenueHeader,
   Facilities,
@@ -12,8 +11,7 @@ import {
   VenueDetails,
   OwnerDetails,
 } from '@/components/Venue'
-import Notification from '@/components/Shared/Notifications'
-import Loader from '@/components/Shared/Loader'
+import { Notification, Loader, Button } from '@/components/Shared'
 import Modal from 'react-modal'
 import Head from '@/components/HeadMeta'
 

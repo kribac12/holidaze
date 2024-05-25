@@ -4,9 +4,7 @@ import HeroSection from '@/components/HeroSection'
 import SearchResults from '@/components/SearchForm/SearchResults'
 import VenueList from '@/components/VenueList'
 import FeatureSection from '@/components/FeatureSection'
-import Button from '@/components/Shared/Buttons'
-import Loader from '@/components/Shared/Loader'
-import Notification from '@/components/Shared/Notifications'
+import { Notification, Loader, Button } from '@/components/Shared'
 import Head from '@/components/HeadMeta'
 
 function Home() {

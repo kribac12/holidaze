@@ -5,7 +5,7 @@ import useApi from '@/services/Api/UseApi'
 import Loader from '@/components/Shared/Loader'
 import { truncateText } from '@/utils/TextUtils'
 
-const ProfileVenues = ({ profileName, isOwnProfile }) => {
+const ProfileVenues = ({ profileName, isOwnProfile, isVenueManager }) => {
   const { isLoading, isError, sendRequest } = useApi()
   const [venues, setVenues] = useState([])
 
@@ -27,14 +27,24 @@ const ProfileVenues = ({ profileName, isOwnProfile }) => {
   if (venues.length === 0) {
     return (
       <div>
-        <h2 className="text-h2 font-h2">Venues</h2>
+        <h2 className="mb-4 text-h2 font-h2">Venues</h2>
         {isOwnProfile ? (
           <p>
-            You currently manage no venues. Add your first venue{' '}
-            <Link to="/create-venue" className="text-primary underline">
-              here
-            </Link>
-            .
+            You currently manage no venues.{' '}
+            {isVenueManager ? (
+              <>
+                Add your first venue{' '}
+                <Link to="/create-venue" className="text-primary underline">
+                  here
+                </Link>
+                .
+              </>
+            ) : (
+              <>
+                Edit your profile and check the box for venue manager in order
+                to add venues.
+              </>
+            )}
           </p>
         ) : (
           <p>{profileName} currently manages no venues.</p>

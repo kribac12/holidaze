@@ -73,14 +73,14 @@ function RegisterForm({ onSubmit }) {
   const onSubmitWrapper = async (data) => {
     try {
       await onSubmit(data)
-      clearStoreError() // Clear all global errors
-      clearErrors() // Clear all form errors
+      clearStoreError()
+      clearErrors()
     } catch (error) {
       console.error('Submission error:', error)
       if (error.response && error.response.data && error.response.data.errors) {
         error.response.data.errors.forEach((err) => {
-          setStoreError(err.path, err.message) // Set store-specific errors
-          setError(err.path, { type: 'server', message: err.message }) // Set form-specific errors
+          setStoreError(err.path, err.message)
+          setError(err.path, { type: 'server', message: err.message })
         })
       } else {
         setStoreError('apiError', 'Failed to submit form')

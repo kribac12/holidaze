@@ -22,31 +22,41 @@ const ProfileBookings = ({ profileName, isOwnProfile }) => {
     }
   }, [profileName, sendRequest])
 
+  const isUpcomingBooking = (booking) => {
+    const currentDate = new Date()
+    const bookingEndDate = new Date(booking.dateTo)
+    return bookingEndDate.getTime() >= currentDate.getTime()
+  }
+
+  const upcomingBookings = bookings
+    .filter(isUpcomingBooking)
+    .sort((a, b) => new Date(a.dateFrom) - new Date(b.dateFrom))
+
   if (isLoading) return <Loader />
   if (isError) return <div>Error fetching bookings.</div>
-  if (bookings.length === 0)
+  if (upcomingBookings.length === 0)
     return (
       <div className="flex-1">
-        <h2 className="text-h2 font-h2">Bookings</h2>
+        <h2 className="mb-4 text-h2 font-h2">Upcoming Bookings</h2>
         {isOwnProfile ? (
           <p>
-            You currently have no bookings. Book your stay{' '}
+            You currently have no upcoming bookings. Book your stay{' '}
             <Link to="/" className="text-primary underline">
               here
             </Link>
             .
           </p>
         ) : (
-          <p>{profileName} currently has no bookings.</p>
+          <p>{profileName} currently has no upcoming bookings.</p>
         )}
       </div>
     )
 
   return (
     <div className="flex-1">
-      <h2 className="mb-4 text-h2 font-h2">Bookings</h2>
+      <h2 className="mb-4 text-h2 font-h2">Upcoming Bookings</h2>
       <ul className="space-y-4">
-        {bookings.map((booking) => (
+        {upcomingBookings.map((booking) => (
           <li
             key={booking.id}
             className="flex space-x-4 rounded-lg border border-gray-200 bg-cardBg p-4 shadow-sm"
@@ -57,6 +67,11 @@ const ProfileBookings = ({ profileName, isOwnProfile }) => {
                   src={booking.venue.media[0].url}
                   alt={booking.venue.media[0].alt || 'Venue image'}
                   className="h-24 w-24 rounded-lg object-cover"
+                  onError={(e) => {
+                    e.target.onerror = null
+                    e.target.src = ''
+                    e.target.alt = 'Image missing'
+                  }}
                 />
               ) : (
                 <div className="text-primarytext flex h-full w-full items-center justify-center bg-gray-200">

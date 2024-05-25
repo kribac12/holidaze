@@ -4,12 +4,10 @@ import 'react-responsive-modal/styles.css'
 import RegisterForm from '../RegisterForm'
 import { useNavigate } from 'react-router-dom'
 import LoginForm from '../LoginForm'
-import Notification from '../../Shared/Notifications'
+import { Loader, Notification, Button } from '@/components/Shared'
 import useApi from '@/services/Api/UseApi'
 import useStore from '@/store'
 import { fetchApiKey } from '@/services/Api/ApiKey'
-import Loader from '../../Shared/Loader'
-import Button from '@/components/Shared/Buttons'
 
 function ModalLogSignin() {
   const {

@@ -24,7 +24,7 @@ function LoginForm({ onLogin }) {
     clearErrors,
   } = useForm({
     resolver: yupResolver(loginSchema),
-    mode: 'onBlur', // Validate on blur
+    mode: 'onBlur',
   })
 
   const onSubmit = async (data) => {

@@ -5,9 +5,7 @@ import useStore from '@/store'
 import EditProfileModal from '@/components/Profile/EditProfileModal'
 import ProfileBookings from '@/components/Profile/ProfileBookings'
 import ProfileVenues from '@/components/Profile/ProfileVenues'
-import Notification from '@/components/Shared/Notifications'
-import Loader from '@/components/Shared/Loader'
-import Button from '@/components/Shared/Buttons'
+import { Notification, Loader, Button } from '@/components/Shared'
 import Head from '@/components/HeadMeta'
 
 const ProfilePage = () => {

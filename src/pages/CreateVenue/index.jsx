@@ -6,8 +6,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import useApi from '@/services/Api/UseApi'
 import useStore from '@/store'
 import ErrorMessage from '@/utils/ErrorMessage'
-import Notification from '@/components/Shared/Notifications'
-import Button from '@/components/Shared/Buttons'
+import { Notification, Button } from '@/components/Shared'
 import Head from '@/components/HeadMeta'
 
 const venueSchema = Yup.object().shape({

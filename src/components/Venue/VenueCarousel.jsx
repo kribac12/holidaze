@@ -1,6 +1,6 @@
 import Slider from 'react-slick'
 import PropTypes from 'prop-types'
-import VenueMedia from './VenueMedia' // Import VenueMedia component
+import VenueMedia from './VenueMedia'
 
 const VenueCarousel = ({ media }) => {
   const settings = {

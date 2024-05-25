@@ -1,9 +1,15 @@
+import { useEffect } from 'react'
 import campingImage from '@/assets/images/camping.jpg'
+import { preloadImage } from '@/utils/PreloadImage'
 import useStore from '@/store'
 import Button from '../Shared/Buttons'
 
 function FeatureSection() {
   const openModal = useStore((state) => state.openModal)
+
+  useEffect(() => {
+    preloadImage(campingImage)
+  }, [])
 
   const handleRegisterClick = () => {
     openModal(true)
@@ -21,7 +27,7 @@ function FeatureSection() {
           </p>
         </div>
         <div className="relative mx-auto h-auto w-full max-w-xl">
-          <img src={campingImage} alt="Camping" className="h-auto w-full" />
+          <img src={campingImage} alt="Camping" className="h-600 w-400" />
           <div className="absolute inset-0 bg-white opacity-50"></div>
           <Button
             type="primary"

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import useApi from '@/services/Api/UseApi'
 import { DayPicker } from 'react-day-picker'
 import 'react-day-picker/dist/style.css'
-import { formatISO, addDays } from 'date-fns'
+import { formatISO, addDays, isBefore, startOfToday } from 'date-fns'
 import Button from '@/components/Shared/Buttons'
 import useStore from '@/store'
 import Notification from '@/components/Shared/Notifications'
@@ -31,14 +31,15 @@ const BookingSection = ({ venueId, bookings }) => {
   }, [auth.token])
 
   const getDisabledDays = () => {
-    let days = []
-    bookings.forEach((booking) => {
+    const days = bookings.flatMap((booking) => {
       let current = new Date(booking.dateFrom)
       const end = new Date(booking.dateTo)
+      const range = []
       while (current <= end) {
-        days.push(new Date(current))
+        range.push(new Date(current))
         current = addDays(current, 1)
       }
+      return range
     })
     return days
   }
@@ -99,7 +100,7 @@ const BookingSection = ({ venueId, bookings }) => {
     }
   }
 
-  const disabledDays = getDisabledDays()
+  const disabledDays = [...getDisabledDays(), { before: startOfToday() }]
 
   return (
     <div className="mx-auto flex max-w-sm flex-col rounded-lg bg-cardBg p-2 shadow">

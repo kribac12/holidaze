@@ -3,8 +3,7 @@ import LazyLoad from 'react-lazyload'
 import useApi from '@/services/Api/UseApi'
 import { Link } from 'react-router-dom'
 import VenueInfoCard from '../Venue/VenueInfoCard'
-import Button from '@/components/Shared/Buttons'
-import Loader from '../Shared/Loader'
+import { Loader, Button } from '@/components/Shared'
 
 function VenueList() {
   const { isLoading, isError, sendRequest } = useApi()
@@ -33,15 +32,15 @@ function VenueList() {
       .catch((error) => {
         console.error('Error fetching venues:', error)
       })
-  }, [sendRequest, sort, limit, page]) // Only recreate the function when dependencies change
+  }, [sendRequest, sort, limit, page])
 
   useEffect(() => {
     fetchVenues()
   }, [fetchVenues]) // Reacts to changes in `fetchVenues`
 
-  const handleShowMore = () => {
+  const handleShowMore = useCallback(() => {
     setPage((prevPage) => prevPage + 1)
-  }
+  }, [])
 
   if (isLoading && page === 1) return <Loader />
   if (isError) return <div>Error loading venues.</div>

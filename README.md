@@ -57,6 +57,11 @@ Holidaze is an accommodation booking site that provides a seamless experience fo
 
 ## Installation
 
+### Prerequisites
+
+- Node.js (version 14 or later)
+- npm
+
 1. Clone the repository:
 
    ```bash
